@@ -34,50 +34,70 @@ class LoggedOut extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Snag',
-              style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
+            Expanded(
+              flex: 5,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Snag',
+                      style:
+                          TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      textAlign: TextAlign.center,
+                      'Client application for SteamGifts',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ]),
             ),
-            const Text(
-              'Client application for SteamGifts',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 200),
-            GestureDetector(
-              onTap: () => urlLauncher('https://www.steamgifts.com/', true),
-              child: Text.rich(
-                  textAlign: TextAlign.center,
-                  const TextSpan(
-                      text: 'You need an account on',
-                      style: TextStyle(fontSize: 22),
-                      children: [
-                        TextSpan(
-                            text: ' steamgifts.com ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22)),
-                        TextSpan(
-                            text: 'to use this app.',
-                            style: TextStyle(fontSize: 22)),
-                      ])),
-            ),
-            const SizedBox(height: 160),
-            const Padding(
-              padding: EdgeInsets.all(14.0),
-              child: Text('If you have an account:',
-                  style: TextStyle(fontSize: 18)),
-            ),
-            FilledButton(
-                child: const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 26),
+            Expanded(
+              flex: 5,
+              child: Center(
+                child: GestureDetector(
+                  onTap: () => urlLauncher('https://www.steamgifts.com/', true),
+                  child: Text.rich(
+                      textAlign: TextAlign.center,
+                      const TextSpan(
+                          text: 'You need an account on',
+                          style: TextStyle(fontSize: 22),
+                          children: [
+                            TextSpan(
+                                text: ' steamgifts.com ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 22)),
+                            TextSpan(
+                                text: 'to use this app.',
+                                style: TextStyle(fontSize: 22)),
+                          ])),
                 ),
-                onPressed: () => context.push(LoginRoute.login.route)),
-            const SizedBox(height: 80),
-            TextButton(
-                onPressed: () => customNav(const About(), context),
-                child: Text('About', style: TextStyle(fontSize: 20)))
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(14.0),
+                      child: Text('If you have an account:',
+                          style: TextStyle(fontSize: 18)),
+                    ),
+                    FilledButton(
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(fontSize: 26),
+                        ),
+                        onPressed: () => context.push(LoginRoute.login.route)),
+                  ]),
+            ),
+            Expanded(
+              flex: 2,
+              child: TextButton(
+                  onPressed: () => customNav(const About(), context),
+                  child: Text('About', style: TextStyle(fontSize: 20))),
+            )
           ],
         ),
       ),
