@@ -1,0 +1,106 @@
+name: "Build"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:  
+  build:      
+    name: Build & Release 
+    runs-on: ubuntu-latest 
+
+    steps:
+        #Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+        #Extract Name
+      - name: Extract name from pubspec.yaml
+        id: extract_name
+        run: |
+          name=$(grep '^name: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "NAME=$name" >> $GITHUB_OUTPUT
+
+        #Extract Version
+      - name: Extract version from pubspec.yaml
+        id: extract_version
+        run: |
+          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+
+        #Check if Tag Exists
+      - name: Check if Version Exists
+        id: check_version
+        run: |
+          if git show-ref --tags --verify --quiet "refs/tags/v${{ steps.extract_version.outputs.VERSION }}"; then
+            echo "VERSION_EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION_EXISTS=false" >> $GITHUB_OUTPUT
+          fi
+
+        #Setup Java
+      - name: Set Up Java
+        env: 
+          EXISTS : ${{ steps.check_version.outputs.VERSION_EXISTS }}
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+        #Setup Flutter
+      - name: Set Up Flutter
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+        #Install Dependencies
+      - name: Install Dependencies
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: flutter pub get
+
+        #Setup Keystore
+      - name: Decode Keystore
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+          
+      - name: Create key.properties
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: |
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=keystore.jks" >> android/key.properties
+        
+       #Building APK
+      - name: Build APK
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: flutter build apk --release
+
+        #Rename APK
+      - name: Rename APK
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
+
+        #Upload Artifacts
+      - name: Upload Artifacts
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Releases
+          path: |
+            build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
+        
+        #Create Release
+      - name: Create Release
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
+          tag: v${{ steps.extract_version.outputs.VERSION }}
+          generateReleaseNotes: true

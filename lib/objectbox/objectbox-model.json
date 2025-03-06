@@ -1,0 +1,168 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2600449463212046792",
+      "lastPropertyId": "3:2830319372264064154",
+      "name": "DiscussionBookmarkModel",
+      "properties": [
+        {
+          "id": "1:4324825088511771992",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7901777110654280491",
+          "name": "href",
+          "type": 9
+        },
+        {
+          "id": "3:2830319372264064154",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5150874511920210717",
+      "lastPropertyId": "5:8542863716455574167",
+      "name": "GameBookmarkModel",
+      "properties": [
+        {
+          "id": "1:2191860520287057307",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5546747090219093865",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:4896861530691526047",
+          "name": "href",
+          "type": 9
+        },
+        {
+          "id": "4:1648434813553424879",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "5:8542863716455574167",
+          "name": "appid",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:7419379687254347064",
+      "lastPropertyId": "8:4822557758740206745",
+      "name": "GiveawayBookmarkModel",
+      "properties": [
+        {
+          "id": "1:1847480637901692793",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4650230457840709941",
+          "name": "gaId",
+          "type": 9
+        },
+        {
+          "id": "3:2459608894741913689",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:7661176943151692348",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "5:2699234169896693984",
+          "name": "appid",
+          "type": 9
+        },
+        {
+          "id": "6:1683975809137066054",
+          "name": "agoStamp",
+          "type": 6
+        },
+        {
+          "id": "7:3107701818263285603",
+          "name": "remainingStamp",
+          "type": 6
+        },
+        {
+          "id": "8:4822557758740206745",
+          "name": "favourite",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:9012714444067022403",
+      "lastPropertyId": "3:7789974885603624174",
+      "name": "GroupBookmarkModel",
+      "properties": [
+        {
+          "id": "1:1891575057665670483",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8680145873986897536",
+          "name": "href",
+          "type": 9
+        },
+        {
+          "id": "3:7789974885603624174",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:6659837700588507228",
+      "lastPropertyId": "2:3028153999326847203",
+      "name": "UserBookmarkModel",
+      "properties": [
+        {
+          "id": "1:912922424582677879",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3028153999326847203",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "5:6659837700588507228",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
