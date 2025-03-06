@@ -113,10 +113,9 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Delete'),
-                    content: RichText(
-                        text: TextSpan(
+                    content: Text.rich(
+                        TextSpan(
                             text: 'Are you sure you want to delete the ',
-                            style: DefaultTextStyle.of(context).style,
                             children: [
                           TextSpan(
                               text: _bookmarks[index].name,

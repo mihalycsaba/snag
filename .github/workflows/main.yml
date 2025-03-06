@@ -77,7 +77,12 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
         
-       #Building APK
+        #Run build_runner
+      - name: Run build_runner
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        run: dart run build_runner build
+
+        #Building APK
       - name: Build APK
         if: steps.check_version.outputs.VERSION_EXISTS == 'false'
         run: flutter build apk --release

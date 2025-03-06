@@ -47,9 +47,9 @@ class LoggedOut extends StatelessWidget {
             const SizedBox(height: 200),
             GestureDetector(
               onTap: () => urlLauncher('https://www.steamgifts.com/', true),
-              child: RichText(
+              child: Text.rich(
                   textAlign: TextAlign.center,
-                  text: const TextSpan(
+                  const TextSpan(
                       text: 'You need an account on',
                       style: TextStyle(fontSize: 22),
                       children: [

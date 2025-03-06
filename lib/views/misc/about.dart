@@ -110,11 +110,11 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
             SizedBox(height: 40),
             TextButton(
                 onPressed: () =>
-                    urlLauncher('https://github.com/mihalycsaba/w2img'),
+                    urlLauncher('https://github.com/mihalycsaba/snag'),
                 child: Text('Source code', style: TextStyle(fontSize: 18))),
             TextButton(
                 onPressed: () =>
-                    urlLauncher('https://github.com/mihalycsaba/w2img/issues'),
+                    urlLauncher('https://github.com/mihalycsaba/snag/issues'),
                 child: Text('Report an issue', style: TextStyle(fontSize: 18))),
             TextButton(
                 onPressed: () => customNav(Licenses(), context),
@@ -124,11 +124,10 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RichText(
-                    text: TextSpan(
-                        text: 'Huge thanks to ',
-                        style: TextStyle(fontSize: 16),
-                        children: [
+                Text.rich(TextSpan(
+                    text: 'Huge thanks to ',
+                    style: TextStyle(fontSize: 16),
+                    children: [
                       TextSpan(
                           text: 'cg',
                           style: TextStyle(
@@ -152,8 +151,8 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
+                  Text.rich(
+                    TextSpan(
                         text: 'Please consider supporting them on ',
                         style: TextStyle(
                           fontSize: 16,
