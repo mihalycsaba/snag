@@ -10,7 +10,7 @@ Client application for [steamgifts.com](https://www.steamgifts.com/). Made with 
 
 You will need a [steamgifts.com](https://www.steamgifts.com/) account to use this app.
 
-Download from [Github](https://github.com/mihalycsaba/snag/releases/talest)
+Download from [Github](https://github.com/mihalycsaba/snag/releases/latest)
 
 ## Updating
 
