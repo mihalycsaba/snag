@@ -8,7 +8,9 @@ on:
 jobs:  
   build:      
     name: Build & Release 
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
         #Checkout Repository
