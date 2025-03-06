@@ -6,7 +6,18 @@ Client application for [steamgifts.com](https://www.steamgifts.com/). Made with 
 
 ![Screenshots](readme/screenshots/screenshots.png)
 
+## Features
+
+- Notificaions for winning, ended giveaways and new messages.
+- Notification after having a certain number of points.
+- Bookmarking giveaways, discussions, users, games and groups.
+- Almost complete functionality of the website is available.
+
 ## Installation
+
+Minimum Android version: 10
+
+On older versions, you should use: [sg](https://github.com/PrOF-kk/SteamGifts)
 
 You will need a [steamgifts.com](https://www.steamgifts.com/) account to use this app.
 
@@ -29,3 +40,7 @@ Do it with updated plugins `flutter pub upgrade`
 Run release.sh to test if it builds.
 
 Explain your pull requests. Try to create separete PRs for each feature or fix.
+
+## TODO
+
+- Release an iPhone version.
