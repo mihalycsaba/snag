@@ -36,23 +36,23 @@ import 'package:snag/views/comments/comment_message.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 
-abstract class MessagesListModel {
+abstract class _MessagesListModel {
   Widget? message;
 
-  MessagesListModel({this.message});
+  _MessagesListModel({this.message});
 }
 
-class MessageModel extends MessagesListModel {
+class _MessageModel extends _MessagesListModel {
   String url;
   String title;
 
-  MessageModel({required this.url, required this.title, super.message});
+  _MessageModel({required this.url, required this.title, super.message});
 }
 
-class ReplyModel extends MessagesListModel {
+class _ReplyModel extends _MessagesListModel {
   String id;
 
-  ReplyModel({required this.id, super.message});
+  _ReplyModel({required this.id, super.message});
 }
 
 class MessagesBuilder extends StatefulWidget {
@@ -63,7 +63,7 @@ class MessagesBuilder extends StatefulWidget {
 }
 
 class _MessagesBuilderState extends State<MessagesBuilder> {
-  final PagingController<int, MessagesListModel> _pagingController =
+  final PagingController<int, _MessagesListModel> _pagingController =
       PagingController(firstPageKey: 1);
   bool _customTileExpanded = false;
 
@@ -71,7 +71,7 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _pagingController.addPageRequestListener((pageKey) {
-      fetchMessagesList(pageKey, context);
+      _fetchMessagesList(pageKey, context);
     });
   }
 
@@ -87,29 +87,31 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
       children: [
         Consumer<MessagesProvider>(
             builder: (context, user, child) =>
-                (user.messages == '0') ? Container() : const MarkWidget()),
+                (user.messages == '0') ? Container() : const _MarkWidget()),
         Flexible(
           child: RefreshIndicator(
               onRefresh: () => Future.sync(() => _pagingController.refresh()),
-              child: PagedListView<int, MessagesListModel>(
+              child: PagedListView<int, _MessagesListModel>(
                   pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<MessagesListModel>(
-                      itemBuilder: (context, message, index) => GestureDetector(
-                            //onTap: () => customNav(
-                            //Giveaway('go/comment/${message.id}'), context),
-                            child: message is ReplyModel
-                                ? userReplyEntry(reply: message.message!)
-                                : messageEntry(
-                                    message: message as MessageModel),
-                          ),
-                      newPageProgressIndicatorBuilder: (context) =>
-                          PagedProgressIndicator()))),
+                  builderDelegate:
+                      PagedChildBuilderDelegate<_MessagesListModel>(
+                          itemBuilder: (context, message, index) =>
+                              GestureDetector(
+                                //onTap: () => customNav(
+                                //Giveaway('go/comment/${message.id}'), context),
+                                child: message is _ReplyModel
+                                    ? _userReplyEntry(reply: message.message!)
+                                    : _messageEntry(
+                                        message: message as _MessageModel),
+                              ),
+                          newPageProgressIndicatorBuilder: (context) =>
+                              PagedProgressIndicator()))),
         ),
       ],
     );
   }
 
-  void fetchMessagesList(int pageKey, BuildContext context) async {
+  void _fetchMessagesList(int pageKey, BuildContext context) async {
     String data = await fetchBody(
         url:
             'https://www.steamgifts.com/messages/search?page=${pageKey.toString()}');
@@ -125,12 +127,12 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
     if (!context.mounted) return;
     context.read<MessagesProvider>().updateMessages(messages);
     prefs.setInt(PrefsKeys.messages.key, int.parse(messages));
-    List<MessagesListModel> messagesList = parseMessagesList(document);
+    List<_MessagesListModel> messagesList = _parseMessagesList(document);
     addPage(messagesList, _pagingController, pageKey, 25);
   }
 
-  List<MessagesListModel> parseMessagesList(dom.Document document) {
-    List<MessagesListModel> messagesList = [];
+  List<_MessagesListModel> _parseMessagesList(dom.Document document) {
+    List<_MessagesListModel> messagesList = [];
     List<dom.Element> elements = document
         .getElementsByClassName('widget-container')[0]
         .children[1]
@@ -139,22 +141,22 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
     for (int index = 0; index < elements.length; index++) {
       dom.Element element = elements[index];
       if (element.className == 'comments__entity') {
-        messagesList.add(parseMessageElement(element));
+        messagesList.add(_parseMessageElement(element));
       } else if (element.className == 'comments') {
         element.getElementsByClassName('comment__parent').forEach((element) {
-          messagesList.add(parseReplyElement(element));
+          messagesList.add(_parseReplyElement(element));
         });
       }
     }
     return messagesList;
   }
 
-  ReplyModel parseReplyElement(dom.Element element) {
+  _ReplyModel _parseReplyElement(dom.Element element) {
     dom.Element user =
         element.getElementsByClassName('comment__username')[0].children[0];
     List<dom.Element> role =
         element.getElementsByClassName('comment__role-name');
-    return ReplyModel(
+    return _ReplyModel(
         message: CommentMessage(
           data: element
               .getElementsByClassName('comment__description markdown')[0],
@@ -176,26 +178,26 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
             .attributes['id']!);
   }
 
-  MessageModel parseMessageElement(dom.Element element) {
+  _MessageModel _parseMessageElement(dom.Element element) {
     List<dom.Element> comment =
         element.getElementsByClassName('comments__entity__description');
     dom.Element title =
         element.getElementsByClassName('comments__entity__name')[0];
-    return MessageModel(
+    return _MessageModel(
       message: comment.isNotEmpty ? CommentMessage(data: comment[0]) : null,
       title: title.text,
       url: title.children[0].attributes['href']!,
     );
   }
 
-  Widget userReplyEntry({required Widget reply}) {
+  Widget _userReplyEntry({required Widget reply}) {
     return Padding(
       padding: const EdgeInsets.only(left: 32.0),
       child: reply,
     );
   }
 
-  Widget messageEntry({required MessageModel message}) {
+  Widget _messageEntry({required _MessageModel message}) {
     return ExpansionTile(
         title: Text(message.title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -236,14 +238,14 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
   }
 }
 
-class MarkWidget extends StatefulWidget {
-  const MarkWidget({super.key});
+class _MarkWidget extends StatefulWidget {
+  const _MarkWidget();
 
   @override
-  State<MarkWidget> createState() => _MarkWidgetState();
+  State<_MarkWidget> createState() => _MarkWidgetState();
 }
 
-class _MarkWidgetState extends State<MarkWidget> {
+class _MarkWidgetState extends State<_MarkWidget> {
   bool _active = true;
   late WidgetStateProperty<Color?> _bgColor;
 
@@ -258,7 +260,7 @@ class _MarkWidgetState extends State<MarkWidget> {
     return Column(
       children: [
         ElevatedButton(
-            onPressed: _active ? mark : null,
+            onPressed: _active ? _mark : null,
             style: ButtonStyle(backgroundColor: _bgColor),
             child: const Text('Mark as read')),
         const Divider(height: 0)
@@ -266,7 +268,7 @@ class _MarkWidgetState extends State<MarkWidget> {
     );
   }
 
-  void mark() async {
+  void _mark() async {
     String body =
         'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=read_messages';
     Map responseMap = await resMap(body, 'https://www.steamgifts.com/messages');
