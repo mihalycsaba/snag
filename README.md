@@ -43,4 +43,6 @@ Explain your pull requests. Try to create separete PRs for each feature or fix.
 
 ## TODO
 
+- Creating discussion.
+- Creating giveaway.
 - Release an iPhone version.
