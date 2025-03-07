@@ -48,7 +48,7 @@ class _BookmarksState extends State<Bookmarks> {
         appBar: CustomBackAppBar(name: 'Bookmarks'),
         body: Center(
             child: Column(children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Wrap(alignment: WrapAlignment.spaceEvenly, children: [
             TextButton(
               style: ButtonStyle(
                 backgroundColor: _destination == _BookmarksDestination.giveaways
