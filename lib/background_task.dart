@@ -24,7 +24,6 @@ import 'package:workmanager/workmanager.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/common/vars/prefs_keys.dart';
-import 'package:snag/nav/pages.dart';
 import 'package:snag/views/notifications/fetch_notifications.dart';
 
 void backgroundTask() {
@@ -43,7 +42,8 @@ void backgroundTask() {
 void _callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     prefs = await SharedPreferences.getInstance();
-    String data = await fetchBody(url: GiveawayPages.all.url);
+    String data =
+        await fetchBody(url: 'https://www.steamgifts.com/about/brand-assets');
     dom.Document document = parse(data);
     int points =
         int.parse(document.getElementsByClassName('nav__points')[0].text);
