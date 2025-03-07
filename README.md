@@ -27,6 +27,8 @@ Download from [Github](https://github.com/mihalycsaba/snag/releases/latest)
 
 You can use [Obtainium](https://github.com/ImranR98/Obtainium) for updates.
 
+Copy the repository URL `https://github.com/mihalycsaba/snag` into the Obtainium Add App page.
+
 ## Build
 
 The app should always be built with the latest stable version of Flutter.

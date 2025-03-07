@@ -154,6 +154,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
       dom.Element remaining =
           _document.getElementsByClassName('featured__column')[0];
       String remainingText = remaining.text.trim();
+      bool notStarted = remainingText.contains('Begins');
       _remainingStamp = remaining.nodes[2].attributes['data-timestamp']!;
       List<dom.Element> sidebarError =
           _document.getElementsByClassName('sidebar__error');
@@ -161,9 +162,11 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
           sidebarError.isNotEmpty ? sidebarError[0].text.trim() : null;
       _name =
           _document.getElementsByClassName('featured__heading__medium')[0].text;
-      String winners = _document
-          .getElementsByClassName('sidebar__navigation__item__link')[2]
-          .attributes['href']!;
+      String winners = !notStarted
+          ? _document
+              .getElementsByClassName('sidebar__navigation__item__link')[2]
+              .attributes['href']!
+          : '';
       List<dom.Element> entries = _document.getElementsByClassName(
           'sidebar__navigation__item__count live__entry-count');
       List<dom.Element> lvl = _document
@@ -208,7 +211,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                 .children[3]
                 .attributes['href'],
         notEnded: !remainingText.contains('Ended'),
-        notStarted: !remainingText.contains('Begins'),
+        notStarted: !notStarted,
         error: error,
         inviteOnly: _document
             .getElementsByClassName('featured__column--invite-only')
