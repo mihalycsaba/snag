@@ -23,7 +23,7 @@ import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/objectbox/game_bookmark_model.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
-import 'package:snag/views/giveaways/more_giveaways.dart';
+import 'package:snag/views/giveaways/game.dart';
 
 class GameBookmarks extends StatefulWidget {
   const GameBookmarks({super.key});
@@ -58,7 +58,7 @@ class _GameBookmarksState extends State<GameBookmarks> {
               title: Text(_bookmarks[index].name),
               onTap: () async {
                 await customNav(
-                    MoreGiveaways(
+                    Game(
                       href: '/game/${_bookmarks[index].href}/',
                     ),
                     context);

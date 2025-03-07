@@ -27,7 +27,7 @@ import 'package:snag/nav/pages.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/entered/entered_list.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
-import 'package:snag/views/giveaways/more_giveaways.dart';
+import 'package:snag/views/giveaways/game.dart';
 import 'package:snag/views/misc/group.dart';
 import 'package:snag/views/misc/login.dart';
 import 'package:snag/views/misc/user.dart';
@@ -187,7 +187,7 @@ class SGState extends State<SG> {
         path: '${GameRoute.game.route}$route',
         pageBuilder: (context, state) => NoTransitionPage(
             key: UniqueKey(),
-            child: MoreGiveaways(
+            child: Game(
               href:
                   '${GameRoute.game.route}/${state.pathParameters['id']}/${state.pathParameters['name'] ?? ''}',
             )));

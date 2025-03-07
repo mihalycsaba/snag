@@ -8131,14 +8131,14 @@ SOFTWARE.''',
       PackageRef('nested')
     ]);
 
-/// pub_semver 2.1.5
+/// pub_semver 2.2.0
 const _pub_semver = Package(
     name: 'pub_semver',
     description:
         "Versions and version constraints implementing pub's versioning policy. This is very similar to vanilla semver, with a few corner cases.",
     repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/pub_semver',
     authors: [],
-    version: '2.1.5',
+    version: '2.2.0',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -8168,7 +8168,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('collection'), PackageRef('meta')]);
+    dependencies: [PackageRef('collection')]);
 
 /// pubspec_parse 1.5.0
 const _pubspec_parse = Package(

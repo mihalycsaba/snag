@@ -43,10 +43,10 @@ import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/error/error_string.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/get_points.dart';
+import 'package:snag/views/giveaways/game.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 import 'package:snag/views/giveaways/giveaway/winners.dart';
 import 'package:snag/views/giveaways/groups.dart';
-import 'package:snag/views/giveaways/more_giveaways.dart';
 import 'package:snag/views/misc/user.dart';
 
 class _GiveawayDetailsModel extends GiveawayModel {
@@ -460,8 +460,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               icon: Icons.search,
                               text: 'More Giveaways',
                               onPressed: () => customNav(
-                                  MoreGiveaways(href: _giveaway.more),
-                                  context)),
+                                  Game(href: _giveaway.more), context)),
                           _giveaway.winners != null
                               ? CustomMenuItem(
                                   icon: Icons.emoji_events,
@@ -654,6 +653,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
             error: _exception,
             url: _url,
             stackTrace: _stackTrace,
+            type: 'giveaway',
           );
   }
 

@@ -27,10 +27,12 @@ class ErrorPage extends StatelessWidget {
       {super.key,
       required this.error,
       required this.url,
-      required this.stackTrace});
+      required this.stackTrace,
+      required this.type});
   final String error;
   final String url;
   final String stackTrace;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +50,24 @@ class ErrorPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
-                      'An error occurred while loading the giveaway:',
+                      'An error occurred while loading the $type:',
                       style: TextStyle(color: Colors.red, fontSize: 20),
                     ),
                   ),
+                  Center(
+                      child: Text(
+                    'Most likely the URL is invalid.',
+                    style: TextStyle(color: Colors.blue, fontSize: 18),
+                  )),
                   Column(
-                    children: [Text(url), Text(error), Text(stackTrace)],
+                    children: [
+                      Text('URL: $url',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(error),
+                      Text(stackTrace)
+                    ],
                   )
                 ],
               ),
