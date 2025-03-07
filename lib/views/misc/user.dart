@@ -43,6 +43,7 @@ import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/user_bookmark_model.dart';
 import 'package:snag/views/discussions/discussion_model.dart';
 import 'package:snag/views/discussions/discussions_list.dart';
+import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/parse_giveaway_list.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_list_tile.dart';
@@ -93,6 +94,8 @@ class _UserState extends State<User> {
       blacklisted: false);
   late bool _isUser;
   late final String _href;
+  String _exception = '';
+  String _stackTrace = '';
 
   @override
   void initState() {
@@ -128,239 +131,246 @@ class _UserState extends State<User> {
 
   @override
   Widget build(context) {
-    return isLoggedIn
-        ? Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (context.canPop()) {
-                    context.pop();
-                  } else {
-                    context.go(GiveawayPages.all.route);
-                  }
-                },
-              ),
-              title: Text(widget.name, style: const TextStyle(fontSize: 18)),
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              actions: <Widget>[
-                _isUser
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: InkWell(
-                            onTap: _notLoading
-                                ? () {
-                                    setState(() {
-                                      _notLoading = false;
-                                    });
-                                    _changeListState(_ListType.whitelist,
-                                        _user.whitelisted!);
-                                  }
-                                : null,
-                            child: _user.whitelisted!
-                                ? Icon(Icons.favorite,
-                                    color: Colors.lightBlueAccent)
-                                : Icon(Icons.favorite_outline)),
-                      ),
-                _isUser
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: InkWell(
-                            onTap: _notLoading
-                                ? !_user.blacklisted!
-                                    ? () => showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: const Text('Blacklist'),
-                                            content: Text(
-                                                'Are you sure you want to blacklist ${widget.name}?'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('Cancel'),
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
+    return _exception.isEmpty
+        ? isLoggedIn
+            ? Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      if (context.canPop()) {
+                        context.pop();
+                      } else {
+                        context.go(GiveawayPages.all.route);
+                      }
+                    },
+                  ),
+                  title:
+                      Text(widget.name, style: const TextStyle(fontSize: 18)),
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                  actions: <Widget>[
+                    _isUser
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: InkWell(
+                                onTap: _notLoading
+                                    ? () {
+                                        setState(() {
+                                          _notLoading = false;
+                                        });
+                                        _changeListState(_ListType.whitelist,
+                                            _user.whitelisted!);
+                                      }
+                                    : null,
+                                child: _user.whitelisted!
+                                    ? Icon(Icons.favorite,
+                                        color: Colors.lightBlueAccent)
+                                    : Icon(Icons.favorite_outline)),
+                          ),
+                    _isUser
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: InkWell(
+                                onTap: _notLoading
+                                    ? !_user.blacklisted!
+                                        ? () => showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text('Blacklist'),
+                                                content: Text(
+                                                    'Are you sure you want to blacklist ${widget.name}?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('Cancel'),
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text('Yes'),
+                                                    onPressed: () {
+                                                      _changeListState(
+                                                        _ListType.blacklist,
+                                                        _user.blacklisted!,
+                                                      );
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
                                               ),
-                                              TextButton(
-                                                child: const Text('Yes'),
-                                                onPressed: () {
-                                                  _changeListState(
-                                                    _ListType.blacklist,
-                                                    _user.blacklisted!,
-                                                  );
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                    : () => _changeListState(
-                                          _ListType.blacklist,
-                                          _user.blacklisted!,
-                                        )
-                                : null,
-                            child: _user.blacklisted!
-                                ? Icon(Icons.block, color: Colors.red)
-                                : Icon(Icons.block)),
-                      ),
-                _isUser
-                    ? Container()
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: InkWell(
-                          onTap: () {
-                            _changeBookmark();
-                            setState(() {
-                              _bookmarked = !_bookmarked;
-                            });
-                          },
-                          child: Icon(_bookmarked
-                              ? Icons.bookmark
-                              : Icons.bookmark_border),
-                        ),
-                      ),
-                InkWell(
-                  onTap: () => Share.shareUri(Uri.parse(_url)),
-                  child: Icon(Icons.share),
+                                            )
+                                        : () => _changeListState(
+                                              _ListType.blacklist,
+                                              _user.blacklisted!,
+                                            )
+                                    : null,
+                                child: _user.blacklisted!
+                                    ? Icon(Icons.block, color: Colors.red)
+                                    : Icon(Icons.block)),
+                          ),
+                    _isUser
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 7.0),
+                            child: InkWell(
+                              onTap: () {
+                                _changeBookmark();
+                                setState(() {
+                                  _bookmarked = !_bookmarked;
+                                });
+                              },
+                              child: Icon(_bookmarked
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border),
+                            ),
+                          ),
+                    InkWell(
+                      onTap: () => Share.shareUri(Uri.parse(_url)),
+                      child: Icon(Icons.share),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: IconButton(
+                          onPressed: () => urlLauncher(_user.steam),
+                          icon: FaIcon(FontAwesomeIcons.steamSymbol)),
+                    )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: IconButton(
-                      onPressed: () => urlLauncher(_user.steam),
-                      icon: FaIcon(FontAwesomeIcons.steamSymbol)),
-                )
-              ],
-            ),
-            body: RefreshIndicator(
-              onRefresh: () =>
-                  Future.sync(() => _giveawayPagingController.refresh()),
-              child: Center(
-                child: Column(
-                  children: [
-                    Card(
-                      surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                      elevation: CustomCardTheme.elevation,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            SizedBox(width: 80, height: 80, child: _user.image),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: SizedBox(
-                                width: 170,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Role: ${_user.role}',
-                                      style: _detailsTextStyle,
-                                    ),
-                                    Row(
+                body: RefreshIndicator(
+                  onRefresh: () =>
+                      Future.sync(() => _giveawayPagingController.refresh()),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Card(
+                          surfaceTintColor: CustomCardTheme.surfaceTintColor,
+                          elevation: CustomCardTheme.elevation,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                    width: 80, height: 80, child: _user.image),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: SizedBox(
+                                    width: 170,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Online: ',
+                                          'Role: ${_user.role}',
+                                          style: _detailsTextStyle,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Online: ',
+                                              style: _detailsTextStyle,
+                                            ),
+                                            Text(
+                                              _user.online,
+                                              style: _user.online
+                                                      .contains('Online')
+                                                  ? TextStyle(
+                                                      color: Colors.green,
+                                                      fontSize: 12)
+                                                  : _detailsTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          'Registered: ${_user.registered}',
                                           style: _detailsTextStyle,
                                         ),
                                         Text(
-                                          _user.online,
-                                          style: _user.online.contains('Online')
-                                              ? TextStyle(
-                                                  color: Colors.green,
-                                                  fontSize: 12)
-                                              : _detailsTextStyle,
-                                        ),
+                                          'Comments: ${_user.comments}',
+                                          style: _detailsTextStyle,
+                                        )
                                       ],
                                     ),
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Text(
-                                      'Registered: ${_user.registered}',
+                                      'Entered: ${_user.entered}',
                                       style: _detailsTextStyle,
                                     ),
                                     Text(
-                                      'Comments: ${_user.comments}',
+                                      'Won: ${_user.won}',
+                                      style: _detailsTextStyle,
+                                    ),
+                                    Text(
+                                      'Sent: ${_user.sent}',
+                                      style: _detailsTextStyle,
+                                    ),
+                                    Text(
+                                      'Level: ${_user.level}',
                                       style: _detailsTextStyle,
                                     )
                                   ],
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Entered: ${_user.entered}',
-                                  style: _detailsTextStyle,
-                                ),
-                                Text(
-                                  'Won: ${_user.won}',
-                                  style: _detailsTextStyle,
-                                ),
-                                Text(
-                                  'Sent: ${_user.sent}',
-                                  style: _detailsTextStyle,
-                                ),
-                                Text(
-                                  'Level: ${_user.level}',
-                                  style: _detailsTextStyle,
                                 )
                               ],
-                            )
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      _list == '' ? _bgColor : null,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _list = '';
+                                  });
+                                  _giveawayPagingController.refresh();
+                                },
+                                child: const Text('Sent')),
+                            TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    _list == '/giveaways/won' ? _bgColor : null,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _list = '/giveaways/won';
+                                });
+                                _giveawayPagingController.refresh();
+                              },
+                              child: const Text('Won'),
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    _list == '/discussions' ? _bgColor : null,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _list = '/discussions';
+                                  _discussionsPagingController.refresh();
+                                });
+                              },
+                              child: const Text('Discussions'),
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: _list == '' ? _bgColor : null,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _list = '';
-                              });
-                              _giveawayPagingController.refresh();
-                            },
-                            child: const Text('Sent')),
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                _list == '/giveaways/won' ? _bgColor : null,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _list = '/giveaways/won';
-                            });
-                            _giveawayPagingController.refresh();
-                          },
-                          child: const Text('Won'),
-                        ),
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                _list == '/discussions' ? _bgColor : null,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _list = '/discussions';
-                              _discussionsPagingController.refresh();
-                            });
-                          },
-                          child: const Text('Discussions'),
-                        ),
-                      ],
-                    ),
-                    Flexible(
-                      child: _list == '/discussions'
-                          ? DiscussionsList(
-                              pagingController: _discussionsPagingController)
-                          : PagedListView<int, GiveawayListModel>(
-                              itemExtent: CustomPagedListTheme.itemExtent,
-                              pagingController: _giveawayPagingController,
-                              builderDelegate:
-                                  PagedChildBuilderDelegate<GiveawayListModel>(
+                        Flexible(
+                          child: _list == '/discussions'
+                              ? DiscussionsList(
+                                  pagingController:
+                                      _discussionsPagingController)
+                              : PagedListView<int, GiveawayListModel>(
+                                  itemExtent: CustomPagedListTheme.itemExtent,
+                                  pagingController: _giveawayPagingController,
+                                  builderDelegate: PagedChildBuilderDelegate<
+                                          GiveawayListModel>(
                                       itemBuilder: (context, giveaway, index) =>
                                           Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -378,99 +388,109 @@ class _UserState extends State<User> {
                                       newPageProgressIndicatorBuilder:
                                           (context) =>
                                               PagedProgressIndicator())),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ))
-        : LoggedOut();
+                  ),
+                ))
+            : LoggedOut()
+        : ErrorPage(
+            error: _exception,
+            url: _url,
+            stackTrace: _stackTrace,
+            type: 'user');
   }
 
   Future<void> _fetchGiveawayList(
       int pageKey, String page, BuildContext context) async {
     String data = await fetchBody(url: '$page?page=${pageKey.toString()}');
     _isUser = widget.name == username;
-    dom.Element container =
-        parse(data).getElementsByClassName('widget-container')[0];
+    try {
+      dom.Element container =
+          parse(data).getElementsByClassName('widget-container')[0];
 
-    if (pageKey == 1 && _list == '') {
-      dom.Element header =
-          parse(data).getElementsByClassName('featured__inner-wrap')[0];
-      List<dom.Element> details =
-          header.getElementsByClassName('featured__table__column');
-      dom.Element buttons =
-          container.getElementsByClassName('sidebar__shortcut-inner-wrap')[0];
-      _user = _UserModel(
-          image: CachedNetworkImage(
-              errorWidget: (context, url, error) => const SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.grey),
-                        child: Icon(Icons.error)),
-                  ),
-              width: 80,
-              height: 80,
-              imageUrl: getAvatar(header, 'global__image-inner-wrap')),
-          role: details[0]
-              .getElementsByClassName('featured__table__row')[0]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          online: details[0]
-              .getElementsByClassName('featured__table__row')[1]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          registered: details[0]
-              .getElementsByClassName('featured__table__row')[2]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          comments: details[0]
-              .getElementsByClassName('featured__table__row')[3]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          entered: details[1]
-              .getElementsByClassName('featured__table__row')[0]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          won: details[1]
-              .getElementsByClassName('featured__table__row')[1]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          sent: details[1]
-              .getElementsByClassName('featured__table__row')[2]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .text
-              .trim(),
-          level: jsonDecode(details[1]
-              .getElementsByClassName('featured__table__row')[3]
-              .getElementsByClassName('featured__table__row__right')[0]
-              .children[0]
-              .attributes['data-ui-tooltip']!)['rows'][0]['columns'][1]['name'],
-          steam: _isUser
-              ? buttons.children[0].attributes['href']!
-              : buttons.children[3].attributes['href']!,
-          id: _isUser
-              ? null
-              : buttons
-                  .children[0].children[0].children[2].attributes['value']!,
-          whitelisted: _isUser
-              ? null
-              : buttons
-                  .getElementsByClassName(
-                      'sidebar__shortcut__whitelist is-selected')
-                  .isNotEmpty,
-          blacklisted: _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
+      if (pageKey == 1 && _list == '') {
+        dom.Element header =
+            parse(data).getElementsByClassName('featured__inner-wrap')[0];
+        List<dom.Element> details =
+            header.getElementsByClassName('featured__table__column');
+        dom.Element buttons =
+            container.getElementsByClassName('sidebar__shortcut-inner-wrap')[0];
+        _user = _UserModel(
+            image: CachedNetworkImage(
+                errorWidget: (context, url, error) => const SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.grey),
+                          child: Icon(Icons.error)),
+                    ),
+                width: 80,
+                height: 80,
+                imageUrl: getAvatar(header, 'global__image-inner-wrap')),
+            role: details[0]
+                .getElementsByClassName('featured__table__row')[0]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            online: details[0]
+                .getElementsByClassName('featured__table__row')[1]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            registered: details[0]
+                .getElementsByClassName('featured__table__row')[2]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            comments: details[0]
+                .getElementsByClassName('featured__table__row')[3]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            entered: details[1]
+                .getElementsByClassName('featured__table__row')[0]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            won: details[1]
+                .getElementsByClassName('featured__table__row')[1]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            sent: details[1]
+                .getElementsByClassName('featured__table__row')[2]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .text
+                .trim(),
+            level: jsonDecode(details[1]
+                    .getElementsByClassName('featured__table__row')[3]
+                    .getElementsByClassName('featured__table__row__right')[0]
+                    .children[0]
+                    .attributes['data-ui-tooltip']!)['rows'][0]['columns'][1]
+                ['name'],
+            steam: _isUser
+                ? buttons.children[0].attributes['href']!
+                : buttons.children[3].attributes['href']!,
+            id: _isUser
+                ? null
+                : buttons
+                    .children[0].children[0].children[2].attributes['value']!,
+            whitelisted: _isUser
+                ? null
+                : buttons
+                    .getElementsByClassName('sidebar__shortcut__whitelist is-selected')
+                    .isNotEmpty,
+            blacklisted: _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
+        setState(() {});
+      }
+      List<GiveawayListModel> giveaways = parseList(container, widget.name);
+      addPage(giveaways, _giveawayPagingController, pageKey, 25);
+    } catch (error, stack) {
+      _exception = error.toString();
+      _stackTrace = stack.toString();
       setState(() {});
     }
-
-    List<GiveawayListModel> giveaways = parseList(container, widget.name);
-    addPage(giveaways, _giveawayPagingController, pageKey, 25);
   }
 
   Future<void> _changeListState(_ListType type, bool active) async {

@@ -37,6 +37,7 @@ import 'package:snag/views/comments/comment_editor.dart';
 import 'package:snag/views/comments/comment_message.dart';
 import 'package:snag/views/comments/comments.dart';
 import 'package:snag/views/comments/refresh_controller.dart';
+import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/misc/logged_out.dart';
 
 class Discussion extends StatefulWidget {
@@ -129,273 +130,295 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
   int _total = 0;
   bool _patron = false;
   List<dom.Element> _role = [];
+  String _exception = '';
+  String _stackTrace = '';
 
   @override
   void initState() {
     super.initState();
     _bookmark = objectbox.getDiscussionBookmarked(widget.href);
     _bookmarked = _bookmark.isNotEmpty;
-    dom.Document document = parse(widget.data);
-    _comment = document.getElementsByClassName('comments')[0];
-    _desctiption =
-        _comment.getElementsByClassName('comment__description markdown')[0];
-    dom.Element user = _comment.getElementsByClassName('comment__username')[0];
-    _username = user.text;
-    List<dom.Element> userChildren = user.children;
-    _userHref =
-        userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null;
-    _ago = _comment
-        .getElementsByClassName('comment__actions')[0]
-        .nodes[1]
-        .nodes[0]
-        .text!;
-    _name = document
-        .getElementsByClassName('page__heading__breadcrumbs')[0]
-        .children[4]
-        .firstChild!
-        .text!;
-    _closed = document
-        .getElementsByClassName(
-            'page__heading__button page__heading__button--red')
-        .isNotEmpty;
-    _poll = document
-        .getElementsByClassName('poll__view-results-container')
-        .isNotEmpty;
-    _patron = _comment.getElementsByClassName('fa fa-star').isNotEmpty;
-    _role = _comment.getElementsByClassName('comment__role-name');
-    if (_poll) {
-      _question = document
-          .getElementsByClassName('table__heading')[0]
+
+    try {
+      dom.Document document = parse(widget.data);
+      _comment = document.getElementsByClassName('comments')[0];
+      _desctiption =
+          _comment.getElementsByClassName('comment__description markdown')[0];
+      dom.Element user =
+          _comment.getElementsByClassName('comment__username')[0];
+      _username = user.text;
+      List<dom.Element> userChildren = user.children;
+      _userHref =
+          userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null;
+      _ago = _comment
+          .getElementsByClassName('comment__actions')[0]
           .nodes[1]
-          .text!
-          .trim();
-      document
+          .nodes[0]
+          .text!;
+      _name = document
+          .getElementsByClassName('page__heading__breadcrumbs')[0]
+          .children[4]
+          .firstChild!
+          .text!;
+      _closed = document
           .getElementsByClassName(
-              'table__row-outer-wrap poll__answer-container')
-          .forEach((element) {
-        int votes = int.parse(element.attributes['data-votes']!);
-        _total += votes;
-        _answers.add(_AnswerModel(
-            answer: element
-                .getElementsByClassName('table__column__heading')[0]
-                .text
-                .trim(),
-            votes: votes,
-            id: element
-                .nodes[1].nodes[3].nodes[1].nodes[5].attributes['value']!,
-            voted: element.className.contains('is-selected')));
-      });
+              'page__heading__button page__heading__button--red')
+          .isNotEmpty;
+      _poll = document
+          .getElementsByClassName('poll__view-results-container')
+          .isNotEmpty;
+      _patron = _comment.getElementsByClassName('fa fa-star').isNotEmpty;
+      _role = _comment.getElementsByClassName('comment__role-name');
+      if (_poll) {
+        _question = document
+            .getElementsByClassName('table__heading')[0]
+            .nodes[1]
+            .text!
+            .trim();
+        document
+            .getElementsByClassName(
+                'table__row-outer-wrap poll__answer-container')
+            .forEach((element) {
+          int votes = int.parse(element.attributes['data-votes']!);
+          _total += votes;
+          _answers.add(_AnswerModel(
+              answer: element
+                  .getElementsByClassName('table__column__heading')[0]
+                  .text
+                  .trim(),
+              votes: votes,
+              id: element
+                  .nodes[1].nodes[3].nodes[1].nodes[5].attributes['value']!,
+              voted: element.className.contains('is-selected')));
+        });
+      }
+    } catch (error, stack) {
+      _exception = error.toString();
+      _stackTrace = stack.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(DiscussionPages.all.route);
-            }
-          },
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: InkWell(
-              onTap: () {
-                _changeBookmark();
-                setState(() {
-                  _bookmarked = !_bookmarked;
-                });
-              },
-              child: Icon(
-                _bookmarked ? Icons.bookmark : Icons.bookmark_border,
+    return _exception.isEmpty
+        ? Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go(DiscussionPages.all.route);
+                  }
+                },
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
-            child: GestureDetector(
-              onTap: () => Share.shareUri(Uri.parse(widget.url)),
-              child: Icon(
-                Icons.share,
-              ),
-            ),
-          ),
-        ],
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(
-          style: const TextStyle(fontSize: 18),
-          _name,
-          maxLines: 2,
-        ),
-      ),
-      body: CustomScrollView(slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Card(
-                elevation: CustomCardTheme.elevation,
-                surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommentMessage(
-                      data: _desctiption,
-                      name: _username,
-                      userHref: _userHref,
-                      ago: _ago,
-                      avatar: getAvatar(_comment, 'global__image-inner-wrap'),
-                      patron: _patron,
-                      role: _role.isNotEmpty ? _role[0].text.trim() : '',
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: InkWell(
+                    onTap: () {
+                      _changeBookmark();
+                      setState(() {
+                        _bookmarked = !_bookmarked;
+                      });
+                    },
+                    child: Icon(
+                      _bookmarked ? Icons.bookmark : Icons.bookmark_border,
                     ),
-                    _poll
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    _question,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _results = !_results;
-                                      });
-                                    },
-                                    child: const Text('Results'))
-                              ],
-                            ),
-                          )
-                        : Container(),
-                    _poll
-                        ? ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _answers.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) => Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: GestureDetector(
-                                    onTap: () => _vote(_answers[index]),
-                                    child: Card.filled(
-                                      elevation: 0.1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 6.0),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Flexible(
-                                                      child: Text(
-                                                          _answers[index]
-                                                              .answer)),
-                                                  SizedBox(
-                                                      width: 12,
-                                                      child: _answers[index]
-                                                              .voted
-                                                          ? Icon(
-                                                              Icons.circle,
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.green,
-                                                            )
-                                                          : Icon(
-                                                              Icons
-                                                                  .circle_outlined,
-                                                              size: 16,
-                                                            ))
-                                                ],
-                                              ),
-                                              _results
-                                                  ? Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 8.0),
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 75,
-                                                            child: Text(
-                                                                '${_answers[index].votes} votes'),
-                                                          ),
-                                                          Flexible(
-                                                            child: SizedBox(
-                                                              height: 8,
-                                                              child:
-                                                                  FractionallySizedBox(
-                                                                      widthFactor:
-                                                                          _answers[index].votes /
-                                                                              _total,
-                                                                      child:
-                                                                          Divider(
-                                                                        color: _answers[index].voted
-                                                                            ? Colors.green
-                                                                            : Colors.grey[500],
-                                                                        height:
-                                                                            0,
-                                                                        thickness:
-                                                                            8,
-                                                                      )),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Container(),
-                                            ],
-                                          ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
+                  child: GestureDetector(
+                    onTap: () => Share.shareUri(Uri.parse(widget.url)),
+                    child: Icon(
+                      Icons.share,
+                    ),
+                  ),
+                ),
+              ],
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              title: Text(
+                style: const TextStyle(fontSize: 18),
+                _name,
+                maxLines: 2,
+              ),
+            ),
+            body: CustomScrollView(slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Card(
+                      elevation: CustomCardTheme.elevation,
+                      surfaceTintColor: CustomCardTheme.surfaceTintColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommentMessage(
+                            data: _desctiption,
+                            name: _username,
+                            userHref: _userHref,
+                            ago: _ago,
+                            avatar:
+                                getAvatar(_comment, 'global__image-inner-wrap'),
+                            patron: _patron,
+                            role: _role.isNotEmpty ? _role[0].text.trim() : '',
+                          ),
+                          _poll
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          _question,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
                                         ),
                                       ),
-                                    ),
+                                      TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _results = !_results;
+                                            });
+                                          },
+                                          child: const Text('Results'))
+                                    ],
                                   ),
-                                ))
-                        : Container(),
-                    const Divider(height: 0),
-                    !_closed
-                        ? TextButton(
-                            onPressed: () async {
-                              Object? refresh = await customNav(
-                                  CommentEditor(
-                                      data: _desctiption,
-                                      name: _username,
-                                      url: widget.url),
-                                  context);
-                              if (refresh == true) widget.controller.method();
-                            },
-                            child: const Text('Comment'))
-                        : Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, top: 4.0, bottom: 4.0),
-                            child: const Text('Closed'),
-                          ),
-                  ],
-                )),
-          ),
-        ),
-        Comments(
-          href: widget.href,
-          isGiveaway: false,
-          refresh: widget.controller,
-          closed: _closed,
-        ),
-      ]),
-    );
+                                )
+                              : Container(),
+                          _poll
+                              ? ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: _answers.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) => Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: GestureDetector(
+                                          onTap: () => _vote(_answers[index]),
+                                          child: Card.filled(
+                                            elevation: 0.1,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 6.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Flexible(
+                                                            child: Text(
+                                                                _answers[index]
+                                                                    .answer)),
+                                                        SizedBox(
+                                                            width: 12,
+                                                            child: _answers[
+                                                                        index]
+                                                                    .voted
+                                                                ? Icon(
+                                                                    Icons
+                                                                        .circle,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .green,
+                                                                  )
+                                                                : Icon(
+                                                                    Icons
+                                                                        .circle_outlined,
+                                                                    size: 16,
+                                                                  ))
+                                                      ],
+                                                    ),
+                                                    _results
+                                                        ? Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    top: 8.0),
+                                                            child: Row(
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 75,
+                                                                  child: Text(
+                                                                      '${_answers[index].votes} votes'),
+                                                                ),
+                                                                Flexible(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    height: 8,
+                                                                    child: FractionallySizedBox(
+                                                                        widthFactor: _answers[index].votes / _total,
+                                                                        child: Divider(
+                                                                          color: _answers[index].voted
+                                                                              ? Colors.green
+                                                                              : Colors.grey[500],
+                                                                          height:
+                                                                              0,
+                                                                          thickness:
+                                                                              8,
+                                                                        )),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        : Container(),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ))
+                              : Container(),
+                          const Divider(height: 0),
+                          !_closed
+                              ? TextButton(
+                                  onPressed: () async {
+                                    Object? refresh = await customNav(
+                                        CommentEditor(
+                                            data: _desctiption,
+                                            name: _username,
+                                            url: widget.url),
+                                        context);
+                                    if (refresh == true) {
+                                      widget.controller.method();
+                                    }
+                                  },
+                                  child: const Text('Comment'))
+                              : Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, top: 4.0, bottom: 4.0),
+                                  child: const Text('Closed'),
+                                ),
+                        ],
+                      )),
+                ),
+              ),
+              Comments(
+                href: widget.href,
+                isGiveaway: false,
+                refresh: widget.controller,
+                closed: _closed,
+              ),
+            ]),
+          )
+        : ErrorPage(
+            error: _exception,
+            url: widget.url,
+            stackTrace: _stackTrace,
+            type: 'discussion',
+          );
   }
 
   void _changeBookmark() {
