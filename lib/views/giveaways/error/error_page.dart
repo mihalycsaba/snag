@@ -27,11 +27,11 @@ class ErrorPage extends StatelessWidget {
       {super.key,
       required this.error,
       required this.url,
-      required this.stackTrace,
+      this.stackTrace,
       required this.type});
   final String error;
   final String url;
-  final String stackTrace;
+  final String? stackTrace;
   final String type;
 
   @override
@@ -58,15 +58,17 @@ class ErrorPage extends StatelessWidget {
                   ),
                   Center(
                       child: Text(
-                    'Most likely the URL is invalid.',
+                    stackTrace == null
+                        ? error
+                        : 'Most likely the URL is invalid.',
                     style: TextStyle(color: Colors.blue, fontSize: 18),
                   )),
                   Column(
                     children: [
                       Text('URL: $url',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(error),
-                      Text(stackTrace)
+                      stackTrace != null ? Text(error) : Container(),
+                      stackTrace != null ? Text(stackTrace!) : Container(),
                     ],
                   )
                 ],

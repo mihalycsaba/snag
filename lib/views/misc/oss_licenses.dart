@@ -369,14 +369,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('yaml')
     ]);
 
-/// args 2.6.0
+/// args 2.7.0
 const _args = Package(
     name: 'args',
     description:
         'Library for defining parsers for parsing raw command-line arguments into a set of options and values using GNU and POSIX style options.',
-    repository: 'https://github.com/dart-lang/core/main/pkgs/args',
+    repository: 'https://github.com/dart-lang/core/tree/main/pkgs/args',
     authors: [],
-    version: '2.6.0',
+    version: '2.7.0',
     license: '''Copyright 2013, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -1512,14 +1512,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('typed_data')]);
 
-/// csslib 0.17.3
+/// csslib 1.0.2
 const _csslib = Package(
     name: 'csslib',
     description:
         'A library for parsing and analyzing CSS (Cascading Style Sheets).',
-    repository: 'https://github.com/dart-lang/csslib',
+    repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/csslib',
     authors: [],
-    version: '0.17.3',
+    version: '1.0.2',
     license: '''Copyright 2013, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -3033,13 +3033,13 @@ const _flat_buffers = Package(
     isSdk: false,
     dependencies: []);
 
-/// flutter 3.29.0
+/// flutter 3.29.2
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.29.0',
+    version: '3.29.2',
     license: '''Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -3120,17 +3120,17 @@ SOFTWARE.''',
       PackageRef('uuid')
     ]);
 
-/// flutter_html 3.0.0-beta.2
+/// flutter_html 3.0.0
 const _flutter_html = Package(
     name: 'flutter_html',
     description:
         'A Flutter widget for rendering static HTML and CSS as Flutter widgets.',
     homepage: 'https://github.com/Sub6Resources/flutter_html',
     authors: [],
-    version: '3.0.0-beta.2',
+    version: '3.0.0',
     license: '''MIT License
 
-Copyright (c) 2019-2022 The flutter_html developers
+Copyright (c) 2019-2025 The flutter_html developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -3159,17 +3159,17 @@ SOFTWARE.''',
       PackageRef('flutter')
     ]);
 
-/// flutter_html_table 3.0.0-beta.2
+/// flutter_html_table 3.0.0
 const _flutter_html_table = Package(
     name: 'flutter_html_table',
     description:
         'This extension package allows the <table> tag to be rendered using the flutter_html package',
     homepage: 'https://github.com/Sub6Resources/flutter_html',
     authors: [],
-    version: '3.0.0-beta.2',
+    version: '3.0.0',
     license: '''MIT License
 
-Copyright (c) 2019-2022 The flutter_html developers
+Copyright (c) 2019-2025 The flutter_html developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -5461,14 +5461,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('collection')]);
 
-/// html 0.15.4
+/// html 0.15.5
 const _html = Package(
     name: 'html',
     description:
         'APIs for parsing and manipulating HTML content outside the browser.',
-    repository: 'https://github.com/dart-lang/html',
+    repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/html',
     authors: [],
-    version: '0.15.4',
+    version: '0.15.5',
     license: '''Copyright (c) 2006-2012 The Authors
 
 Contributors:
@@ -7226,7 +7226,7 @@ SOFTWARE.''',
       PackageRef('plugin_platform_interface')
     ]);
 
-/// package_config 2.1.1
+/// package_config 2.2.0
 const _package_config = Package(
     name: 'package_config',
     description:
@@ -7234,7 +7234,7 @@ const _package_config = Package(
     repository:
         'https://github.com/dart-lang/tools/tree/main/pkgs/package_config',
     authors: [],
-    version: '2.1.1',
+    version: '2.2.0',
     license: '''Copyright 2019, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -11083,7 +11083,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('web_socket')
     ]);
 
-/// win32 5.11.0
+/// win32 5.12.0
 const _win32 = Package(
     name: 'win32',
     description:
@@ -11092,7 +11092,7 @@ const _win32 = Package(
     homepage: 'https://win32.pub',
     repository: 'https://github.com/halildurmus/win32',
     authors: [],
-    version: '5.11.0',
+    version: '5.12.0',
     license: '''BSD 3-Clause License
 
 Copyright (c) 2024, Halil Durmus
