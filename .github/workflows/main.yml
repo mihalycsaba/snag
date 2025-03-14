@@ -32,6 +32,12 @@ jobs:
         run: |
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version" >> $GITHUB_OUTPUT
+          if [[ "$version" == *pre* ]]; then
+            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
+          else
+            echo "PRERELEASE=false" >> $GITHUB_OUTPUT
+          fi
+
 
         #Check if Tag Exists
       - name: Check if Version Exists
@@ -105,9 +111,19 @@ jobs:
         
         #Create Release
       - name: Create Release
-        if: steps.check_version.outputs.VERSION_EXISTS == 'false'
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false' && steps.extract_version.outputs.PRERELEASE == 'false'
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
           tag: v${{ steps.extract_version.outputs.VERSION }}
           generateReleaseNotes: true
+      
+        #Create Pre-Release
+      - name: Create Pre-Release
+        if: steps.check_version.outputs.VERSION_EXISTS == 'false' && steps.extract_version.outputs.PRERELEASE == 'true'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
+          tag: v${{ steps.extract_version.outputs.VERSION }}
+          generateReleaseNotes: true
+          prerelease: true
