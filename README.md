@@ -33,7 +33,7 @@ Copy the repository URL `https://github.com/mihalycsaba/snag` into the Obtainium
 
 The app should always be built with the latest stable version of Flutter.
 
-Latest release was built with: `3.29.0`
+Latest release was built with: `3.29.2`
 
 ## Contributing
 

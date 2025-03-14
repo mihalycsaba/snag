@@ -138,7 +138,6 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
     super.initState();
     _bookmark = objectbox.getDiscussionBookmarked(widget.href);
     _bookmarked = _bookmark.isNotEmpty;
-
     try {
       dom.Document document = parse(widget.data);
       _comment = document.getElementsByClassName('comments')[0];

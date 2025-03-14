@@ -99,7 +99,6 @@ class _GiveawayState extends State<Giveaway> {
                         error:
                             'You are not a member of the required Steam groups.',
                         url: _url,
-                        stackTrace: '',
                         type: 'giveaway');
                   } else if (error.contains(
                       "not a member of the giveaway creator's whitelist.")) {
@@ -107,14 +106,9 @@ class _GiveawayState extends State<Giveaway> {
                         error:
                             "You are not a member of the giveaway creator's whitelist.",
                         url: _url,
-                        stackTrace: '',
                         type: 'giveaway');
                   } else if (error.contains('Deleted ')) {
-                    return ErrorPage(
-                        error: error,
-                        url: _url,
-                        stackTrace: '',
-                        type: 'giveaway');
+                    return ErrorPage(error: error, url: _url, type: 'giveaway');
                   }
                   return RefreshIndicator(
                       onRefresh: pullRefresh,
