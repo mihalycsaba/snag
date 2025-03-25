@@ -120,6 +120,8 @@ class _GroupState extends State<Group> {
                     IconButton(
                         onPressed: () {
                           if (_bookmarked) {
+                            _bookmark =
+                                objectbox.getGroupBookmarked(widget.href);
                             objectbox.removeGroupBookmark(_bookmark[0].id);
                           } else {
                             objectbox.addGroupBookmark(

@@ -422,6 +422,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
 
   void _changeBookmark() {
     if (_bookmarked) {
+      _bookmark = objectbox.getDiscussionBookmarked(widget.href);
       objectbox.removeDiscussionBookmark(_bookmark.first.id);
     } else {
       objectbox.addDiscussionBookmark(href: widget.href, name: _name);
