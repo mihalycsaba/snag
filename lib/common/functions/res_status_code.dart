@@ -30,6 +30,6 @@ Future<int> resStatusCode(String bodyFragment) async {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       encoding: Encoding.getByName('utf-8'),
-      body: 'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)!}f$bodyFragment');
+      body: 'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)!}$bodyFragment');
   return response.statusCode;
 }
