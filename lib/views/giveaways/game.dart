@@ -112,6 +112,7 @@ class _GameState extends State<Game> {
                     InkWell(
                       onTap: () {
                         if (_bookmarked) {
+                          _bookmark = objectbox.getGameBookmarked(widget.href);
                           objectbox.removeGameBookmark(_bookmark.first.id);
                         } else {
                           objectbox.addGameBookmark(

@@ -522,6 +522,7 @@ class _UserState extends State<User> {
 
   _changeBookmark() {
     if (_bookmarked) {
+      _bookmark = objectbox.getUserBookmarked(widget.name);
       objectbox.removeUserBookmark(_bookmark.first.id);
     } else {
       objectbox.addUserBookmark(name: widget.name);
