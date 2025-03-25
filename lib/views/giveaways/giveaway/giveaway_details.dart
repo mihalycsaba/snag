@@ -670,6 +670,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
 
   void _changeBookmark() {
     if (_bookmarked) {
+      _bookmark = objectbox.getGiveawayBookmarked(widget.href);
       objectbox.removeGiveawayBookmark(_bookmark.first.id);
     } else {
       objectbox.addGiveawayBookmark(
