@@ -24,7 +24,7 @@ import 'package:snag/common/vars/prefs_keys.dart';
 
 Future<String> fetchBody(
     {required String url,
-    bool isBlacklisted = false,
+    final bool isBlacklisted = false,
     final bool firstCheck = false}) async {
   Map<String, String> headers = {};
   if (!isBlacklisted) {

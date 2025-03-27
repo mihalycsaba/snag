@@ -88,8 +88,8 @@ class _GroupState extends State<Group> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController.addPageRequestListener(
-        (pageKey) => _fetchPage(pageKey, '${_url}search', context));
+    _pagingController
+        .addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -136,8 +136,7 @@ class _GroupState extends State<Group> {
                             : Icons.bookmark_border)),
                     IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: () => Share.shareUri(Uri.parse(
-                            'https://www.steamgifts.com${widget.href}'))),
+                        onPressed: () => Share.shareUri(Uri.parse(_url))),
                     IconButton(
                         onPressed: () => urlLauncher(_group.steam),
                         icon: FaIcon(FontAwesomeIcons.steamSymbol))
@@ -239,15 +238,17 @@ class _GroupState extends State<Group> {
             type: 'group');
   }
 
-  void _fetchPage(int pageKey, String url, BuildContext context) async {
+  void _fetchPage(int pageKey, BuildContext context) async {
     try {
-      String data = await fetchBody(url: '$url?page=${pageKey.toString()}');
+      String data =
+          await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
 
       dom.Document document = parse(data);
-
       dom.Element container =
           document.getElementsByClassName('widget-container')[0];
       if (pageKey == 1) {
+        _url =
+            'https://www.steamgifts.com${container.getElementsByClassName('page__heading__breadcrumbs').first.nodes.first.attributes['href']}/';
         dom.Element featured =
             document.getElementsByClassName('featured__inner-wrap')[0];
         List<dom.Element> details =
