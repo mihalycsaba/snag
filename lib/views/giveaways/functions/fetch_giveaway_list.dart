@@ -35,11 +35,12 @@ Future<void> fetchGiveawayList(
     BuildContext context) async {
   String data = await fetchBody(url: '$url&page=${pageKey.toString()}');
   //Todo: maybe move the following into fetchBody
+  dom.Document document = parse(data);
   if (context.mounted) {
-    dom.Document document = parse(data);
     getPoints(document, context);
     getNotifications(document, context);
   }
   List<GiveawayListModel> giveaways = parser(data, pageKey);
-  addPage(giveaways, pagingController, pageKey, 50);
+  addPage(giveaways, pagingController, pageKey,
+      document.getElementsByClassName('widget-container').first);
 }

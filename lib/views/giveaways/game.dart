@@ -280,7 +280,7 @@ class _GameState extends State<Game> {
         setState(() {});
       }
       List<GiveawayListModel> giveaways = parseList(container);
-      addPage(giveaways, _pagingController, pageKey, 25);
+      addPage(giveaways, _pagingController, pageKey, container);
     } catch (error, stack) {
       _exception = error.toString();
       _stackTrace = stack.toString();

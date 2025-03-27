@@ -126,10 +126,13 @@ class _WinnersState extends State<Winners> {
   }
 
   Future<void> fetchWinnerList(int pageKey, BuildContext context) async {
-    String data =
-        await fetchBody(url: 'https://www.steamgifts.com${widget.link}');
+    String data = await fetchBody(
+        url:
+            'https://www.steamgifts.com${widget.link}/search?page=${pageKey.toString()}');
     List<WinnerModel> winnerList = parseWinnerList(data);
-    addPage(winnerList, _pagingController, pageKey, 25);
+    dom.Document document = parse(data);
+    addPage(winnerList, _pagingController, pageKey,
+        document.getElementsByClassName('widget-container').first);
   }
 
   List<WinnerModel> parseWinnerList(String data) {

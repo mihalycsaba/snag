@@ -185,7 +185,8 @@ class _WonBuilderState extends State<WonBuilder> {
         url:
             'https://www.steamgifts.com/giveaways/won/search?page=${pageKey.toString()}');
     List<_WonListModel> wonList = parseWonList(data);
-    addPage(wonList, _pagingController, pageKey, 50);
+    addPage(wonList, _pagingController, pageKey,
+        parse(data).getElementsByClassName('widget-container').first);
   }
 
   List<_WonListModel> parseWonList(String data) {

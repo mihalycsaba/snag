@@ -485,7 +485,7 @@ class _UserState extends State<User> {
         setState(() {});
       }
       List<GiveawayListModel> giveaways = parseList(container, widget.name);
-      addPage(giveaways, _giveawayPagingController, pageKey, 25);
+      addPage(giveaways, _giveawayPagingController, pageKey, container);
     } catch (error, stack) {
       _exception = error.toString();
       _stackTrace = stack.toString();
