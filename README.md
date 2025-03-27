@@ -29,6 +29,10 @@ You can use [Obtainium](https://github.com/ImranR98/Obtainium) for updates.
 
 Copy the repository URL `https://github.com/mihalycsaba/snag` into the Obtainium Add App page.
 
+You can get prerelease versions with Obtainium by enabling `Include prereleases`.
+
+![Obtainium](readme/screenshots/obtainium.png)
+
 ## Build
 
 The app should always be built with the latest stable version of Flutter.

@@ -61,6 +61,7 @@ const allDependencies = <Package>[
   _flutter_local_notifications,
   _flutter_local_notifications_linux,
   _flutter_local_notifications_platform_interface,
+  _flutter_local_notifications_windows,
   _flutter_oss_licenses,
   _flutter_staggered_grid_view,
   _flutter_svg,
@@ -5011,7 +5012,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('lints')]);
 
-/// flutter_local_notifications 18.0.1
+/// flutter_local_notifications 19.0.0
 const _flutter_local_notifications = Package(
     name: 'flutter_local_notifications',
     description:
@@ -5019,7 +5020,7 @@ const _flutter_local_notifications = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
     authors: [],
-    version: '18.0.1',
+    version: '19.0.0',
     license: '''Copyright 2018 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -5053,11 +5054,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('clock'),
       PackageRef('flutter'),
       PackageRef('flutter_local_notifications_linux'),
+      PackageRef('flutter_local_notifications_windows'),
       PackageRef('flutter_local_notifications_platform_interface'),
       PackageRef('timezone')
     ]);
 
-/// flutter_local_notifications_linux 5.0.0
+/// flutter_local_notifications_linux 6.0.0
 const _flutter_local_notifications_linux = Package(
     name: 'flutter_local_notifications_linux',
     description:
@@ -5065,7 +5067,7 @@ const _flutter_local_notifications_linux = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
     authors: [],
-    version: '5.0.0',
+    version: '6.0.0',
     license: '''Copyright 2018 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -5104,7 +5106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('xdg_directories')
     ]);
 
-/// flutter_local_notifications_platform_interface 8.0.0
+/// flutter_local_notifications_platform_interface 9.0.0
 const _flutter_local_notifications_platform_interface = Package(
     name: 'flutter_local_notifications_platform_interface',
     description:
@@ -5112,8 +5114,48 @@ const _flutter_local_notifications_platform_interface = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_platform_interface',
     authors: [],
-    version: '8.0.0',
+    version: '9.0.0',
     license: '''Copyright 2020 Michael Bui. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('plugin_platform_interface')]);
+
+/// flutter_local_notifications_windows 1.0.0
+const _flutter_local_notifications_windows = Package(
+    name: 'flutter_local_notifications_windows',
+    description:
+        'Windows implementation of the flutter_local_notifications plugin',
+    homepage:
+        'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_windows',
+    authors: [],
+    version: '1.0.0',
+    license: '''Copyright 2024 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -5144,7 +5186,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [
       PackageRef('flutter'),
-      PackageRef('plugin_platform_interface')
+      PackageRef('ffi'),
+      PackageRef('flutter_local_notifications_platform_interface'),
+      PackageRef('meta'),
+      PackageRef('timezone'),
+      PackageRef('xml')
     ]);
 
 /// flutter_oss_licenses 3.0.4
@@ -8094,14 +8140,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('async'), PackageRef('stack_trace')]);
 
-/// provider 6.1.2
+/// provider 6.1.4
 const _provider = Package(
     name: 'provider',
     description:
         'A wrapper around InheritedWidget to make them easier to use and more reusable.',
     repository: 'https://github.com/rrousselGit/provider',
     authors: [],
-    version: '6.1.2',
+    version: '6.1.4',
     license: '''MIT License
 
 Copyright (c) 2019 Remi Rousselet
@@ -8988,7 +9034,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('uuid')
     ]);
 
-/// shared_preferences 2.5.2
+/// shared_preferences 2.5.3
 const _shared_preferences = Package(
     name: 'shared_preferences',
     description:
@@ -8996,7 +9042,7 @@ const _shared_preferences = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
     authors: [],
-    version: '2.5.2',
+    version: '2.5.3',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
