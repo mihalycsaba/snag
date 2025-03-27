@@ -73,14 +73,16 @@ class _CommentsState extends State<Comments> {
     String data = await fetchBody(
         url: '$url?page=${pageKey.toString()}',
         isBlacklisted: widget.isBlacklisted);
-    List<dom.Element> list = parse(data).getElementsByClassName('comments');
+    dom.Element container =
+        parse(data).getElementsByClassName('widget-container').first;
+    List<dom.Element> list = container.getElementsByClassName('comments');
     List<CommentModel> comments = [];
     if (widget.isGiveaway) {
       comments = list.isNotEmpty ? _parseComments(list[0].children) : [];
     } else {
       comments = list.length != 1 ? _parseComments(list[1].children) : [];
     }
-    addPage(comments, _pagingController, pageKey, 25);
+    addPage(comments, _pagingController, pageKey, container);
   }
 
   List<CommentModel> _parseComments(List<dom.Element> elements,

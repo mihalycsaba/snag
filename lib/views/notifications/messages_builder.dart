@@ -128,7 +128,8 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
     context.read<MessagesProvider>().updateMessages(messages);
     prefs.setInt(PrefsKeys.messages.key, int.parse(messages));
     List<_MessagesListModel> messagesList = _parseMessagesList(document);
-    addPage(messagesList, _pagingController, pageKey, 25);
+    addPage(messagesList, _pagingController, pageKey,
+        document.getElementsByClassName('widget-container').first);
   }
 
   List<_MessagesListModel> _parseMessagesList(dom.Document document) {

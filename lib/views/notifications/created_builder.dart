@@ -120,7 +120,8 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
         url:
             'https://www.steamgifts.com/giveaways/created/search?page=${pageKey.toString()}');
     List<CreatedListModel> createdList = parseCreatedList(data);
-    addPage(createdList, _pagingController, pageKey, 50);
+    addPage(createdList, _pagingController, pageKey,
+        parse(data).getElementsByClassName('widget-container').first);
   }
 
   List<CreatedListModel> parseCreatedList(String data) {
@@ -143,7 +144,11 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
         item.getElementsByClassName('table__column--width-small text-center');
     List<dom.Element> links =
         item.getElementsByClassName('table__column__secondary-link');
-    dom.Element sendLink = links.length == 1 ? links[0] : links[1];
+    dom.Element? sendLink = links.isEmpty
+        ? null
+        : links.length == 1
+            ? links[0]
+            : links[1];
     dom.Element heading =
         item.getElementsByClassName('table__column__heading')[0];
     return CreatedListModel(
@@ -162,7 +167,8 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
         href: heading.attributes['href']!,
         sent: status[3].text.contains('Sent'),
         received: status[3].text.contains('Received'),
-        sendLink:
-            sendLink.text == 'Unsent' ? sendLink.attributes['href'] : null);
+        sendLink: sendLink != null && sendLink.text == 'Unsent'
+            ? sendLink.attributes['href']
+            : null);
   }
 }

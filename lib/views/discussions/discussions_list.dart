@@ -116,7 +116,8 @@ Future<void> fetchDiscussions(
     getNotifications(document, context);
   }
   List<DiscussionModel> discussions = _parseDiscussionList(document);
-  addPage(discussions, pagingController, pageKey, user ? 25 : 100);
+  addPage(discussions, pagingController, pageKey,
+      document.getElementsByClassName('widget-container').first);
 }
 
 List<DiscussionModel> _parseDiscussionList(dom.Document document) {

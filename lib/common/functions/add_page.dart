@@ -15,11 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
+import 'package:html/dom.dart' as dom;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-void addPage(
-    List list, PagingController pagingController, int pageKey, int max) {
-  final bool isLastPage = list.length < max;
+void addPage(List list, PagingController pagingController, int pageKey,
+    dom.Element container) {
+  List<dom.Element> pagination =
+      container.getElementsByClassName('pagination__navigation');
+  final bool isLastPage = pagination.isEmpty ||
+      !pagination.first.innerHtml.contains('<span>Next</span>');
   if (isLastPage) {
     pagingController.appendLastPage(list);
   } else {

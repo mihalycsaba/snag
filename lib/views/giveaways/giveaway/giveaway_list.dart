@@ -85,7 +85,8 @@ class _GiveawayListState extends State<GiveawayList>
         giveaways.add(parseGiveawayListElement(element));
       });
     } else {
-      if (pageKey == 1 && widget.page.name == 'All') {
+      if (pageKey == 1 && widget.page.name == 'All' ||
+          widget.page.name == 'Multiple') {
         parse(document
                 .getElementsByClassName('pinned-giveaways__outer-wrap')[0]
                 .innerHtml)
