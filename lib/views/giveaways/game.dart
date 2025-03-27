@@ -80,8 +80,8 @@ class _GameState extends State<Game> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController.addPageRequestListener(
-        (pageKey) => _fetchPage(pageKey, '${_url}search', context));
+    _pagingController
+        .addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -221,10 +221,15 @@ class _GameState extends State<Game> {
             type: 'game');
   }
 
-  void _fetchPage(int pageKey, String url, BuildContext context) async {
+  void _fetchPage(int pageKey, BuildContext context) async {
     try {
-      String data = await fetchBody(url: '$url?page=${pageKey.toString()}');
+      String data =
+          await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
+      dom.Element container =
+          parse(data).getElementsByClassName('widget-container')[0];
       if (pageKey == 1) {
+        _url =
+            'https://www.steamgifts.com${container.getElementsByClassName('page__heading__breadcrumbs').first.nodes.first.attributes['href']}/';
         dom.Element featured =
             parse(data).getElementsByClassName('featured__inner-wrap')[0];
         List<String> values = featured
@@ -274,8 +279,6 @@ class _GameState extends State<Game> {
         );
         setState(() {});
       }
-      dom.Element container =
-          parse(data).getElementsByClassName('widget-container')[0];
       List<GiveawayListModel> giveaways = parseList(container);
       addPage(giveaways, _pagingController, pageKey, 25);
     } catch (error, stack) {
