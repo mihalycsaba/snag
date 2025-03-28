@@ -50,7 +50,10 @@ class DiscussionFilter extends StatelessWidget {
         child: Consumer<DiscussionFilterProvider>(
             builder: (context, user, child) => user.model == SimpleFilterModel()
                 ? const Icon(Icons.filter_alt_off)
-                : const Icon(Icons.filter_alt)),
+                : Icon(
+                    Icons.filter_alt,
+                    color: Colors.green[400],
+                  )),
       ),
     );
   }

@@ -285,9 +285,9 @@ class _EnteredFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      const SizedBox(width: 10),
-      InkWell(
+    return Padding(
+      padding: const EdgeInsets.only(left: 18, right: 19),
+      child: InkWell(
         onTap: () async {
           String filter = context.read<EnteredFilterProvider>().filter;
           await showDialog(
@@ -304,9 +304,9 @@ class _EnteredFilter extends StatelessWidget {
         child: Consumer<EnteredFilterProvider>(
             builder: (context, user, child) => user.model == SimpleFilterModel()
                 ? const Icon(Icons.filter_alt_off)
-                : const Icon(Icons.filter_alt)),
-      )
-    ]);
+                : Icon(Icons.filter_alt, color: Colors.green[400])),
+      ),
+    );
   }
 }
 

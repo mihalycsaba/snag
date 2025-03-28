@@ -49,7 +49,7 @@ class GiveawayFilter extends StatelessWidget {
             builder: (context, user, child) =>
                 user.model == GiveawayFilterModel()
                     ? const Icon(Icons.filter_alt_off)
-                    : const Icon(Icons.filter_alt)),
+                    : Icon(Icons.filter_alt, color: Colors.green[400])),
       ),
     );
   }
