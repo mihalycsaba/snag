@@ -27,3 +27,5 @@
 - independent font size settings
 
 - only check for notifications between interval
+
+- add filters like age
