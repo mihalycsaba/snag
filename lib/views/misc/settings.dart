@@ -237,6 +237,37 @@ class _PointsWidgetState extends State<_PointsWidget> {
   }
 }
 
+enum _Frequency {
+  fifteenM('15 minutes', '15'),
+  thirtyM('30 minutes', '30'),
+  fourtyfiveM('45 minutes', '45'),
+  oneH('1 hour', '60'),
+  oneHthirtyM('1 hour 30 minutes', '90'),
+  twoH('2 hours', '120'),
+  threeH('3 hours', '180'),
+  fourH('4 hours', '240'),
+  fiveH('5 hours', '300'),
+  sixH('6 hours', '360'),
+  sevenH('7 hours', '420'),
+  eightH('8 hours', '480'),
+  nineH('9 hours', '540'),
+  tenH('10 hours', '600'),
+  elevenH('11 hours', '660'),
+  twelveH('12 hours', '720'),
+  oneD('1 day', '1440'),
+  twoD('2 days', '2880'),
+  threeD('3 days', '4320'),
+  fourD('4 days', '5760'),
+  fiveD('5 days', '7200'),
+  sixD('6 days', '8640'),
+  sevenD('7 days', '10080');
+
+  final String text;
+  final String minutes;
+
+  const _Frequency(this.text, this.minutes);
+}
+
 class _NotificationFrequency extends StatefulWidget {
   const _NotificationFrequency();
 
@@ -245,64 +276,50 @@ class _NotificationFrequency extends StatefulWidget {
 }
 
 class _NotificationFrequencyState extends State<_NotificationFrequency> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _pointLimit =
-      TextEditingController(text: prefs.getString(PrefsKeys.frequency.key));
-  bool _equal = true;
+  double _currentValue = 1;
+
+  @override
+  void initState() {
+    final int savedValue = int.parse(prefs.getString(PrefsKeys.frequency.key)!);
+    for (int i = 0; i < _Frequency.values.length; i++) {
+      if (savedValue <= int.parse(_Frequency.values[i].minutes)) {
+        _currentValue = i + 1;
+        break;
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Row(
-        children: [
-          const Text('Notification frequency in minutes:'),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextFormField(
-                textAlign: TextAlign.end,
-                controller: _pointLimit,
-                keyboardType: TextInputType.number,
-                onChanged: (value) => _equal = _changed(value,
-                    prefs.getString(PrefsKeys.frequency.key), _equal, setState),
-                maxLines: 1,
-                decoration: _customDecoration('minutes'),
-                validator: (value) => _frequencyValidator(value),
-                autovalidateMode: AutovalidateMode.always,
-              ),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: _equal ? null : _saveFrequency,
-              child: const Text('Save'))
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+            'Notification frequency: ${_Frequency.values[_currentValue.toInt() - 1].text}'),
+        Slider(
+          padding: EdgeInsets.all(16),
+          value: _currentValue,
+          min: 1,
+          max: _Frequency.values.length.toDouble(),
+          divisions: _Frequency.values.length,
+          onChanged: (double value) {
+            setState(() {
+              _currentValue = value.ceilToDouble();
+            });
+          },
+          onChangeEnd: (double value) {
+            _saveFrequency();
+          },
+        )
+      ],
     );
   }
 
   void _saveFrequency() {
-    if (_formKey.currentState!.validate()) {
-      prefs.setString(PrefsKeys.frequency.key, _pointLimit.text);
-      Workmanager().cancelAll();
-      notificationPermission();
-      _equal = true;
-      setState(() {});
-    }
-  }
-
-  String? _frequencyValidator(String? value) {
-    if (value != null && value.isNotEmpty) {
-      int? number = int.tryParse(value);
-      if (number != null) {
-        if (number < 15) {
-          return 'minimum 15';
-        }
-      } else {
-        return 'not integer';
-      }
-    }
-    return null;
+    prefs.setString(PrefsKeys.frequency.key,
+        _Frequency.values[_currentValue.toInt() - 1].minutes);
+    Workmanager().cancelAll();
+    notificationPermission();
   }
 }
 
