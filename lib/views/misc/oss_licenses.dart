@@ -5012,7 +5012,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('lints')]);
 
-/// flutter_local_notifications 19.0.0
+/// flutter_local_notifications 19.1.0
 const _flutter_local_notifications = Package(
     name: 'flutter_local_notifications',
     description:
@@ -5020,7 +5020,7 @@ const _flutter_local_notifications = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
     authors: [],
-    version: '19.0.0',
+    version: '19.1.0',
     license: '''Copyright 2018 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -5507,14 +5507,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('collection')]);
 
-/// html 0.15.5
+/// html 0.15.5+1
 const _html = Package(
     name: 'html',
     description:
         'APIs for parsing and manipulating HTML content outside the browser.',
     repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/html',
     authors: [],
-    version: '0.15.5',
+    version: '0.15.5+1',
     license: '''Copyright (c) 2006-2012 The Authors
 
 Contributors:
@@ -7731,14 +7731,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('path_provider_platform_interface')
     ]);
 
-/// permission_handler 11.4.0
+/// permission_handler 12.0.0+1
 const _permission_handler = Package(
     name: 'permission_handler',
     description:
         'Permission plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.',
     repository: 'https://github.com/baseflow/flutter-permission-handler',
     authors: [],
-    version: '11.4.0',
+    version: '12.0.0+1',
     license: '''MIT License
 
 Copyright (c) 2018 Baseflow
@@ -7772,14 +7772,14 @@ SOFTWARE.''',
       PackageRef('permission_handler_platform_interface')
     ]);
 
-/// permission_handler_android 12.1.0
+/// permission_handler_android 13.0.1
 const _permission_handler_android = Package(
     name: 'permission_handler_android',
     description:
         'Permission plugin for Flutter. This plugin provides the Android API to request and check permissions.',
     homepage: 'https://github.com/baseflow/flutter-permission-handler',
     authors: [],
-    version: '12.1.0',
+    version: '13.0.1',
     license: '''MIT License
 
 Copyright (c) 2018 Baseflow
@@ -7808,14 +7808,14 @@ SOFTWARE.''',
       PackageRef('permission_handler_platform_interface')
     ]);
 
-/// permission_handler_apple 9.4.6
+/// permission_handler_apple 9.4.7
 const _permission_handler_apple = Package(
     name: 'permission_handler_apple',
     description:
         'Permission plugin for Flutter. This plugin provides the iOS API to request and check permissions.',
     repository: 'https://github.com/baseflow/flutter-permission-handler',
     authors: [],
-    version: '9.4.6',
+    version: '9.4.7',
     license: '''MIT License
 
 Copyright (c) 2018 Baseflow
@@ -9080,14 +9080,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('shared_preferences_windows')
     ]);
 
-/// shared_preferences_android 2.4.8
+/// shared_preferences_android 2.4.9
 const _shared_preferences_android = Package(
     name: 'shared_preferences_android',
     description: 'Android implementation of the shared_preferences plugin',
     repository:
         'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_android',
     authors: [],
-    version: '2.4.8',
+    version: '2.4.9',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

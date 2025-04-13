@@ -19,10 +19,11 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:humanizer/humanizer.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
-import 'package:snag/objectbox/giveaway_bookmark_model.dart';
+import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
@@ -34,118 +35,133 @@ class GiveawayBookmarks extends StatefulWidget {
 }
 
 class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
-  List<GiveawayBookmarkModel> _bookmarks = [];
-
   @override
   void initState() {
     super.initState();
-    _bookmarks = objectbox.getGiveawayBookmarks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context
+          .read<GiveawayBookmarksProvider>()
+          .updateGiveawayBookmarks(objectbox.getGiveawayBookmarks());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _bookmarks.length,
-      itemBuilder: (BuildContext context, int index) {
-        String remaining = '';
-        bool ended = false;
-        (remaining, ended) = _calcRemaining(_bookmarks[index].remainingStamp);
-        return ListTile(
-          contentPadding: CustomListTileTheme.contentPadding,
-          minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-          dense: CustomListTileTheme.dense,
-          selected: ended,
-          selectedColor: Colors.grey[600],
-          title: Text(_bookmarks[index].name,
-              style: CustomListTileTheme.titleTextStyle,
-              overflow: CustomListTileTheme.overflow),
-          subtitle: Text(
-              '${_calcSeconds(_bookmarks[index].agoStamp)} ago - $remaining',
-              style: CustomListTileTheme.subtitleTextStyle),
-          leading: SizedBox(
-            width: CustomListTileTheme.leadingWidth,
-            child: CachedNetworkImage(
-              imageUrl:
-                  'https://shared.akamai.steamstatic.com/store_item_assets/steam/${_bookmarks[index].type}s/${_bookmarks[index].appid}/capsule_184x69.jpg',
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-          ),
-          onTap: () async {
-            await customNav(
-                Giveaway(href: '/giveaway/${_bookmarks[index].gaId}/'),
-                context);
-            _bookmarks = objectbox.getGiveawayBookmarks();
-            setState(() {});
-          },
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                child: SizedBox(
-                    width: CustomListTileTheme.trailingWidth - 4,
-                    height: CustomListTileTheme.trailingHeight,
-                    child: Icon(
-                        _bookmarks[index].favourite
-                            ? Icons.star
-                            : Icons.star_border,
-                        size: CustomListTileTheme.iconSize + 7)),
-                onTap: () {
-                  objectbox.updateGiveawayBookmark(
-                      id: _bookmarks[index].id,
-                      gaId: _bookmarks[index].gaId,
-                      name: _bookmarks[index].name,
-                      type: _bookmarks[index].type,
-                      appid: _bookmarks[index].appid,
-                      agoStamp: _bookmarks[index].agoStamp,
-                      remainingStamp: _bookmarks[index].remainingStamp,
-                      favourite: !_bookmarks[index].favourite);
-                  _bookmarks = objectbox.getGiveawayBookmarks();
-                  setState(() {});
-                },
-              ),
-              InkWell(
-                child: SizedBox(
-                    width: CustomListTileTheme.trailingWidth - 4,
-                    height: CustomListTileTheme.trailingHeight,
-                    child: const Icon(Icons.delete,
-                        size: CustomListTileTheme.iconSize + 6)),
-                onTap: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Delete'),
-                    content: Text.rich(TextSpan(
-                        text: 'Are you sure you want to delete the ',
-                        children: [
-                          TextSpan(
-                              text: _bookmarks[index].name,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(text: ' bookmark?')
-                        ])),
-                    actions: [
-                      TextButton(
-                        child: const Text('Cancel'),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      TextButton(
-                        child: const Text('Yes'),
-                        onPressed: () {
-                          objectbox
-                              .removeGiveawayBookmark(_bookmarks[index].id);
-                          _bookmarks = objectbox.getGiveawayBookmarks();
-                          setState(() {});
-                          Navigator.pop(context);
+    return Consumer<GiveawayBookmarksProvider>(
+        builder: (context, user, child) => ListView.builder(
+              itemCount: user.giveaways.length,
+              itemBuilder: (BuildContext context, int index) {
+                String remaining = '';
+                bool ended = false;
+                (remaining, ended) =
+                    _calcRemaining(user.giveaways[index].remainingStamp);
+                return ListTile(
+                  contentPadding: CustomListTileTheme.contentPadding,
+                  minVerticalPadding: CustomListTileTheme.minVerticalPadding,
+                  dense: CustomListTileTheme.dense,
+                  selected: ended,
+                  selectedColor: Colors.grey[600],
+                  title: Text(user.giveaways[index].name,
+                      style: CustomListTileTheme.titleTextStyle,
+                      overflow: CustomListTileTheme.overflow),
+                  subtitle: Text(
+                      '${_calcSeconds(user.giveaways[index].agoStamp)} ago - $remaining',
+                      style: CustomListTileTheme.subtitleTextStyle),
+                  leading: SizedBox(
+                    width: CustomListTileTheme.leadingWidth,
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          'https://shared.akamai.steamstatic.com/store_item_assets/steam/${user.giveaways[index].type}s/${user.giveaways[index].appid}/capsule_184x69.jpg',
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
+                  onTap: () async {
+                    await customNav(
+                        Giveaway(
+                            href: '/giveaway/${user.giveaways[index].gaId}/'),
+                        context);
+                    if (context.mounted) {
+                      context
+                          .read<GiveawayBookmarksProvider>()
+                          .updateGiveawayBookmarks(
+                              objectbox.getGiveawayBookmarks());
+                    }
+                  },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        child: SizedBox(
+                            width: CustomListTileTheme.trailingWidth - 4,
+                            height: CustomListTileTheme.trailingHeight,
+                            child: Icon(
+                                user.giveaways[index].favourite
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                size: CustomListTileTheme.iconSize + 7)),
+                        onTap: () {
+                          objectbox.updateGiveawayBookmark(
+                              id: user.giveaways[index].id,
+                              gaId: user.giveaways[index].gaId,
+                              name: user.giveaways[index].name,
+                              type: user.giveaways[index].type,
+                              appid: user.giveaways[index].appid,
+                              agoStamp: user.giveaways[index].agoStamp,
+                              remainingStamp:
+                                  user.giveaways[index].remainingStamp,
+                              favourite: !user.giveaways[index].favourite);
+                          context
+                              .read<GiveawayBookmarksProvider>()
+                              .updateGiveawayBookmarks(
+                                  objectbox.getGiveawayBookmarks());
                         },
+                      ),
+                      InkWell(
+                        child: SizedBox(
+                            width: CustomListTileTheme.trailingWidth - 4,
+                            height: CustomListTileTheme.trailingHeight,
+                            child: const Icon(Icons.delete,
+                                size: CustomListTileTheme.iconSize + 6)),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Delete'),
+                            content: Text.rich(TextSpan(
+                                text: 'Are you sure you want to delete the ',
+                                children: [
+                                  TextSpan(
+                                      text: user.giveaways[index].name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: ' bookmark?')
+                                ])),
+                            actions: [
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                              TextButton(
+                                child: const Text('Yes'),
+                                onPressed: () {
+                                  objectbox.removeGiveawayBookmark(
+                                      user.giveaways[index].id);
+                                  context
+                                      .read<GiveawayBookmarksProvider>()
+                                      .updateGiveawayBookmarks(
+                                          objectbox.getGiveawayBookmarks());
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+                );
+              },
+            ));
   }
 
   String _calcSeconds(int seconds) => DateTime.timestamp()

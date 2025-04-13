@@ -15,24 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class CustomBackAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomBackAppBar({required this.name, this.action, super.key})
-      : preferredSize = const Size.fromHeight(kToolbarHeight);
+import 'package:snag/objectbox/giveaway_bookmark_model.dart';
 
-  final String name;
-  final Widget? action;
+class GiveawayBookmarksProvider extends ChangeNotifier {
+  List<GiveawayBookmarkModel> giveaways = [];
 
-  @override
-  final Size preferredSize;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      title: Text(name),
-      actions: [action ?? Container()],
-    );
+  void updateGiveawayBookmarks(List<GiveawayBookmarkModel> giveaways) {
+    this.giveaways = giveaways;
+    notifyListeners();
   }
 }

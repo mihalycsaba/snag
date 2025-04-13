@@ -71,6 +71,15 @@ class ObjectBox {
   }
 
   void removeGiveawayBookmark(int id) => _giveawayBookmarkBox.remove(id);
+  void removeAllGiveawayBookmarksExceptFavourite() {
+    List<GiveawayBookmarkModel> bookmarks = getGiveawayBookmarks();
+    for (GiveawayBookmarkModel bookmark in bookmarks) {
+      if (!bookmark.favourite) {
+        removeGiveawayBookmark(bookmark.id);
+      }
+    }
+  }
+
   List<GiveawayBookmarkModel> getGiveawayBookmarked(String href) {
     return _giveawayBookmarkBox
         .query(GiveawayBookmarkModel_.gaId.equals(_hrefSplit(href, 'giveaway')))

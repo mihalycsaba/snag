@@ -49,7 +49,7 @@ dependencies:
       ref: main
   url_launcher: ^6.1.14
   flutter_html: ^3.0.0-beta.2
-  permission_handler: ^11.0.1
+  permission_handler: ^12.0.0+1
   flutter_inappwebview: ^6.0.0
   dynamic_color: ^1.7.0
   share_plus: ^10.0.2
