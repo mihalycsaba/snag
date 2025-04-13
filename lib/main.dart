@@ -32,6 +32,7 @@ import 'package:snag/objectbox/objectbox.dart';
 import 'package:snag/provider_models/discussion_filter_provider.dart';
 import 'package:snag/provider_models/entered_filter_provider.dart';
 import 'package:snag/provider_models/gifts_provider.dart';
+import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
 import 'package:snag/provider_models/giveaway_filter_provider.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/points_provider.dart';
@@ -98,5 +99,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => GiftsProvider()),
     ChangeNotifierProvider(create: (_) => WonProvider()),
     ChangeNotifierProvider(create: (_) => MessagesProvider()),
+    ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
   ], child: const SG()));
 }

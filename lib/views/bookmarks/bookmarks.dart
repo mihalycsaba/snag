@@ -17,8 +17,12 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:snag/common/functions/button_background_color.dart';
+import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
+import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
 import 'package:snag/views/bookmarks/discussion_bookmarks.dart';
 import 'package:snag/views/bookmarks/game_bookmarks.dart';
 import 'package:snag/views/bookmarks/giveaway_bookmarks.dart';
@@ -45,7 +49,40 @@ class _BookmarksState extends State<Bookmarks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomBackAppBar(name: 'Bookmarks'),
+        appBar: CustomBackAppBar(
+            name: 'Bookmarks',
+            action: _destination == _BookmarksDestination.giveaways
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 19),
+                    child: InkWell(
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('Delete All'),
+                                  content: const Text(
+                                      'Are you sure you want to delete all, except favourite bookmarks?'),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text('Cancel'),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                    TextButton(
+                                      child: const Text('Yes'),
+                                      onPressed: () {
+                                        objectbox
+                                            .removeAllGiveawayBookmarksExceptFavourite();
+                                        context
+                                            .read<GiveawayBookmarksProvider>()
+                                            .updateGiveawayBookmarks(objectbox
+                                                .getGiveawayBookmarks());
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                )),
+                        child: Icon(Icons.delete)),
+                  )
+                : null),
         body: Center(
             child: Column(children: [
           Wrap(alignment: WrapAlignment.spaceEvenly, children: [
