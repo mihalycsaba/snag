@@ -86,7 +86,6 @@ const allDependencies = <Package>[
   _lints,
   _list_counter,
   _logging,
-  _macros,
   _matcher,
   _material_color_utilities,
   _meta,
@@ -277,7 +276,7 @@ class PackageRef {
   Package resolve() => allDependencies.firstWhere((d) => d.name == name);
 }
 
-/// _fe_analyzer_shared 76.0.0
+/// _fe_analyzer_shared 82.0.0
 const __fe_analyzer_shared = Package(
     name: '_fe_analyzer_shared',
     description:
@@ -285,7 +284,7 @@ const __fe_analyzer_shared = Package(
     repository:
         'https://github.com/dart-lang/sdk/tree/main/pkg/_fe_analyzer_shared',
     authors: [],
-    version: '76.0.0',
+    version: '82.0.0',
     license: '''Copyright 2019, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -317,14 +316,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('meta')]);
 
-/// analyzer 6.11.0
+/// analyzer 7.4.1
 const _analyzer = Package(
     name: 'analyzer',
     description:
         'This package provides a library that performs static analysis of Dart code.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/analyzer',
     authors: [],
-    version: '6.11.0',
+    version: '7.4.1',
     license: '''Copyright 2013, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -360,7 +359,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('convert'),
       PackageRef('crypto'),
       PackageRef('glob'),
-      PackageRef('macros'),
       PackageRef('meta'),
       PackageRef('package_config'),
       PackageRef('path'),
@@ -1624,14 +1622,14 @@ SOFTWARE.''',
       PackageRef('json_annotation')
     ]);
 
-/// dart_style 2.3.8
+/// dart_style 3.0.1
 const _dart_style = Package(
     name: 'dart_style',
     description:
         'Opinionated, automatic Dart source code formatter. Provides an API and a CLI tool.',
     repository: 'https://github.com/dart-lang/dart_style',
     authors: [],
-    version: '2.3.8',
+    version: '3.0.1',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -1668,7 +1666,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('package_config'),
       PackageRef('path'),
       PackageRef('pub_semver'),
-      PackageRef('source_span')
+      PackageRef('source_span'),
+      PackageRef('yaml')
     ]);
 
 /// dbus 0.7.11
@@ -3034,13 +3033,13 @@ const _flat_buffers = Package(
     isSdk: false,
     dependencies: []);
 
-/// flutter 3.29.2
+/// flutter 3.29.3
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.29.2',
+    version: '3.29.3',
     license: '''Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -4938,14 +4937,14 @@ const _flutter_inappwebview_windows = Package(
       PackageRef('flutter_inappwebview_platform_interface')
     ]);
 
-/// flutter_layout_grid 2.0.7
+/// flutter_layout_grid 2.0.8
 const _flutter_layout_grid = Package(
     name: 'flutter_layout_grid',
     description:
         'A powerful grid layout system for Flutter, optimized for complex user interface design.',
     homepage: 'https://github.com/shyndman/flutter_layout_grid',
     authors: [],
-    version: '2.0.7',
+    version: '2.0.8',
     license: '''MIT License
 Copyright (c) 2019 Scott Hyndman
 
@@ -6126,45 +6125,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// macros 0.1.3-main.0
-const _macros = Package(
-    name: 'macros',
-    description:
-        'This package is for macro authors, and exposes the APIs necessary to write a macro. It exports the APIs from the private `_macros` SDK vendored package.',
-    repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/macros',
-    authors: [],
-    version: '0.1.3-main.0',
-    license: '''Copyright 2024, the Dart project authors.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-    * Neither the name of Google LLC nor the names of its
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-    isMarkdown: false,
-    isSdk: false,
-    dependencies: []);
-
 /// matcher 0.12.17
 const _matcher = Package(
     name: 'matcher',
@@ -6535,7 +6495,7 @@ SOFTWARE.''',
     isSdk: false,
     dependencies: [PackageRef('flutter')]);
 
-/// objectbox 4.1.0
+/// objectbox 4.2.0
 const _objectbox = Package(
     name: 'objectbox',
     description:
@@ -6544,7 +6504,7 @@ const _objectbox = Package(
     repository:
         'https://github.com/objectbox/objectbox-dart/tree/main/objectbox',
     authors: [],
-    version: '4.1.0',
+    version: '4.2.0',
     license: '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -6756,7 +6716,7 @@ const _objectbox = Package(
       PackageRef('path')
     ]);
 
-/// objectbox_flutter_libs 4.1.0
+/// objectbox_flutter_libs 4.2.0
 const _objectbox_flutter_libs = Package(
     name: 'objectbox_flutter_libs',
     description:
@@ -6765,7 +6725,7 @@ const _objectbox_flutter_libs = Package(
     repository:
         'https://github.com/objectbox/objectbox-dart/tree/main/flutter_libs',
     authors: [],
-    version: '4.1.0',
+    version: '4.2.0',
     license: '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -6975,7 +6935,7 @@ const _objectbox_flutter_libs = Package(
       PackageRef('path_provider')
     ]);
 
-/// objectbox_generator 4.1.0
+/// objectbox_generator 4.2.0
 const _objectbox_generator = Package(
     name: 'objectbox_generator',
     description:
@@ -6984,7 +6944,7 @@ const _objectbox_generator = Package(
     repository:
         'https://github.com/objectbox/objectbox-dart/tree/main/generator',
     authors: [],
-    version: '4.1.0',
+    version: '4.2.0',
     license: '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -8066,14 +8026,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('meta')]);
 
-/// pointycastle 3.9.1
+/// pointycastle 4.0.0
 const _pointycastle = Package(
     name: 'pointycastle',
     description:
         'A Dart library implementing cryptographic algorithms and primitives, modeled on the BouncyCastle library.',
     homepage: 'https://github.com/bcgit/pc-dart',
     authors: [],
-    version: '3.9.1',
+    version: '4.0.0',
     license:
         '''Copyright (c) 2000 - 2019 The Legion of the Bouncy Castle Inc. (https://www.bouncycastle.org)
 
@@ -8095,11 +8055,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
     isMarkdown: false,
     isSdk: false,
-    dependencies: [
-      PackageRef('collection'),
-      PackageRef('convert'),
-      PackageRef('js')
-    ]);
+    dependencies: [PackageRef('collection'), PackageRef('convert')]);
 
 /// pool 1.5.1
 const _pool = Package(
@@ -9456,7 +9412,7 @@ SOFTWARE.''',
     isSdk: false,
     dependencies: [PackageRef('flutter')]);
 
-/// source_gen 1.5.0
+/// source_gen 2.0.0
 const _source_gen = Package(
     name: 'source_gen',
     description:
@@ -9464,7 +9420,7 @@ const _source_gen = Package(
     repository:
         'https://github.com/dart-lang/source_gen/tree/master/source_gen',
     authors: [],
-    version: '1.5.0',
+    version: '2.0.0',
     license: '''Copyright 2015, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -9501,6 +9457,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('dart_style'),
       PackageRef('glob'),
       PackageRef('path'),
+      PackageRef('pub_semver'),
       PackageRef('source_span'),
       PackageRef('yaml')
     ]);
