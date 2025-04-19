@@ -25,7 +25,6 @@ import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
 import 'package:snag/sg.dart';
 
@@ -42,7 +41,7 @@ class Settings extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: 12.0, vertical: paddingHeight),
-          child: Column(
+          child: ListView(
             children: [
               notificationsDenied
                   ? Padding(

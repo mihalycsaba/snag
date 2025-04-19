@@ -19,9 +19,8 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
+import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/provider_models/points_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 

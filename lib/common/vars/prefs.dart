@@ -18,3 +18,22 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 late final SharedPreferences prefs;
+
+enum PrefsKeys {
+  gifts('gifts'),
+  won('won'),
+  messages('messages'),
+  pointLimit('pointLimit'),
+  pointsNotification('pointsNotification'),
+  frequency('frequency'),
+  sessid('sessid'),
+  notificationsDenied('notificationsDenied'),
+  xsrf('xsrf'),
+  dynamicColor('dynamicColor'),
+  keysAvailable('keysAvailable'),
+  ;
+
+  final String key;
+
+  const PrefsKeys(this.key);
+}

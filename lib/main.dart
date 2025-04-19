@@ -27,7 +27,6 @@ import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/objectbox/objectbox.dart';
 import 'package:snag/provider_models/discussion_filter_provider.dart';
 import 'package:snag/provider_models/entered_filter_provider.dart';

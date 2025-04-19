@@ -5266,7 +5266,7 @@ SOFTWARE.''',
     isSdk: false,
     dependencies: [PackageRef('flutter')]);
 
-/// flutter_svg 2.0.17
+/// flutter_svg 2.1.0
 const _flutter_svg = Package(
     name: 'flutter_svg',
     description:
@@ -5274,7 +5274,7 @@ const _flutter_svg = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/third_party/packages/flutter_svg',
     authors: [],
-    version: '2.0.17',
+    version: '2.1.0',
     license: '''Copyright (c) 2018 Dan Field
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -5424,7 +5424,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('string_scanner')
     ]);
 
-/// go_router 14.8.1
+/// go_router 15.0.0
 const _go_router = Package(
     name: 'go_router',
     description:
@@ -5432,7 +5432,7 @@ const _go_router = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/packages/go_router',
     authors: [],
-    version: '14.8.1',
+    version: '15.0.0',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -7485,14 +7485,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('path_provider_windows')
     ]);
 
-/// path_provider_android 2.2.16
+/// path_provider_android 2.2.17
 const _path_provider_android = Package(
     name: 'path_provider_android',
     description: 'Android implementation of the path_provider plugin.',
     repository:
         'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_android',
     authors: [],
-    version: '2.2.16',
+    version: '2.2.17',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -9036,14 +9036,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('shared_preferences_windows')
     ]);
 
-/// shared_preferences_android 2.4.9
+/// shared_preferences_android 2.4.10
 const _shared_preferences_android = Package(
     name: 'shared_preferences_android',
     description: 'Android implementation of the shared_preferences plugin',
     repository:
         'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_android',
     authors: [],
-    version: '2.4.9',
+    version: '2.4.10',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -10192,14 +10192,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('url_launcher_windows')
     ]);
 
-/// url_launcher_android 6.3.15
+/// url_launcher_android 6.3.16
 const _url_launcher_android = Package(
     name: 'url_launcher_android',
     description: 'Android implementation of the url_launcher plugin.',
     repository:
         'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher_android',
     authors: [],
-    version: '6.3.15',
+    version: '6.3.16',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -11001,14 +11001,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// web_socket 0.1.6
+/// web_socket 1.0.0
 const _web_socket = Package(
     name: 'web_socket',
     description:
         'Any easy-to-use library for communicating with WebSockets that has multiple implementations.',
     repository: 'https://github.com/dart-lang/http/tree/master/pkgs/web_socket',
     authors: [],
-    version: '0.1.6',
+    version: '1.0.0',
     license: '''Copyright 2024, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -11040,7 +11040,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('web')]);
 
-/// web_socket_channel 3.0.2
+/// web_socket_channel 3.0.3
 const _web_socket_channel = Package(
     name: 'web_socket_channel',
     description:
@@ -11048,7 +11048,7 @@ const _web_socket_channel = Package(
     repository:
         'https://github.com/dart-lang/http/tree/master/pkgs/web_socket_channel',
     authors: [],
-    version: '3.0.2',
+    version: '3.0.3',
     license: '''Copyright 2016, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without

@@ -21,7 +21,6 @@ import 'package:html/dom.dart' as dom;
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/provider_models/gifts_provider.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';

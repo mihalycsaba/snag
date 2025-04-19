@@ -28,7 +28,6 @@ import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';

@@ -25,7 +25,6 @@ import 'package:snag/common/functions/get_user.dart';
 import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
 import 'package:snag/nav/go_nav.dart';
 import 'package:snag/nav/pages.dart';

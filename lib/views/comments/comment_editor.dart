@@ -24,7 +24,6 @@ import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/res_map.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/views/comments/custom_html.dart';
 
 class CommentEditor extends StatefulWidget {
