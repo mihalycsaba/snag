@@ -23,7 +23,6 @@ import 'package:html/dom.dart' as dom;
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/views/comments/comment_editor.dart';
 import 'package:snag/views/comments/custom_html.dart';

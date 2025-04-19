@@ -20,7 +20,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 
 Future<Map> resMap(String body, String url) async {
   Response response = await post(Uri.parse(url),

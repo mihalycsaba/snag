@@ -23,7 +23,6 @@ import 'package:workmanager/workmanager.dart';
 
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/views/notifications/fetch_notifications.dart';
 
 void backgroundTask() {

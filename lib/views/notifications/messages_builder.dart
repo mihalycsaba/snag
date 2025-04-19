@@ -29,7 +29,6 @@ import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/functions/res_map.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/views/comments/comment_message.dart';

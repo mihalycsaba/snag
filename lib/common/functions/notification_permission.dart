@@ -18,9 +18,8 @@
 import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/background_task.dart';
+import 'package:snag/common/vars/prefs.dart';
 
 void notificationPermission() async {
   if (await Permission.notification.request().isGranted) {

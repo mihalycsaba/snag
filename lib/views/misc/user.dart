@@ -38,7 +38,6 @@ import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/user_bookmark_model.dart';
 import 'package:snag/views/discussions/discussion_model.dart';

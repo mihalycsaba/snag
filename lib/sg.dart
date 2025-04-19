@@ -22,12 +22,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/entered/entered_list.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/game.dart';
+import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/misc/group.dart';
 import 'package:snag/views/misc/login.dart';
 import 'package:snag/views/misc/user.dart';

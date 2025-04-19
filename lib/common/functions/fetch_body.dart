@@ -20,7 +20,6 @@ import 'package:http/http.dart';
 import 'package:snag/common/functions/get_user.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 
 Future<String> fetchBody(
     {required String url,

@@ -29,7 +29,6 @@ import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/common/vars/prefs_keys.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/discussion_bookmark_model.dart';
