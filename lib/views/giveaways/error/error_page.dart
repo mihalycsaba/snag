@@ -99,7 +99,8 @@ class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: <Widget>[
         GestureDetector(
-          onTap: () => Share.shareUri(Uri.parse(url)),
+          onTap: () =>
+              SharePlus.instance.share(ShareParams(uri: Uri.parse(url))),
           child: const Padding(
             padding: EdgeInsets.only(
                 left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),

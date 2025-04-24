@@ -230,7 +230,8 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                   padding:
                       EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
                   child: GestureDetector(
-                    onTap: () => Share.shareUri(Uri.parse(widget.url)),
+                    onTap: () => SharePlus.instance
+                        .share(ShareParams(uri: Uri.parse(widget.url))),
                     child: Icon(
                       Icons.share,
                     ),

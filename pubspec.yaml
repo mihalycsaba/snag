@@ -52,7 +52,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   flutter_inappwebview: ^6.0.0
   dynamic_color: ^1.7.0
-  share_plus: ^10.0.2
+  share_plus: ^11.0.0
   flutter_html_table: ^3.0.0-beta.2
   objectbox: ^4.0.2
   objectbox_flutter_libs: any
@@ -61,7 +61,6 @@ dependencies:
   humanizer: ^3.0.0
   go_router: ^15.0.0
   font_awesome_flutter: ^10.8.0
-  rename_app: ^1.6.2
   flutter_svg: ^2.0.17
   vector_graphics: ^1.1.18
   package_info_plus: ^8.3.0

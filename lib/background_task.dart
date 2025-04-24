@@ -28,8 +28,8 @@ import 'package:snag/views/notifications/fetch_notifications.dart';
 void backgroundTask() {
   Workmanager().initialize(_callbackDispatcher);
   Workmanager().registerPeriodicTask("bg", "simplePeriodicTask",
-      frequency: Duration(
-          minutes: int.parse(prefs.getString(PrefsKeys.frequency.key)!)),
+      frequency:
+          Duration(minutes: prefs.getInt(PrefsKeys.backgroundFrequency.key)!),
       constraints: Constraints(
         networkType: NetworkType.connected,
         requiresBatteryNotLow: true,

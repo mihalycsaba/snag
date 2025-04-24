@@ -44,10 +44,9 @@ class Settings extends StatelessWidget {
           child: ListView(
             children: [
               notificationsDenied
-                  ? Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: paddingHeight),
-                      child: const Row(
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
@@ -59,10 +58,10 @@ class Settings extends StatelessWidget {
                     )
                   : Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: paddingHeight),
-                          child: const Row(
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: paddingHeight),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
@@ -79,7 +78,7 @@ class Settings extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(
+                              const Flexible(
                                 child: Text(
                                     "Disable battery optimization for this app, to keep getting notifications even if you don't use the app for a while. Find this app in the All apps list."),
                               ),
@@ -94,46 +93,45 @@ class Settings extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: paddingHeight),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _PointsWidget(),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: paddingHeight),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _NotificationFrequency(),
                         ),
                       ],
                     ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: paddingHeight),
-                child: const Divider(height: 0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                child: Divider(height: 0),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: paddingHeight),
-                child: const _SyncWidget(),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                child: _SyncWidget(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: paddingHeight),
-                child: const Divider(height: 0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                child: Divider(height: 0),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: paddingHeight - 7.0),
-                child: const _ThemeWidget(),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight - 7.0),
+                child: _ThemeWidget(),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: paddingHeight),
-                child: const Divider(height: 0),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                child: Divider(height: 0),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: paddingHeight),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: paddingHeight),
+                child: Text(
                     "To enable opening steamgifts.com links in this app, in the app's Open by default menu enable steamgifts.com domains by tapping on + Add links and selecting the two domains."),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Flexible(
+                const Flexible(
                     child: Text(
                         'You should be able to find these settings in this list:')),
                 GestureDetector(
@@ -157,8 +155,8 @@ class _AppSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => OpenSettingsPlusAndroid().appNotification(),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+      child: const Padding(
+        padding: EdgeInsets.only(left: 8.0),
         child: Icon(Icons.settings),
       ),
     );
@@ -198,7 +196,12 @@ class _PointsWidgetState extends State<_PointsWidget> {
                     _equal,
                     setState),
                 maxLines: 1,
-                decoration: _customDecoration('points'),
+                decoration: InputDecoration(
+                  isDense: true,
+                  border: const UnderlineInputBorder(),
+                  hintText: 'points',
+                  hintStyle: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                ),
                 validator: (value) => _limitValidator(value),
                 autovalidateMode: AutovalidateMode.always,
               ),
@@ -234,35 +237,78 @@ class _PointsWidgetState extends State<_PointsWidget> {
     }
     return null;
   }
+
+  bool _changed(
+      String value, String? frequency, bool equal, Function callback) {
+    equal = true;
+    if (value != frequency) {
+      equal = false;
+    }
+    callback(() {});
+    return equal;
+  }
+}
+
+class _CustomSlider extends StatelessWidget {
+  const _CustomSlider(
+      {required this.currentValue,
+      required this.text,
+      required this.values,
+      required this.onChanged,
+      required this.onChangedEnd});
+
+  final double currentValue;
+  final String text;
+  final List values;
+  final ValueChanged<double> onChanged;
+  final ValueChanged<double> onChangedEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('$text ${values[currentValue.toInt() - 1].text}'),
+        Slider(
+          padding: EdgeInsets.all(16),
+          value: currentValue,
+          min: 1,
+          max: values.length.toDouble(),
+          divisions: values.length,
+          onChanged: onChanged,
+          onChangeEnd: onChangedEnd,
+        )
+      ],
+    );
+  }
 }
 
 enum _Frequency {
-  fifteenM('15 minutes', '15'),
-  thirtyM('30 minutes', '30'),
-  fourtyfiveM('45 minutes', '45'),
-  oneH('1 hour', '60'),
-  oneHthirtyM('1 hour 30 minutes', '90'),
-  twoH('2 hours', '120'),
-  threeH('3 hours', '180'),
-  fourH('4 hours', '240'),
-  fiveH('5 hours', '300'),
-  sixH('6 hours', '360'),
-  sevenH('7 hours', '420'),
-  eightH('8 hours', '480'),
-  nineH('9 hours', '540'),
-  tenH('10 hours', '600'),
-  elevenH('11 hours', '660'),
-  twelveH('12 hours', '720'),
-  oneD('1 day', '1440'),
-  twoD('2 days', '2880'),
-  threeD('3 days', '4320'),
-  fourD('4 days', '5760'),
-  fiveD('5 days', '7200'),
-  sixD('6 days', '8640'),
-  sevenD('7 days', '10080');
+  fifteenM('15 minutes', 15),
+  thirtyM('30 minutes', 30),
+  fourtyfiveM('45 minutes', 45),
+  oneH('1 hour', 60),
+  oneHthirtyM('1 hour 30 minutes', 90),
+  twoH('2 hours', 120),
+  threeH('3 hours', 180),
+  fourH('4 hours', 240),
+  fiveH('5 hours', 300),
+  sixH('6 hours', 360),
+  sevenH('7 hours', 420),
+  eightH('8 hours', 480),
+  nineH('9 hours', 540),
+  tenH('10 hours', 600),
+  elevenH('11 hours', 660),
+  twelveH('12 hours', 720),
+  oneD('1 day', 1440),
+  twoD('2 days', 2880),
+  threeD('3 days', 4320),
+  fourD('4 days', 5760),
+  fiveD('5 days', 7200),
+  sixD('6 days', 8640),
+  sevenD('7 days', 10080);
 
   final String text;
-  final String minutes;
+  final int minutes;
 
   const _Frequency(this.text, this.minutes);
 }
@@ -279,9 +325,9 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
 
   @override
   void initState() {
-    final int savedValue = int.parse(prefs.getString(PrefsKeys.frequency.key)!);
+    final int savedValue = prefs.getInt(PrefsKeys.backgroundFrequency.key)!;
     for (int i = 0; i < _Frequency.values.length; i++) {
-      if (savedValue <= int.parse(_Frequency.values[i].minutes)) {
+      if (savedValue <= _Frequency.values[i].minutes) {
         _currentValue = i + 1;
         break;
       }
@@ -291,53 +337,26 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-            'Notification frequency: ${_Frequency.values[_currentValue.toInt() - 1].text}'),
-        Slider(
-          padding: EdgeInsets.all(16),
-          value: _currentValue,
-          min: 1,
-          max: _Frequency.values.length.toDouble(),
-          divisions: _Frequency.values.length,
-          onChanged: (double value) {
-            setState(() {
-              _currentValue = value.ceilToDouble();
-            });
-          },
-          onChangeEnd: (double value) {
-            _saveFrequency();
-          },
-        )
-      ],
-    );
+    return _CustomSlider(
+        currentValue: _currentValue,
+        text: 'Notification frequency:',
+        values: _Frequency.values,
+        onChanged: (double value) {
+          setState(() {
+            _currentValue = value.ceilToDouble();
+          });
+        },
+        onChangedEnd: (double value) {
+          _saveFrequency();
+        });
   }
 
   void _saveFrequency() {
-    prefs.setString(PrefsKeys.frequency.key,
+    prefs.setInt(PrefsKeys.backgroundFrequency.key,
         _Frequency.values[_currentValue.toInt() - 1].minutes);
     Workmanager().cancelAll();
     notificationPermission();
   }
-}
-
-bool _changed(String value, String? frequency, bool equal, Function callback) {
-  equal = true;
-  if (value != frequency) {
-    equal = false;
-  }
-  callback(() {});
-  return equal;
-}
-
-InputDecoration _customDecoration(String hintText) {
-  return InputDecoration(
-    isDense: true,
-    border: const UnderlineInputBorder(),
-    hintText: hintText,
-    hintStyle: TextStyle(fontSize: 12, color: Colors.grey[500]),
-  );
 }
 
 class _SyncWidget extends StatefulWidget {

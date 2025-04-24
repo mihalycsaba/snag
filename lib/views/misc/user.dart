@@ -225,7 +225,8 @@ class _UserState extends State<User> {
                             ),
                           ),
                     InkWell(
-                      onTap: () => Share.shareUri(Uri.parse(_url)),
+                      onTap: () => SharePlus.instance
+                          .share(ShareParams(uri: Uri.parse(_url))),
                       child: Icon(Icons.share),
                     ),
                     Padding(

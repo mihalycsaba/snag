@@ -123,7 +123,6 @@ const allDependencies = <Package>[
   _pubspec_parse,
   _quiver,
   _rational,
-  _rename_app,
   _rxdart,
   _share_plus,
   _share_plus_platform_interface,
@@ -205,7 +204,6 @@ const dependencies = <Package>[
   _path_provider,
   _permission_handler,
   _provider,
-  _rename_app,
   _share_plus,
   _shared_preferences,
   _url_launcher,
@@ -316,14 +314,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('meta')]);
 
-/// analyzer 7.4.1
+/// analyzer 7.4.4
 const _analyzer = Package(
     name: 'analyzer',
     description:
         'This package provides a library that performs static analysis of Dart code.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/analyzer',
     authors: [],
-    version: '7.4.1',
+    version: '7.4.4',
     license: '''Copyright 2013, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -5424,7 +5422,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('string_scanner')
     ]);
 
-/// go_router 15.0.0
+/// go_router 15.1.1
 const _go_router = Package(
     name: 'go_router',
     description:
@@ -5432,7 +5430,7 @@ const _go_router = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/packages/go_router',
     authors: [],
-    version: '15.0.0',
+    version: '15.1.1',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -5506,14 +5504,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('collection')]);
 
-/// html 0.15.5+1
+/// html 0.15.6
 const _html = Package(
     name: 'html',
     description:
         'APIs for parsing and manipulating HTML content outside the browser.',
     repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/html',
     authors: [],
-    version: '0.15.5+1',
+    version: '0.15.6',
     license: '''Copyright (c) 2006-2012 The Authors
 
 Contributors:
@@ -8644,34 +8642,6 @@ const _rational = Package(
     isSdk: false,
     dependencies: []);
 
-/// rename_app 1.6.2
-const _rename_app = Package(
-    name: 'rename_app',
-    description:
-        'The flutter package which changes app name for all platforms with sound null safety!',
-    repository: 'https://github.com/Syed-Waleed-Shah/rename_app',
-    authors: [],
-    version: '1.6.2',
-    license: '''Copyright (c) 2023 Syed Waleed
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
-    isMarkdown: false,
-    isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('xml')]);
-
 /// rxdart 0.28.0
 const _rxdart = Package(
     name: 'rxdart',
@@ -8886,7 +8856,7 @@ const _rxdart = Package(
     isSdk: false,
     dependencies: []);
 
-/// share_plus 10.1.4
+/// share_plus 11.0.0
 const _share_plus = Package(
     name: 'share_plus',
     description:
@@ -8895,7 +8865,7 @@ const _share_plus = Package(
     repository:
         'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus',
     authors: [],
-    version: '10.1.4',
+    version: '11.0.0',
     license:
         '''Copyright 2017, the Flutter project authors. All rights reserved.
 
@@ -8942,7 +8912,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('win32')
     ]);
 
-/// share_plus_platform_interface 5.0.2
+/// share_plus_platform_interface 6.0.0
 const _share_plus_platform_interface = Package(
     name: 'share_plus_platform_interface',
     description: 'A common platform interface for the share_plus plugin.',
@@ -8950,7 +8920,7 @@ const _share_plus_platform_interface = Package(
     repository:
         'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
     authors: [],
-    version: '5.0.2',
+    version: '6.0.0',
     license: '''Copyright 2017 The Chromium Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -10392,14 +10362,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('plugin_platform_interface')
     ]);
 
-/// url_launcher_web 2.4.0
+/// url_launcher_web 2.4.1
 const _url_launcher_web = Package(
     name: 'url_launcher_web',
     description: 'Web platform implementation of url_launcher',
     repository:
         'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher_web',
     authors: [],
-    version: '2.4.0',
+    version: '2.4.1',
     license: '''url_launcher_web
 
 Copyright 2013 The Flutter Authors. All rights reserved.

@@ -136,7 +136,8 @@ class _GroupState extends State<Group> {
                             : Icons.bookmark_border)),
                     IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: () => Share.shareUri(Uri.parse(_url))),
+                        onPressed: () => SharePlus.instance
+                            .share(ShareParams(uri: Uri.parse(_url)))),
                     IconButton(
                         onPressed: () => urlLauncher(_group.steam),
                         icon: FaIcon(FontAwesomeIcons.steamSymbol))
