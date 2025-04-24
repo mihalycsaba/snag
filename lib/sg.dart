@@ -69,15 +69,19 @@ class SGState extends State<SG> {
 
   ThemeData _customTheme(
       {bool dark = false, required ColorScheme? colorScheme}) {
+    ColorScheme scheme = colorScheme ??
+        ColorScheme.fromSeed(
+            brightness: dark ? Brightness.dark : Brightness.light,
+            seedColor: const Color.fromARGB(255, 0, 40, 125));
     return ThemeData(
-      // textTheme: Theme.of(context).textTheme.apply(
-      //       fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
-      //     ),
+      textTheme: Theme.of(context).textTheme.apply(
+            fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
+            displayColor: scheme.onSurface,
+            bodyColor: scheme.onSurface,
+            decorationColor: scheme.onSurface,
+          ),
       visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
-      colorScheme: colorScheme ??
-          ColorScheme.fromSeed(
-              brightness: dark ? Brightness.dark : Brightness.light,
-              seedColor: const Color.fromARGB(255, 0, 40, 125)),
+      colorScheme: scheme,
       useMaterial3: true,
     );
   }
