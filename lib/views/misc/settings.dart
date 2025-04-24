@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 
 import 'package:html/parser.dart';
 import 'package:open_settings_plus/open_settings_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:snag/common/functions/fetch_body.dart';
@@ -26,7 +27,7 @@ import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
-import 'package:snag/sg.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -438,7 +439,7 @@ class _ThemeWidgetState extends State<_ThemeWidget> {
           onChanged: (value) {
             setState(() {
               _value = value;
-              SG.of(context)!.changeTheme(_value);
+              context.read<ThemeProvider>().updateTheme(_value);
             });
           },
         ),

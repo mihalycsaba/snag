@@ -35,6 +35,7 @@ import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
 import 'package:snag/provider_models/giveaway_filter_provider.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/points_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
 import 'package:snag/sg.dart';
 
@@ -108,5 +109,6 @@ void main() async {
     ChangeNotifierProvider(create: (_) => WonProvider()),
     ChangeNotifierProvider(create: (_) => MessagesProvider()),
     ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
+    ChangeNotifierProvider(create: (_) => ThemeProvider()),
   ], child: const SG()));
 }
