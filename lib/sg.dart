@@ -20,9 +20,11 @@ import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/pages.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/entered/entered_list.dart';
 import 'package:snag/views/giveaways/game.dart';
@@ -45,12 +47,6 @@ class SG extends StatefulWidget {
 }
 
 class SGState extends State<SG> {
-  void changeTheme(bool dynamicColor) {
-    setState(() {
-      prefs.setBool(PrefsKeys.dynamicColor.key, dynamicColor);
-    });
-  }
-
   Future<String> _checkNotification(BuildContext context) async {
     FlutterLocalNotificationsPlugin status = FlutterLocalNotificationsPlugin();
     status.initialize(const InitializationSettings(
@@ -88,58 +84,61 @@ class SGState extends State<SG> {
 
   @override
   Widget build(BuildContext context) {
-    final bool dynamicColor = prefs.getBool(PrefsKeys.dynamicColor.key)!;
-    return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
-      return FutureBuilder(
-          future: _checkNotification(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              List<RouteBase> routes = [];
-              for (Pages item in PagesList.giveawaypages.pages) {
-                routes.add(_customGoRoute(
-                    item.route, GiveawayPages.widgetsMap[item.route]!));
-              }
-              for (Pages item in PagesList.discussionpages.pages) {
-                routes.add(_customGoRoute(
-                    item.route, DiscussionPages.widgetsMap[item.route]!));
-              }
-              routes.add(_customGoRoute(NotificationsRoute.created.route,
-                  Notifications(NotificationsDestination.created)));
-              routes.add(_customGoRoute(NotificationsRoute.won.route,
-                  Notifications(NotificationsDestination.won)));
-              routes.add(_customGoRoute(NotificationsRoute.messages.route,
-                  Notifications(NotificationsDestination.messages)));
-              routes.add(_customGoRoute(Entered.entered.route, EnteredList()));
-              routes.add(_customGoRoute(LoginRoute.login.route, Login()));
-              routes.add(_giveawayGoRoute('/:id'));
-              routes.add(_giveawayGoRoute('/:id/:name'));
-              routes.add(_discussionGoRoute('/:id'));
-              routes.add(_discussionGoRoute('/:id/:name'));
-              routes.add(_userGoRoute('/:id'));
-              routes.add(_userGoRoute('/:id/:name'));
-              routes.add(_groupGoRoute('/:id'));
-              routes.add(_groupGoRoute('/:id/:name'));
-              routes.add(_gameGoRoute('/:id'));
-              routes.add(_gameGoRoute('/:id/:name'));
-
-              final router =
-                  GoRouter(initialLocation: snapshot.data, routes: routes);
-              return MaterialApp.router(
-                  title: 'SteamGifts',
-                  theme: _customTheme(
-                      colorScheme: dynamicColor ? lightColorScheme : null),
-                  darkTheme: _customTheme(
-                      colorScheme: dynamicColor ? darkColorScheme : null,
-                      dark: true),
-                  themeMode: ThemeMode.system,
-                  themeAnimationDuration: Durations.short2,
-                  themeAnimationCurve: Curves.linear,
-                  routerConfig: router);
-            } else {
-              return Container();
+    return FutureBuilder(
+        future: _checkNotification(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<RouteBase> routes = [];
+            for (Pages item in PagesList.giveawaypages.pages) {
+              routes.add(_customGoRoute(
+                  item.route, GiveawayPages.widgetsMap[item.route]!));
             }
-          });
-    });
+            for (Pages item in PagesList.discussionpages.pages) {
+              routes.add(_customGoRoute(
+                  item.route, DiscussionPages.widgetsMap[item.route]!));
+            }
+            routes.add(_customGoRoute(NotificationsRoute.created.route,
+                Notifications(NotificationsDestination.created)));
+            routes.add(_customGoRoute(NotificationsRoute.won.route,
+                Notifications(NotificationsDestination.won)));
+            routes.add(_customGoRoute(NotificationsRoute.messages.route,
+                Notifications(NotificationsDestination.messages)));
+            routes.add(_customGoRoute(Entered.entered.route, EnteredList()));
+            routes.add(_customGoRoute(LoginRoute.login.route, Login()));
+            routes.add(_giveawayGoRoute('/:id'));
+            routes.add(_giveawayGoRoute('/:id/:name'));
+            routes.add(_discussionGoRoute('/:id'));
+            routes.add(_discussionGoRoute('/:id/:name'));
+            routes.add(_userGoRoute('/:id'));
+            routes.add(_userGoRoute('/:id/:name'));
+            routes.add(_groupGoRoute('/:id'));
+            routes.add(_groupGoRoute('/:id/:name'));
+            routes.add(_gameGoRoute('/:id'));
+            routes.add(_gameGoRoute('/:id/:name'));
+
+            final router =
+                GoRouter(initialLocation: snapshot.data, routes: routes);
+            return DynamicColorBuilder(
+                builder: (lightColorScheme, darkColorScheme) {
+              return Consumer<ThemeProvider>(
+                  builder: (context, theme, child) => MaterialApp.router(
+                      title: 'Snag',
+                      theme: _customTheme(
+                          colorScheme:
+                              theme.dynamicColor ? lightColorScheme : null),
+                      darkTheme: _customTheme(
+                          colorScheme:
+                              theme.dynamicColor ? darkColorScheme : null,
+                          dark: true),
+                      themeMode: ThemeMode.system,
+                      themeAnimationDuration: Durations.short2,
+                      themeAnimationCurve: Curves.linear,
+                      routerConfig: router));
+            });
+          } else {
+            return Container();
+          }
+        });
   }
 
   GoRoute _customGoRoute(String route, Widget page) {
