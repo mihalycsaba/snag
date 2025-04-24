@@ -70,9 +70,9 @@ class SGState extends State<SG> {
   ThemeData _customTheme(
       {bool dark = false, required ColorScheme? colorScheme}) {
     return ThemeData(
-      textTheme: Theme.of(context).textTheme.apply(
-            fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
-          ),
+      // textTheme: Theme.of(context).textTheme.apply(
+      //       fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
+      //     ),
       visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
       colorScheme: colorScheme ??
           ColorScheme.fromSeed(
