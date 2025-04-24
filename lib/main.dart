@@ -67,14 +67,20 @@ void main() async {
   if (prefs.getBool(PrefsKeys.pointsNotification.key) == null) {
     prefs.setBool(PrefsKeys.pointsNotification.key, true);
   }
-  if (prefs.getString(PrefsKeys.frequency.key) == null) {
-    prefs.setString(PrefsKeys.frequency.key, '15');
+  if (prefs.getString(PrefsKeys.frequency.key) != null) {
+    prefs.setInt(PrefsKeys.backgroundFrequency.key,
+        int.parse(prefs.getString(PrefsKeys.frequency.key)!));
+  } else {
+    prefs.setInt(PrefsKeys.backgroundFrequency.key, 15);
   }
   if (prefs.getBool(PrefsKeys.dynamicColor.key) == null) {
     prefs.setBool(PrefsKeys.dynamicColor.key, true);
   }
   if (prefs.getBool(PrefsKeys.keysAvailable.key) == null) {
     prefs.setBool(PrefsKeys.keysAvailable.key, false);
+  }
+  if (prefs.getInt(PrefsKeys.fontSize.key) == null) {
+    prefs.setInt(PrefsKeys.fontSize.key, 0);
   }
 
   if (prefs.getString(PrefsKeys.sessid.key) != null) {

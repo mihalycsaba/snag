@@ -137,7 +137,8 @@ class _GameState extends State<Game> {
                           padding: const EdgeInsets.all(10.0),
                           child: const Icon(Icons.share),
                         ),
-                        onTap: () => Share.shareUri(Uri.parse(_url))),
+                        onTap: () => SharePlus.instance
+                            .share(ShareParams(uri: Uri.parse(_url)))),
                   ],
                 ),
                 body: RefreshIndicator(

@@ -411,7 +411,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                     _CustomIconPadding(
                       padding: _padding,
                       child: InkWell(
-                        onTap: () => Share.shareUri(Uri.parse(_url)),
+                        onTap: () => SharePlus.instance
+                            .share(ShareParams(uri: Uri.parse(_url))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(

@@ -26,11 +26,13 @@ enum PrefsKeys {
   pointLimit('pointLimit'),
   pointsNotification('pointsNotification'),
   frequency('frequency'),
+  backgroundFrequency('backgroundFrequency'),
   sessid('sessid'),
   notificationsDenied('notificationsDenied'),
   xsrf('xsrf'),
   dynamicColor('dynamicColor'),
   keysAvailable('keysAvailable'),
+  fontSize('fontSize'),
   ;
 
   final String key;
