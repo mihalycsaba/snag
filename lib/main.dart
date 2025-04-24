@@ -68,9 +68,12 @@ void main() async {
     prefs.setBool(PrefsKeys.pointsNotification.key, true);
   }
   if (prefs.getString(PrefsKeys.frequency.key) != null) {
-    prefs.setInt(PrefsKeys.backgroundFrequency.key,
-        int.parse(prefs.getString(PrefsKeys.frequency.key)!));
+    if (prefs.getInt(PrefsKeys.backgroundFrequency.key) == null) {
+      prefs.setInt(PrefsKeys.backgroundFrequency.key,
+          int.parse(prefs.getString(PrefsKeys.frequency.key)!));
+    }
   } else {
+    prefs.setString(PrefsKeys.frequency.key, '15');
     prefs.setInt(PrefsKeys.backgroundFrequency.key, 15);
   }
   if (prefs.getBool(PrefsKeys.dynamicColor.key) == null) {
