@@ -236,13 +236,14 @@ class _EnteredListTileState extends State<_EnteredListTile> {
             Flexible(
               //flexible wraps the text if it is too long
               child: Text(widget.giveaway.name,
-                  style: CustomListTileTheme.titleTextStyle,
+                  style: TextStyle(fontSize: CustomListTileTheme.titleTextSize),
                   overflow: CustomListTileTheme.overflow),
             ),
             widget.giveaway.copies != null
                 ? Text(
                     ' ${widget.giveaway.copies}',
-                    style: CustomListTileTheme.titleTextStyle,
+                    style:
+                        TextStyle(fontSize: CustomListTileTheme.titleTextSize),
                   )
                 : Container()
           ],
@@ -251,12 +252,13 @@ class _EnteredListTileState extends State<_EnteredListTile> {
           children: [
             Text(
               '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
-              style: CustomListTileTheme.subtitleTextStyle,
+              style: TextStyle(fontSize: CustomListTileTheme.subtitleTextSize),
             ),
             const Icon(Icons.groups, size: 14),
             Text(
                 ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
-                style: CustomListTileTheme.subtitleTextStyle)
+                style:
+                    TextStyle(fontSize: CustomListTileTheme.subtitleTextSize))
           ],
         ),
         trailing: widget.giveaway.notEnded

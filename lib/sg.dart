@@ -68,7 +68,7 @@ class SGState extends State<SG> {
     ColorScheme scheme = colorScheme ??
         ColorScheme.fromSeed(
             brightness: dark ? Brightness.dark : Brightness.light,
-            seedColor: const Color.fromARGB(255, 0, 40, 125));
+            seedColor: const Color.fromARGB(255, 0, 83, 125));
     return ThemeData(
       textTheme: Theme.of(context).textTheme.apply(
             fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),

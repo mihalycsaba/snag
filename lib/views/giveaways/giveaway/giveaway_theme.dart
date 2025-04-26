@@ -24,10 +24,8 @@ class CustomListTileTheme {
   static const double minVerticalPadding = 3;
   static const bool dense = true;
   static const double subtitleTextSize = 10;
-  static const TextStyle subtitleTextStyle =
-      TextStyle(fontSize: subtitleTextSize);
+  static const double titleTextSize = 14;
   static const double leadingWidth = 86;
-  static const TextStyle titleTextStyle = TextStyle(fontSize: 14);
   static const TextOverflow overflow = TextOverflow.ellipsis;
   static const double trailingWidth = 60;
   static const double trailingHeight = 40;

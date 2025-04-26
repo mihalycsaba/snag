@@ -21,10 +21,17 @@ import 'package:snag/common/vars/prefs.dart';
 
 class ThemeProvider extends ChangeNotifier {
   bool dynamicColor = prefs.getBool(PrefsKeys.dynamicColor.key)!;
+  int fontSize = prefs.getInt(PrefsKeys.fontSize.key)!;
 
-  void updateTheme(bool value) {
+  void updateDynamic(bool value) {
     dynamicColor = value;
     prefs.setBool(PrefsKeys.dynamicColor.key, value);
+    notifyListeners();
+  }
+
+  void updateFontSize(int value) {
+    fontSize = value;
+    prefs.setInt(PrefsKeys.fontSize.key, value);
     notifyListeners();
   }
 }

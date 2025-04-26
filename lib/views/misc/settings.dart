@@ -31,7 +31,7 @@ import 'package:snag/provider_models/theme_provider.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
-  static const double paddingHeight = 10.0;
+  static const double paddingHeight = 11.0;
   static bool notificationsDenied =
       prefs.getBool(PrefsKeys.notificationsDenied.key)!;
 
@@ -108,15 +108,7 @@ class Settings extends StatelessWidget {
                     ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
-                child: Divider(height: 0),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: paddingHeight),
                 child: _SyncWidget(),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: paddingHeight),
-                child: Divider(height: 0),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight - 7.0),
@@ -124,7 +116,7 @@ class Settings extends StatelessWidget {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
-                child: Divider(height: 0),
+                child: _FontSizeWidget(),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
@@ -274,7 +266,7 @@ class _CustomSlider extends StatelessWidget {
           value: currentValue,
           min: 1,
           max: values.length.toDouble(),
-          divisions: values.length,
+          divisions: values.length - 1,
           onChanged: onChanged,
           onChangeEnd: onChangedEnd,
         )
@@ -328,6 +320,7 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
   void initState() {
     final int savedValue = prefs.getInt(PrefsKeys.backgroundFrequency.key)!;
     for (int i = 0; i < _Frequency.values.length; i++) {
+      //Todo: change to equal in a later version
       if (savedValue <= _Frequency.values[i].minutes) {
         _currentValue = i + 1;
         break;
@@ -348,15 +341,67 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
           });
         },
         onChangedEnd: (double value) {
-          _saveFrequency();
+          _currentValue = value.ceilToDouble();
+          prefs.setInt(PrefsKeys.backgroundFrequency.key,
+              _Frequency.values[_currentValue.toInt() - 1].minutes);
+          Workmanager().cancelAll();
+          notificationPermission();
         });
   }
+}
 
-  void _saveFrequency() {
-    prefs.setInt(PrefsKeys.backgroundFrequency.key,
-        _Frequency.values[_currentValue.toInt() - 1].minutes);
-    Workmanager().cancelAll();
-    notificationPermission();
+enum _Size {
+  minusOne('-1', -1),
+  zero('0', 0),
+  one('+1', 1),
+  two('+2', 2),
+  three('+3', 3);
+
+  final String text;
+  final int size;
+
+  const _Size(this.text, this.size);
+}
+
+class _FontSizeWidget extends StatefulWidget {
+  const _FontSizeWidget();
+
+  @override
+  State<_FontSizeWidget> createState() => _FontSizeWidgetState();
+}
+
+class _FontSizeWidgetState extends State<_FontSizeWidget> {
+  double _currentValue = 1;
+
+  @override
+  void initState() {
+    final int savedValue = prefs.getInt(PrefsKeys.fontSize.key)!;
+    for (int i = 0; i < _Size.values.length; i++) {
+      if (savedValue == _Size.values[i].size) {
+        _currentValue = i + 1;
+        break;
+      }
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _CustomSlider(
+        currentValue: _currentValue,
+        text: 'Increase font size by',
+        values: _Size.values,
+        onChanged: (double value) {
+          setState(() {
+            _currentValue = value.ceilToDouble();
+          });
+        },
+        onChangedEnd: (double value) {
+          _currentValue = value.ceilToDouble();
+          int size = _Size.values[_currentValue.toInt() - 1].size;
+          prefs.setInt(PrefsKeys.fontSize.key, size);
+          context.read<ThemeProvider>().updateFontSize(size);
+        });
   }
 }
 
@@ -439,7 +484,7 @@ class _ThemeWidgetState extends State<_ThemeWidget> {
           onChanged: (value) {
             setState(() {
               _value = value;
-              context.read<ThemeProvider>().updateTheme(_value);
+              context.read<ThemeProvider>().updateDynamic(_value);
             });
           },
         ),

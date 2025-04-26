@@ -31,6 +31,7 @@ import 'package:snag/nav/custom_drawer.dart';
 import 'package:snag/nav/custom_drawer_appbar.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/giveaway_filter_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/fetch_giveaway_list.dart';
 import 'package:snag/views/giveaways/functions/parse_giveaway_list.dart';
@@ -146,23 +147,29 @@ class _GiveawayListState extends State<GiveawayList>
               child: RefreshIndicator(
                   onRefresh: () =>
                       Future.sync(() => _pagingController.refresh()),
-                  child: PagedListView<int, GiveawayListModel>(
-                      itemExtent: CustomPagedListTheme.itemExtent,
-                      pagingController: _pagingController,
-                      builderDelegate:
-                          PagedChildBuilderDelegate<GiveawayListModel>(
-                              itemBuilder: (context, giveaway, index) => Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      GiveawayListTile(
-                                        giveaway: giveaway,
-                                        onTileChange: () => changeGiveawayState(
-                                            giveaway, context, setState),
-                                      ),
-                                    ],
-                                  ),
-                              newPageProgressIndicatorBuilder: (context) =>
-                                  PagedProgressIndicator()))),
+                  child: Consumer<ThemeProvider>(
+                    builder: (context, theme, child) =>
+                        PagedListView<int, GiveawayListModel>(
+                            itemExtent: CustomPagedListTheme.itemExtent +
+                                4 * theme.fontSize,
+                            pagingController: _pagingController,
+                            builderDelegate:
+                                PagedChildBuilderDelegate<GiveawayListModel>(
+                                    itemBuilder: (context, giveaway, index) =>
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GiveawayListTile(
+                                              giveaway: giveaway,
+                                              onTileChange: () =>
+                                                  changeGiveawayState(giveaway,
+                                                      context, setState),
+                                            ),
+                                          ],
+                                        ),
+                                    newPageProgressIndicatorBuilder:
+                                        (context) => PagedProgressIndicator())),
+                  )),
             ))
         : LoggedOut();
   }
