@@ -62,11 +62,13 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                   selected: ended,
                   selectedColor: Colors.grey[600],
                   title: Text(user.giveaways[index].name,
-                      style: CustomListTileTheme.titleTextStyle,
+                      style: TextStyle(
+                          fontSize: CustomListTileTheme.titleTextSize),
                       overflow: CustomListTileTheme.overflow),
                   subtitle: Text(
                       '${_calcSeconds(user.giveaways[index].agoStamp)} ago - $remaining',
-                      style: CustomListTileTheme.subtitleTextStyle),
+                      style: TextStyle(
+                          fontSize: CustomListTileTheme.subtitleTextSize)),
                   leading: SizedBox(
                     width: CustomListTileTheme.leadingWidth,
                     child: CachedNetworkImage(

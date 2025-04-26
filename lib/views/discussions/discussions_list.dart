@@ -77,7 +77,8 @@ class DiscussionsList extends StatelessWidget {
                   Flexible(
                     child: Text(
                       discussion.title,
-                      style: CustomListTileTheme.titleTextStyle,
+                      style: TextStyle(
+                          fontSize: CustomListTileTheme.titleTextSize),
                       overflow: CustomListTileTheme.overflow,
                     ),
                   ),
@@ -87,7 +88,8 @@ class DiscussionsList extends StatelessWidget {
                 children: [
                   Text(
                     '${discussion.user} · ${discussion.topic} · C: ${discussion.created} ago${discussion.last} · ${discussion.comments} ',
-                    style: CustomListTileTheme.subtitleTextStyle,
+                    style: TextStyle(
+                        fontSize: CustomListTileTheme.subtitleTextSize),
                   ),
                   Icon(Icons.comment_outlined,
                       size: CustomListTileTheme.iconSize - 2),

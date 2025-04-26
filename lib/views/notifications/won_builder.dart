@@ -110,11 +110,13 @@ class _WonBuilderState extends State<WonBuilder> {
                         child: giveaway.image,
                       ),
                       title: Text(giveaway.name,
-                          style: CustomListTileTheme.titleTextStyle,
+                          style: TextStyle(
+                              fontSize: CustomListTileTheme.titleTextSize),
                           overflow: CustomListTileTheme.overflow),
                       subtitle: Text(
                         giveaway.time,
-                        style: CustomListTileTheme.subtitleTextStyle,
+                        style: TextStyle(
+                            fontSize: CustomListTileTheme.subtitleTextSize),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,

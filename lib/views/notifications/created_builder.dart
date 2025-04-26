@@ -93,10 +93,13 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
                             child: created.image,
                           ),
                           title: Text(created.name,
-                              style: CustomListTileTheme.titleTextStyle,
+                              style: TextStyle(
+                                  fontSize: CustomListTileTheme.titleTextSize),
                               overflow: CustomListTileTheme.overflow),
                           subtitle: Text(created.time,
-                              style: CustomListTileTheme.subtitleTextStyle),
+                              style: TextStyle(
+                                  fontSize:
+                                      CustomListTileTheme.subtitleTextSize)),
                           onTap: () =>
                               customNav(Giveaway(href: created.href), context),
                           trailing: created.sendLink != null
