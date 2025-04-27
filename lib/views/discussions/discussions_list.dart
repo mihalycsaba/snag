@@ -21,12 +21,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/discussions/discussion_model.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
@@ -39,68 +41,78 @@ class DiscussionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, DiscussionModel>(
-      itemExtent: CustomPagedListTheme.itemExtent,
-      pagingController: pagingController,
-      builderDelegate: PagedChildBuilderDelegate<DiscussionModel>(
-        itemBuilder: (context, discussion, index) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              contentPadding: CustomListTileTheme.contentPadding,
-              minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-              dense: CustomListTileTheme.dense,
-              leading: SizedBox(
-                width: 40,
-                height: 40,
-                child: CachedNetworkImage(
-                  imageUrl: discussion.avatar,
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+    return Consumer<ThemeProvider>(
+      builder: (context, theme, child) => PagedListView<int, DiscussionModel>(
+        itemExtent:
+            CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
+        pagingController: pagingController,
+        builderDelegate: PagedChildBuilderDelegate<DiscussionModel>(
+          itemBuilder: (context, discussion, index) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                contentPadding: CustomListTileTheme.contentPadding,
+                minVerticalPadding: CustomListTileTheme.minVerticalPadding,
+                dense: CustomListTileTheme.dense,
+                leading: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CachedNetworkImage(
+                    imageUrl: discussion.avatar,
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
-              ),
-              title: Row(
-                children: [
-                  discussion.closed
-                      ? const Icon(
-                          Icons.lock,
-                          color: Colors.red,
-                          size: 12,
-                        )
-                      : Container(),
-                  discussion.poll
-                      ? const Icon(
-                          Icons.poll_outlined,
-                          size: 14,
-                          color: Colors.green,
-                        )
-                      : Container(),
-                  Flexible(
-                    child: Text(
-                      discussion.title,
-                      style: TextStyle(
-                          fontSize: CustomListTileTheme.titleTextSize),
-                      overflow: CustomListTileTheme.overflow,
+                title: Row(
+                  children: [
+                    discussion.closed
+                        ? const Icon(
+                            Icons.lock,
+                            color: Colors.red,
+                            size: 12,
+                          )
+                        : Container(),
+                    discussion.poll
+                        ? const Icon(
+                            Icons.poll_outlined,
+                            size: 14,
+                            color: Colors.green,
+                          )
+                        : Container(),
+                    Flexible(
+                      child: Consumer<ThemeProvider>(
+                        builder: (context, theme, child) => Text(
+                          discussion.title,
+                          style: TextStyle(
+                              fontSize: CustomListTileTheme.titleTextSize +
+                                  theme.fontSize),
+                          overflow: CustomListTileTheme.overflow,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                subtitle: Consumer<ThemeProvider>(
+                    builder: (context, theme, child) => Row(children: [
+                          Text(
+                            '${discussion.user} · ${discussion.topic} · C: ${discussion.created} ago${discussion.last} · ${discussion.comments} ',
+                            style: TextStyle(
+                                fontSize: CustomListTileTheme.subtitleTextSize +
+                                    theme.fontSize / 2),
+                          ),
+                          Icon(Icons.comment_outlined,
+                              size: CustomListTileTheme.iconSize -
+                                  2 +
+                                  theme.fontSize / 2),
+                        ])),
+                onTap: () =>
+                    customNav(Discussion(href: discussion.href), context),
               ),
-              subtitle: Row(
-                children: [
-                  Text(
-                    '${discussion.user} · ${discussion.topic} · C: ${discussion.created} ago${discussion.last} · ${discussion.comments} ',
-                    style: TextStyle(
-                        fontSize: CustomListTileTheme.subtitleTextSize),
-                  ),
-                  Icon(Icons.comment_outlined,
-                      size: CustomListTileTheme.iconSize - 2),
-                ],
-              ),
-              onTap: () =>
-                  customNav(Discussion(href: discussion.href), context),
-            ),
-          ],
+            ],
+          ),
+          newPageProgressIndicatorBuilder: (context) =>
+              PagedProgressIndicator(),
         ),
-        newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator(),
       ),
     );
   }

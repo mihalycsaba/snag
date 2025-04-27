@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/card_theme.dart';
@@ -32,6 +33,7 @@ import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/discussion_bookmark_model.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/comments/comment_editor.dart';
 import 'package:snag/views/comments/comment_message.dart';
 import 'package:snag/views/comments/comments.dart';
@@ -239,10 +241,12 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                 ),
               ],
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(
-                style: const TextStyle(fontSize: 18),
-                _name,
-                maxLines: 2,
+              title: Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text(
+                  style: TextStyle(fontSize: 18.0 + theme.fontSize),
+                  _name,
+                  maxLines: 2,
+                ),
               ),
             ),
             body: CustomScrollView(slivers: <Widget>[
@@ -273,11 +277,15 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
-                                        child: Text(
-                                          _question,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
+                                        child: Consumer<ThemeProvider>(
+                                          builder: (context, theme, child) =>
+                                              Text(
+                                            _question,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    16.0 + theme.fontSize),
+                                          ),
                                         ),
                                       ),
                                       TextButton(

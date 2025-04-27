@@ -31,6 +31,7 @@ import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/messages_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/comments/comment_message.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
@@ -199,9 +200,12 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
 
   Widget _messageEntry({required _MessageModel message}) {
     return ExpansionTile(
-        title: Text(message.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            textAlign: TextAlign.left),
+        title: Consumer<ThemeProvider>(
+          builder: (context, theme, child) => Text(message.title,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 18.0 * theme.fontSize),
+              textAlign: TextAlign.left),
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

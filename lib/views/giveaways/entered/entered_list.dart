@@ -32,6 +32,7 @@ import 'package:snag/nav/custom_drawer_appbar.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/entered_filter_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/fetch_giveaway_list.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
@@ -184,24 +185,31 @@ class _EnteredListState extends State<EnteredList> {
                 child: RefreshIndicator(
                     onRefresh: () =>
                         Future.sync(() => _pagingController.refresh()),
-                    child: PagedListView<int, GiveawayListModel>(
-                        itemExtent: CustomPagedListTheme.itemExtent,
-                        pagingController: _pagingController,
-                        builderDelegate:
-                            PagedChildBuilderDelegate<GiveawayListModel>(
-                                itemBuilder: (context, giveaway, index) =>
-                                    Column(
-                                      children: [
-                                        _EnteredListTile(
-                                          giveaway: giveaway,
-                                          onTileChange: (giveaway) =>
-                                              changeGiveawayState(
-                                                  giveaway, context, setState),
-                                        ),
-                                      ],
-                                    ),
-                                newPageProgressIndicatorBuilder: (context) =>
-                                    PagedProgressIndicator()))),
+                    child: Consumer<ThemeProvider>(
+                      builder: (context, theme, child) =>
+                          PagedListView<int, GiveawayListModel>(
+                              itemExtent: CustomPagedListTheme.itemExtent +
+                                  addItemExtent(theme.fontSize),
+                              pagingController: _pagingController,
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<GiveawayListModel>(
+                                      itemBuilder: (context, giveaway, index) =>
+                                          Column(
+                                            children: [
+                                              _EnteredListTile(
+                                                giveaway: giveaway,
+                                                onTileChange: (giveaway) =>
+                                                    changeGiveawayState(
+                                                        giveaway,
+                                                        context,
+                                                        setState),
+                                              ),
+                                            ],
+                                          ),
+                                      newPageProgressIndicatorBuilder:
+                                          (context) =>
+                                              PagedProgressIndicator())),
+                    )),
               ),
             ],
           ),
@@ -223,61 +231,69 @@ class _EnteredListTile extends StatefulWidget {
 class _EnteredListTileState extends State<_EnteredListTile> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        contentPadding: CustomListTileTheme.contentPadding,
-        minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-        dense: CustomListTileTheme.dense,
-        selected: widget.giveaway.notEnded,
-        leading: SizedBox(
-            width: CustomListTileTheme.leadingWidth,
-            child: widget.giveaway.image),
-        title: Row(
-          children: [
-            Flexible(
-              //flexible wraps the text if it is too long
-              child: Text(widget.giveaway.name,
-                  style: TextStyle(fontSize: CustomListTileTheme.titleTextSize),
-                  overflow: CustomListTileTheme.overflow),
-            ),
-            widget.giveaway.copies != null
-                ? Text(
-                    ' ${widget.giveaway.copies}',
-                    style:
-                        TextStyle(fontSize: CustomListTileTheme.titleTextSize),
-                  )
-                : Container()
-          ],
-        ),
-        subtitle: Row(
-          children: [
-            Text(
-              '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
-              style: TextStyle(fontSize: CustomListTileTheme.subtitleTextSize),
-            ),
-            const Icon(Icons.groups, size: 14),
-            Text(
-                ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
-                style:
-                    TextStyle(fontSize: CustomListTileTheme.subtitleTextSize))
-          ],
-        ),
-        trailing: widget.giveaway.notEnded
-            ? InkWell(
-                onTap: () => widget.onTileChange(widget.giveaway),
-                child: SizedBox(
-                    width: CustomListTileTheme.trailingWidth,
-                    height: CustomListTileTheme.trailingHeight,
-                    child: widget.giveaway.entered
-                        ? const Icon(Icons.remove)
-                        : const Icon(Icons.add)))
-            : null,
-        onTap: () async {
-          widget.giveaway.entered =
-              await customNav(Giveaway(href: widget.giveaway.href!), context)
-                  as bool;
+    return Consumer<ThemeProvider>(
+      builder: (context, theme, child) => ListTile(
+          contentPadding: CustomListTileTheme.contentPadding,
+          minVerticalPadding: CustomListTileTheme.minVerticalPadding,
+          dense: CustomListTileTheme.dense,
+          selected: widget.giveaway.notEnded,
+          leading: SizedBox(
+              width: CustomListTileTheme.leadingWidth,
+              child: widget.giveaway.image),
+          title: Row(
+            children: [
+              Flexible(
+                //flexible wraps the text if it is too long
+                child: Text(widget.giveaway.name,
+                    style: TextStyle(
+                        fontSize:
+                            CustomListTileTheme.titleTextSize + theme.fontSize),
+                    overflow: CustomListTileTheme.overflow),
+              ),
+              widget.giveaway.copies != null
+                  ? Text(
+                      ' ${widget.giveaway.copies}',
+                      style: TextStyle(
+                          fontSize: CustomListTileTheme.titleTextSize +
+                              theme.fontSize),
+                    )
+                  : Container()
+            ],
+          ),
+          subtitle: Row(
+            children: [
+              Text(
+                '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
+                style: TextStyle(
+                    fontSize: CustomListTileTheme.subtitleTextSize +
+                        theme.fontSize / 2),
+              ),
+              Icon(Icons.groups, size: 14.0 + theme.fontSize / 2),
+              Text(
+                  ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
+                  style: TextStyle(
+                      fontSize: CustomListTileTheme.subtitleTextSize +
+                          theme.fontSize / 2))
+            ],
+          ),
+          trailing: widget.giveaway.notEnded
+              ? InkWell(
+                  onTap: () => widget.onTileChange(widget.giveaway),
+                  child: SizedBox(
+                      width: CustomListTileTheme.trailingWidth,
+                      height: CustomListTileTheme.trailingHeight,
+                      child: widget.giveaway.entered
+                          ? const Icon(Icons.remove)
+                          : const Icon(Icons.add)))
+              : null,
+          onTap: () async {
+            widget.giveaway.entered =
+                await customNav(Giveaway(href: widget.giveaway.href!), context)
+                    as bool;
 
-          setState(() {});
-        });
+            setState(() {});
+          }),
+    );
   }
 }
 
@@ -340,7 +356,7 @@ class _EnteredFilterDialogState extends State<_EnteredFilterDialog> {
             height: _height,
             child: Row(
               children: [
-                const SizedBox(width: 50, child: Text('Search')),
+                const SizedBox(width: 55, child: Text('Search')),
                 CustomTextField(
                     hintText: 'Search',
                     controller: _search,

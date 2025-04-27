@@ -28,6 +28,6 @@ class CustomListTileTheme {
   static const double leadingWidth = 86;
   static const TextOverflow overflow = TextOverflow.ellipsis;
   static const double trailingWidth = 60;
-  static const double trailingHeight = 40;
+  static const double trailingHeight = 60;
   static const double iconSize = 12;
 }

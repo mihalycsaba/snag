@@ -44,7 +44,6 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
   late final String? _points;
   late final String _gaLevel;
   late final String _remaining;
-  late final TextStyle _levelTextStyle;
 
   @override
   void initState() {
@@ -55,9 +54,6 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
         ? '${widget.giveaway.points.toString()}P · '
         : null;
     _gaLevel = widget.giveaway.level > 0 ? 'L${widget.giveaway.level} · ' : '';
-    _levelTextStyle = TextStyle(
-        fontSize: CustomListTileTheme.subtitleTextSize,
-        color: widget.giveaway.level <= userLevel ? null : Colors.red);
     _remaining = _remainingTime();
   }
 
@@ -124,7 +120,13 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
                           fontSize: CustomListTileTheme.subtitleTextSize +
                               theme.fontSize))
                   : Container(),
-              Text(_gaLevel, style: _levelTextStyle),
+              Text(_gaLevel,
+                  style: TextStyle(
+                      fontSize:
+                          CustomListTileTheme.subtitleTextSize + theme.fontSize,
+                      color: widget.giveaway.level <= userLevel
+                          ? null
+                          : Colors.red)),
               Text('${widget.giveaway.entries} ',
                   style: TextStyle(
                     fontSize:

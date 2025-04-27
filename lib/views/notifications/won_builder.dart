@@ -21,6 +21,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
@@ -29,6 +30,7 @@ import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
@@ -91,94 +93,116 @@ class _WonBuilderState extends State<WonBuilder> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedListView<int, _WonListModel>(
-            itemExtent: CustomPagedListTheme.itemExtent,
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<_WonListModel>(
-              itemBuilder: (context, giveaway, index) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: ListTile(
-                      selected: giveaway.notReceived,
-                      contentPadding: CustomListTileTheme.contentPadding,
-                      minVerticalPadding:
-                          CustomListTileTheme.minVerticalPadding,
-                      dense: CustomListTileTheme.dense,
-                      leading: SizedBox(
-                        width: CustomListTileTheme.leadingWidth,
-                        child: giveaway.image,
+        child: Consumer<ThemeProvider>(
+          builder: (context, theme, child) => PagedListView<int, _WonListModel>(
+              itemExtent: CustomPagedListTheme.itemExtent +
+                  addItemExtent(theme.fontSize),
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<_WonListModel>(
+                itemBuilder: (context, giveaway, index) => Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: ListTile(
+                        selected: giveaway.notReceived,
+                        contentPadding: CustomListTileTheme.contentPadding,
+                        minVerticalPadding:
+                            CustomListTileTheme.minVerticalPadding,
+                        dense: CustomListTileTheme.dense,
+                        leading: SizedBox(
+                          width: CustomListTileTheme.leadingWidth,
+                          child: giveaway.image,
+                        ),
+                        title: Consumer<ThemeProvider>(
+                          builder: (context, theme, child) => Text(
+                              giveaway.name,
+                              style: TextStyle(
+                                  fontSize: CustomListTileTheme.titleTextSize +
+                                      theme.fontSize),
+                              overflow: CustomListTileTheme.overflow),
+                        ),
+                        subtitle: Consumer<ThemeProvider>(
+                          builder: (context, theme, child) => Text(
+                            giveaway.time,
+                            style: TextStyle(
+                                fontSize: CustomListTileTheme.subtitleTextSize +
+                                    theme.fontSize),
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            giveaway.keyButton != null
+                                ? Consumer<ThemeProvider>(
+                                    builder: (context, theme, child) =>
+                                        TextButton(
+                                            child: Text('Open gift',
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        12.0 + theme.fontSize)),
+                                            onPressed: () async {
+                                              await resMapAjax(
+                                                      giveaway.keyButton!)
+                                                  .then((value) {
+                                                _pagingController.refresh();
+                                              });
+                                            }),
+                                  )
+                                : giveaway.keyIsRedeemable &&
+                                        giveaway.notReceived
+                                    ? Consumer<ThemeProvider>(
+                                        builder: (context, theme, child) =>
+                                            TextButton(
+                                                onPressed: () => urlLauncher(
+                                                    giveaway.redeemKeyLink!),
+                                                child: Text('Redeem',
+                                                    style: TextStyle(
+                                                        fontSize: 12.0 +
+                                                            theme.fontSize))),
+                                      )
+                                    : !giveaway.keyIsRedeemable &&
+                                            giveaway.notReceived &&
+                                            !giveaway.giftLinkAvailable
+                                        ? TextButton(
+                                            onPressed: null,
+                                            child: Text('No key'),
+                                          )
+                                        : giveaway.notReceived &&
+                                                giveaway.giftLinkAvailable
+                                            ? TextButton(
+                                                onPressed: () => urlLauncher(
+                                                    giveaway.giftLink!),
+                                                child: Text(
+                                                  'Link',
+                                                ))
+                                            : Container(),
+                            giveaway.notReceived
+                                ? _Received(
+                                    pagingController: _pagingController,
+                                    giveaway: giveaway,
+                                    action: '1',
+                                    icon: Icons.close,
+                                    active: giveaway.active,
+                                  )
+                                : _Received(
+                                    pagingController: _pagingController,
+                                    giveaway: giveaway,
+                                    action: '',
+                                    icon: Icons.check,
+                                    active: giveaway.active,
+                                  )
+                          ],
+                        ),
+                        onTap: () =>
+                            customNav(Giveaway(href: giveaway.href), context),
                       ),
-                      title: Text(giveaway.name,
-                          style: TextStyle(
-                              fontSize: CustomListTileTheme.titleTextSize),
-                          overflow: CustomListTileTheme.overflow),
-                      subtitle: Text(
-                        giveaway.time,
-                        style: TextStyle(
-                            fontSize: CustomListTileTheme.subtitleTextSize),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          giveaway.keyButton != null
-                              ? TextButton(
-                                  child: Text('Open gift',
-                                      style: TextStyle(fontSize: 12)),
-                                  onPressed: () async {
-                                    await resMapAjax(giveaway.keyButton!)
-                                        .then((value) {
-                                      _pagingController.refresh();
-                                    });
-                                  })
-                              : giveaway.keyIsRedeemable && giveaway.notReceived
-                                  ? TextButton(
-                                      onPressed: () =>
-                                          urlLauncher(giveaway.redeemKeyLink!),
-                                      child: Text('Redeem',
-                                          style: TextStyle(fontSize: 12)))
-                                  : !giveaway.keyIsRedeemable &&
-                                          giveaway.notReceived &&
-                                          !giveaway.giftLinkAvailable
-                                      ? TextButton(
-                                          onPressed: null,
-                                          child: Text('No key'),
-                                        )
-                                      : giveaway.notReceived &&
-                                              giveaway.giftLinkAvailable
-                                          ? TextButton(
-                                              onPressed: () => urlLauncher(
-                                                  giveaway.giftLink!),
-                                              child: Text(
-                                                'Link',
-                                              ))
-                                          : Container(),
-                          giveaway.notReceived
-                              ? _Received(
-                                  pagingController: _pagingController,
-                                  giveaway: giveaway,
-                                  action: '1',
-                                  icon: Icons.close,
-                                  active: giveaway.active,
-                                )
-                              : _Received(
-                                  pagingController: _pagingController,
-                                  giveaway: giveaway,
-                                  action: '',
-                                  icon: Icons.check,
-                                  active: giveaway.active,
-                                )
-                        ],
-                      ),
-                      onTap: () =>
-                          customNav(Giveaway(href: giveaway.href), context),
                     ),
-                  ),
-                ],
-              ),
-              newPageProgressIndicatorBuilder: (context) =>
-                  PagedProgressIndicator(),
-            )));
+                  ],
+                ),
+                newPageProgressIndicatorBuilder: (context) =>
+                    PagedProgressIndicator(),
+              )),
+        ));
   }
 
   Future<void> fetchWonList(int pageKey, BuildContext context) async {
@@ -283,6 +307,10 @@ class _Received extends StatelessWidget {
           icon,
           size: 14,
         ),
-        label: Text('Received', style: TextStyle(fontSize: 12)));
+        label: Consumer<ThemeProvider>(
+            builder: (context, theme, child) => Text(
+                  'Received',
+                  style: TextStyle(fontSize: 12.0 + theme.fontSize),
+                )));
   }
 }

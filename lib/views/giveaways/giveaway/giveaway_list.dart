@@ -151,7 +151,7 @@ class _GiveawayListState extends State<GiveawayList>
                     builder: (context, theme, child) =>
                         PagedListView<int, GiveawayListModel>(
                             itemExtent: CustomPagedListTheme.itemExtent +
-                                4 * theme.fontSize,
+                                addItemExtent(theme.fontSize),
                             pagingController: _pagingController,
                             builderDelegate:
                                 PagedChildBuilderDelegate<GiveawayListModel>(

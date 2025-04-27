@@ -19,11 +19,13 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/comments/comment_editor.dart';
 import 'package:snag/views/comments/custom_html.dart';
 import 'package:snag/views/misc/user.dart';
@@ -102,14 +104,16 @@ class CommentMessage extends StatelessWidget {
               name != null
                   ? Padding(
                       padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        name!,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: active
-                                ? Theme.of(context).colorScheme.primary
-                                : null),
+                      child: Consumer<ThemeProvider>(
+                        builder: (context, theme, child) => Text(
+                          name!,
+                          style: TextStyle(
+                              fontSize: 16.0 + theme.fontSize,
+                              fontWeight: FontWeight.bold,
+                              color: active
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null),
+                        ),
                       ))
                   : Container(),
               patron ? Icon(Icons.star, color: Colors.green[800]) : Container(),
@@ -133,12 +137,15 @@ class CommentMessage extends StatelessWidget {
                           const SizedBox(
                             width: 1,
                           ),
-                          Text('${ago!} ago',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: active
-                                      ? Theme.of(context).colorScheme.primary
-                                      : null)),
+                          Consumer<ThemeProvider>(
+                            builder: (context, theme, child) => Text(
+                                '${ago!} ago',
+                                style: TextStyle(
+                                    fontSize: 10.0 + theme.fontSize,
+                                    color: active
+                                        ? Theme.of(context).colorScheme.primary
+                                        : null)),
+                          ),
                         ],
                       ),
                     )

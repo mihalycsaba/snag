@@ -21,6 +21,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
@@ -28,6 +29,7 @@ import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/functions/res_status_code.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 import 'package:snag/views/misc/user.dart';
 
@@ -82,45 +84,50 @@ class _WinnersState extends State<Winners> {
         ),
         body: RefreshIndicator(
             onRefresh: () => Future.sync(() => _pagingController.refresh()),
-            child: PagedListView<int, WinnerModel>(
-              itemExtent: CustomPagedListTheme.itemExtent,
-              pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
-                itemBuilder: (context, item, index) => ListTile(
-                    contentPadding: CustomListTileTheme.contentPadding,
-                    minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-                    dense: CustomListTileTheme.dense,
-                    leading: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: CachedNetworkImage(
-                        imageUrl: item.image,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+            child: Consumer<ThemeProvider>(
+              builder: (context, theme, child) =>
+                  PagedListView<int, WinnerModel>(
+                itemExtent: CustomPagedListTheme.itemExtent +
+                    addItemExtent(theme.fontSize),
+                pagingController: _pagingController,
+                builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
+                  itemBuilder: (context, item, index) => ListTile(
+                      contentPadding: CustomListTileTheme.contentPadding,
+                      minVerticalPadding:
+                          CustomListTileTheme.minVerticalPadding,
+                      dense: CustomListTileTheme.dense,
+                      leading: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CachedNetworkImage(
+                          imageUrl: item.image,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
                       ),
-                    ),
-                    title: Text(item.name),
-                    subtitle: widget.self ? Text(item.email!) : null,
-                    onTap: item.anonymous
-                        ? null
-                        : () => customNav(User(name: item.name), context),
-                    trailing: widget.self
-                        ? TextButton(
-                            onPressed: item.sent
-                                ? null
-                                : () async {
-                                    int statusCode = await resStatusCode(
-                                        '&action=1&do=sent_feedback&winner_id=${item.id}');
-                                    if (statusCode == 200) {
-                                      setState(() {
-                                        item.sent = true;
-                                      });
-                                    }
-                                  },
-                            child: const Text('Send'))
-                        : null),
-                newPageProgressIndicatorBuilder: (context) =>
-                    const PagedProgressIndicator(),
+                      title: Text(item.name),
+                      subtitle: widget.self ? Text(item.email!) : null,
+                      onTap: item.anonymous
+                          ? null
+                          : () => customNav(User(name: item.name), context),
+                      trailing: widget.self
+                          ? TextButton(
+                              onPressed: item.sent
+                                  ? null
+                                  : () async {
+                                      int statusCode = await resStatusCode(
+                                          '&action=1&do=sent_feedback&winner_id=${item.id}');
+                                      if (statusCode == 200) {
+                                        setState(() {
+                                          item.sent = true;
+                                        });
+                                      }
+                                    },
+                              child: const Text('Send'))
+                          : null),
+                  newPageProgressIndicatorBuilder: (context) =>
+                      const PagedProgressIndicator(),
+                ),
               ),
             )));
   }
