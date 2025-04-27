@@ -25,6 +25,7 @@ import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/gifts_provider.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/points_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
 
 class CustomDrawerAppBar extends StatelessWidget
@@ -43,22 +44,24 @@ class CustomDrawerAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            name,
-            style: const TextStyle(fontSize: 18),
-          ),
-          showPoints
-              ? Consumer<PointsProvider>(
-                  builder: (context, user, child) => Text(
-                    user.points.toString(),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                )
-              : Container()
-        ],
+      title: Consumer<ThemeProvider>(
+        builder: (context, theme, child) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              style: TextStyle(fontSize: 18.0 + theme.fontSize),
+            ),
+            showPoints
+                ? Consumer<PointsProvider>(
+                    builder: (context, user, child) => Text(
+                      user.points.toString(),
+                      style: TextStyle(fontSize: 12.0 + theme.fontSize),
+                    ),
+                  )
+                : Container()
+          ],
+        ),
       ),
       actions: [
         Consumer<GiftsProvider>(

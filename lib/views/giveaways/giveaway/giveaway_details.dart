@@ -35,6 +35,7 @@ import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/giveaway_bookmark_model.dart';
 import 'package:snag/provider_models/points_provider.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/comments/comment_editor.dart';
 import 'package:snag/views/comments/comment_message.dart';
 import 'package:snag/views/comments/comments.dart';
@@ -491,26 +492,30 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 //overflow comes from site
-                                child: Text(
-                                  _giveaway.name,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
+                                child: Consumer<ThemeProvider>(
+                                  builder: (context, theme, child) => Text(
+                                    _giveaway.name,
+                                    style: TextStyle(
+                                        fontSize: 20.0 + theme.fontSize,
+                                        fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 )),
                             Row(children: [
                               GestureDetector(
-                                onTap: () => customNav(
-                                    User(name: _giveaway.creator!), context),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.person, size: 16),
-                                    Text(_giveaway.creator!,
-                                        style: const TextStyle(
-                                            fontSize: _detailsFontSize + 4)),
-                                  ],
-                                ),
-                              ),
+                                  onTap: () => customNav(
+                                      User(name: _giveaway.creator!), context),
+                                  child: Consumer<ThemeProvider>(
+                                      builder: (context, theme, child) =>
+                                          Row(children: [
+                                            Icon(Icons.person,
+                                                size: 16.0 + theme.fontSize),
+                                            Text(_giveaway.creator!,
+                                                style: TextStyle(
+                                                    fontSize: _detailsFontSize +
+                                                        4 +
+                                                        theme.fontSize)),
+                                          ]))),
                               const Spacer(),
                               _giveaway.copies != null
                                   ? Padding(
@@ -527,26 +532,34 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                   alignment: Alignment.centerLeft,
                                   child: Text('Level ${_giveaway.level}'))
                             ]),
-                            Row(children: [
-                              const Icon(Icons.group, size: 14),
-                              const SizedBox(width: 1),
-                              Text(
-                                '${_giveaway.entries} entries ',
-                                style:
-                                    const TextStyle(fontSize: _detailsFontSize),
-                              ),
-                              const Icon(Icons.calendar_today, size: 10),
-                              const SizedBox(width: 1),
-                              Text('${_giveaway.ago!} ago',
-                                  style: const TextStyle(
-                                      fontSize: _detailsFontSize)),
-                              const Spacer(),
-                              const Icon(Icons.schedule, size: 12),
-                              SizedBox(width: 1),
-                              Text(_giveaway.remaining.toLowerCase(),
-                                  style: const TextStyle(
-                                      fontSize: _detailsFontSize)),
-                            ])
+                            Consumer<ThemeProvider>(
+                              builder: (context, theme, child) =>
+                                  Row(children: [
+                                Icon(Icons.group, size: 14.0 + theme.fontSize),
+                                const SizedBox(width: 1),
+                                Text(
+                                  '${_giveaway.entries} entries ',
+                                  style: TextStyle(
+                                      fontSize:
+                                          _detailsFontSize + theme.fontSize),
+                                ),
+                                Icon(Icons.calendar_today,
+                                    size: 10.0 + theme.fontSize),
+                                const SizedBox(width: 1),
+                                Text('${_giveaway.ago!} ago',
+                                    style: TextStyle(
+                                        fontSize:
+                                            _detailsFontSize + theme.fontSize)),
+                                const Spacer(),
+                                Icon(Icons.schedule,
+                                    size: 12.0 + theme.fontSize),
+                                SizedBox(width: 1),
+                                Text(_giveaway.remaining.toLowerCase(),
+                                    style: TextStyle(
+                                        fontSize:
+                                            _detailsFontSize + theme.fontSize)),
+                              ]),
+                            )
                           ],
                         ),
                       ),

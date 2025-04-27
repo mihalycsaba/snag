@@ -22,9 +22,11 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 
@@ -53,16 +55,18 @@ class CustomHtml extends StatelessWidget {
                         context),
                     child: const Text('Links'))
               ])),
-      child: Html(
-        doNotRenderTheseTags: const {'img', 'div', 'br'},
-        data: data.innerHtml,
-        style: {
-          "p": Style(
-              fontSize: FontSize(14),
-              color: active ? Theme.of(context).colorScheme.primary : null)
-        },
-        onLinkTap: (url, attributes, element) => _checkUrl(url!, context),
-        extensions: const [TableHtmlExtension()],
+      child: Consumer<ThemeProvider>(
+        builder: (context, theme, child) => Html(
+          doNotRenderTheseTags: const {'img', 'div', 'br'},
+          data: data.innerHtml,
+          style: {
+            "p": Style(
+                fontSize: FontSize(14.0 + theme.fontSize),
+                color: active ? Theme.of(context).colorScheme.primary : null)
+          },
+          onLinkTap: (url, attributes, element) => _checkUrl(url!, context),
+          extensions: const [TableHtmlExtension()],
+        ),
       ),
     );
   }

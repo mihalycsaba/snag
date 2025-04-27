@@ -21,6 +21,7 @@ import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/card_theme.dart';
@@ -30,6 +31,7 @@ import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/objectbox/game_bookmark_model.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/parse_giveaway_list.dart';
@@ -195,22 +197,31 @@ class _GameState extends State<Game> {
                         ),
                       ),
                     ),
-                    PagedSliverList<int, GiveawayListModel>(
-                        itemExtent: CustomPagedListTheme.itemExtent,
-                        pagingController: _pagingController,
-                        builderDelegate: PagedChildBuilderDelegate<
-                                GiveawayListModel>(
-                            itemBuilder: (context, giveaway, index) => Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      GiveawayListTile(
-                                        giveaway: giveaway,
-                                        onTileChange: () => changeGiveawayState(
-                                            giveaway, context, setState),
-                                      ),
-                                    ]),
-                            newPageProgressIndicatorBuilder: (context) =>
-                                PagedProgressIndicator())),
+                    Consumer<ThemeProvider>(
+                      builder: (context, theme, child) =>
+                          PagedSliverList<int, GiveawayListModel>(
+                              itemExtent: CustomPagedListTheme.itemExtent +
+                                  addItemExtent(theme.fontSize),
+                              pagingController: _pagingController,
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<GiveawayListModel>(
+                                      itemBuilder: (context, giveaway, index) =>
+                                          Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GiveawayListTile(
+                                                  giveaway: giveaway,
+                                                  onTileChange: () =>
+                                                      changeGiveawayState(
+                                                          giveaway,
+                                                          context,
+                                                          setState),
+                                                ),
+                                              ]),
+                                      newPageProgressIndicatorBuilder:
+                                          (context) =>
+                                              PagedProgressIndicator())),
+                    ),
                   ]),
                 ),
               )

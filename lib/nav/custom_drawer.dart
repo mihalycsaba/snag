@@ -19,11 +19,13 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/go_nav.dart';
 import 'package:snag/nav/pages.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/bookmarks/bookmarks.dart';
 import 'package:snag/views/giveaways/open_code.dart';
 import 'package:snag/views/misc/about.dart';
@@ -42,18 +44,23 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         children: [
           const SizedBox(height: 12),
-          ListTile(
-            minVerticalPadding: 3,
-            dense: true,
-            leading: CachedNetworkImage(
-                width: 36,
-                imageUrl: avatar,
-                errorWidget: (context, url, error) => const Icon(Icons.error)),
-            title: Text(username,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-            subtitle: Text('Level $userLevel'),
-            onTap: () => customNav(User(name: username), context),
+          Consumer<ThemeProvider>(
+            builder: (context, theme, child) => ListTile(
+              minVerticalPadding: 3,
+              dense: true,
+              leading: CachedNetworkImage(
+                  width: 36,
+                  imageUrl: avatar,
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error)),
+              title: Text(username,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0 + theme.fontSize)),
+              subtitle: Text('Level $userLevel',
+                  style: TextStyle(fontSize: 12.0 + theme.fontSize)),
+              onTap: () => customNav(User(name: username), context),
+            ),
           ),
           const Divider(height: 0),
           ExpansionTile(

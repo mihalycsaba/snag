@@ -33,7 +33,7 @@ class GiveawayFilterDialog extends StatefulWidget {
 class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final double _height = 48;
-  final double _width = 50;
+  final double _width = 55;
   late TextEditingController _search;
   late TextEditingController _minLevel;
   late TextEditingController _maxLevel;

@@ -21,11 +21,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 import 'package:snag/views/giveaways/giveaway/winners.dart';
@@ -77,45 +79,59 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedListView<int, CreatedListModel>(
-            itemExtent: CustomPagedListTheme.itemExtent,
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<CreatedListModel>(
-                itemBuilder: (context, created, index) => Column(children: [
-                      ListTile(
-                          contentPadding: CustomListTileTheme.contentPadding,
-                          minVerticalPadding:
-                              CustomListTileTheme.minVerticalPadding,
-                          dense: CustomListTileTheme.dense,
-                          selected: !created.received,
-                          leading: SizedBox(
-                            width: CustomListTileTheme.leadingWidth,
-                            child: created.image,
-                          ),
-                          title: Text(created.name,
-                              style: TextStyle(
-                                  fontSize: CustomListTileTheme.titleTextSize),
-                              overflow: CustomListTileTheme.overflow),
-                          subtitle: Text(created.time,
-                              style: TextStyle(
-                                  fontSize:
-                                      CustomListTileTheme.subtitleTextSize)),
-                          onTap: () =>
-                              customNav(Giveaway(href: created.href), context),
-                          trailing: created.sendLink != null
-                              ? TextButton(
-                                  child: Text('Winners'),
-                                  onPressed: () => customNav(
-                                    Winners(
-                                        link: created.sendLink!, self: true),
-                                    context,
-                                  ).then(
-                                      (value) => _pagingController.refresh()),
-                                )
-                              : null),
-                    ]),
-                newPageProgressIndicatorBuilder: (context) =>
-                    PagedProgressIndicator())));
+        child: Consumer<ThemeProvider>(
+          builder: (context, theme, child) => PagedListView<int,
+                  CreatedListModel>(
+              itemExtent: CustomPagedListTheme.itemExtent +
+                  addItemExtent(theme.fontSize),
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<CreatedListModel>(
+                  itemBuilder: (context, created, index) => Column(children: [
+                        ListTile(
+                            contentPadding: CustomListTileTheme.contentPadding,
+                            minVerticalPadding:
+                                CustomListTileTheme.minVerticalPadding,
+                            dense: CustomListTileTheme.dense,
+                            selected: !created.received,
+                            leading: SizedBox(
+                              width: CustomListTileTheme.leadingWidth,
+                              child: created.image,
+                            ),
+                            title: Consumer<ThemeProvider>(
+                              builder: (context, theme, child) => Text(
+                                  created.name,
+                                  style: TextStyle(
+                                      fontSize:
+                                          CustomListTileTheme.titleTextSize +
+                                              theme.fontSize),
+                                  overflow: CustomListTileTheme.overflow),
+                            ),
+                            subtitle: Consumer<ThemeProvider>(
+                              builder: (context, theme, child) => Text(
+                                created.time,
+                                style: TextStyle(
+                                    fontSize:
+                                        CustomListTileTheme.subtitleTextSize +
+                                            theme.fontSize),
+                              ),
+                            ),
+                            onTap: () => customNav(
+                                Giveaway(href: created.href), context),
+                            trailing: created.sendLink != null
+                                ? TextButton(
+                                    child: Text('Winners'),
+                                    onPressed: () => customNav(
+                                      Winners(
+                                          link: created.sendLink!, self: true),
+                                      context,
+                                    ).then(
+                                        (value) => _pagingController.refresh()),
+                                  )
+                                : null),
+                      ]),
+                  newPageProgressIndicatorBuilder: (context) =>
+                      PagedProgressIndicator())),
+        ));
   }
 
   Future<void> fetchCreatedList(int pageKey, BuildContext context) async {

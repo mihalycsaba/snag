@@ -88,7 +88,7 @@ class _DiscussionFilterDialogState extends State<_DiscussionFilterDialog> {
             height: _height,
             child: Row(
               children: [
-                const SizedBox(width: 50, child: Text('Search')),
+                const SizedBox(width: 55, child: Text('Search')),
                 CustomTextField(
                     hintText: 'Search',
                     controller: _search,

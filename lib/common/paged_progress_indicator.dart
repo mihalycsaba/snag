@@ -25,6 +25,10 @@ class CustomPagedListTheme {
   static const double itemExtent = 41.0;
 }
 
+int addItemExtent(int size) {
+  return 4 * size;
+}
+
 class PagedProgressIndicator extends StatelessWidget {
   const PagedProgressIndicator({super.key});
 
