@@ -203,7 +203,7 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
         title: Consumer<ThemeProvider>(
           builder: (context, theme, child) => Text(message.title,
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 18.0 * theme.fontSize),
+                  fontWeight: FontWeight.bold, fontSize: 18.0 + theme.fontSize),
               textAlign: TextAlign.left),
         ),
         trailing: Row(
