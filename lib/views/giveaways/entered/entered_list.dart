@@ -266,14 +266,14 @@ class _EnteredListTileState extends State<_EnteredListTile> {
                 '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
                 style: TextStyle(
                     fontSize: CustomListTileTheme.subtitleTextSize +
-                        theme.fontSize / 2),
+                        theme.fontSize / 1.9),
               ),
-              Icon(Icons.groups, size: 14.0 + theme.fontSize / 2),
+              Icon(Icons.groups, size: 14.0 + theme.fontSize / 1.9),
               Text(
                   ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
                   style: TextStyle(
                       fontSize: CustomListTileTheme.subtitleTextSize +
-                          theme.fontSize / 2))
+                          theme.fontSize / 1.9))
             ],
           ),
           trailing: widget.giveaway.notEnded
