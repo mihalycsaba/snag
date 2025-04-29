@@ -67,16 +67,16 @@ class DiscussionsList extends StatelessWidget {
                     builder: (context, theme, child) => Row(
                           children: [
                             discussion.closed
-                                ? const Icon(
+                                ? Icon(
                                     Icons.lock,
                                     color: Colors.red,
-                                    size: 12,
+                                    size: 12.0 + theme.fontSize,
                                   )
                                 : Container(),
                             discussion.poll
-                                ? const Icon(
+                                ? Icon(
                                     Icons.poll_outlined,
-                                    size: 14,
+                                    size: 14.0 + theme.fontSize,
                                     color: Colors.green,
                                   )
                                 : Container(),
