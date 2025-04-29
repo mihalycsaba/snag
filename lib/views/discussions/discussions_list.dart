@@ -98,12 +98,12 @@ class DiscussionsList extends StatelessWidget {
                             '${discussion.user} · ${discussion.topic} · C: ${discussion.created} ago${discussion.last} · ${discussion.comments} ',
                             style: TextStyle(
                                 fontSize: CustomListTileTheme.subtitleTextSize +
-                                    theme.fontSize / 2),
+                                    theme.fontSize / 1.9),
                           ),
                           Icon(Icons.comment_outlined,
                               size: CustomListTileTheme.iconSize -
                                   2 +
-                                  theme.fontSize / 2),
+                                  theme.fontSize / 1.9),
                         ])),
                 onTap: () =>
                     customNav(Discussion(href: discussion.href), context),
