@@ -37,7 +37,7 @@ import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/points_provider.dart';
 import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
-import 'package:snag/sg.dart';
+import 'package:snag/snag.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -110,5 +110,5 @@ void main() async {
     ChangeNotifierProvider(create: (_) => MessagesProvider()),
     ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
-  ], child: const SG()));
+  ], child: const Snag()));
 }
