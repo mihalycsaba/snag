@@ -36,17 +36,17 @@ import 'package:snag/views/notifications/notification_destination.dart';
 import 'package:snag/views/notifications/notifications.dart';
 import 'package:snag/views/notifications/notifications_destination.dart';
 
-class SG extends StatefulWidget {
-  const SG({super.key});
+class Snag extends StatefulWidget {
+  const Snag({super.key});
 
-  static SGState? of(BuildContext context) =>
-      context.findAncestorStateOfType<SGState>();
+  static SnagState? of(BuildContext context) =>
+      context.findAncestorStateOfType<SnagState>();
 
   @override
-  State<SG> createState() => SGState();
+  State<Snag> createState() => SnagState();
 }
 
-class SGState extends State<SG> {
+class SnagState extends State<Snag> {
   Future<String> _checkNotification(BuildContext context) async {
     FlutterLocalNotificationsPlugin status = FlutterLocalNotificationsPlugin();
     status.initialize(const InitializationSettings(

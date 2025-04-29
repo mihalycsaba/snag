@@ -63,34 +63,31 @@ class DiscussionsList extends StatelessWidget {
                         const Icon(Icons.error),
                   ),
                 ),
-                title: Row(
-                  children: [
-                    discussion.closed
-                        ? const Icon(
-                            Icons.lock,
-                            color: Colors.red,
-                            size: 12,
-                          )
-                        : Container(),
-                    discussion.poll
-                        ? const Icon(
-                            Icons.poll_outlined,
-                            size: 14,
-                            color: Colors.green,
-                          )
-                        : Container(),
-                    Flexible(
-                      child: Consumer<ThemeProvider>(
-                        builder: (context, theme, child) => Text(
-                          discussion.title,
-                          style: TextStyle(
-                              fontSize: CustomListTileTheme.titleTextSize +
-                                  theme.fontSize),
-                          overflow: CustomListTileTheme.overflow,
-                        ),
-                      ),
-                    ),
-                  ],
+                title: Flexible(
+                  child: Consumer<ThemeProvider>(
+                      builder: (context, theme, child) => Row(children: [
+                            discussion.closed
+                                ? Icon(
+                                    Icons.lock,
+                                    color: Colors.red,
+                                    size: 12.0 + theme.fontSize,
+                                  )
+                                : Container(),
+                            discussion.poll
+                                ? Icon(
+                                    Icons.poll_outlined,
+                                    size: 14.0 + theme.fontSize,
+                                    color: Colors.green,
+                                  )
+                                : Container(),
+                            Text(
+                              discussion.title,
+                              style: TextStyle(
+                                  fontSize: CustomListTileTheme.titleTextSize +
+                                      theme.fontSize),
+                              overflow: CustomListTileTheme.overflow,
+                            )
+                          ])),
                 ),
                 subtitle: Consumer<ThemeProvider>(
                     builder: (context, theme, child) => Row(children: [
