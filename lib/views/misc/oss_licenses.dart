@@ -5539,14 +5539,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     isSdk: false,
     dependencies: [PackageRef('csslib'), PackageRef('source_span')]);
 
-/// http 1.3.0
+/// http 1.4.0
 const _http = Package(
     name: 'http',
     description:
         'A composable, multi-platform, Future-based API for HTTP requests.',
     repository: 'https://github.com/dart-lang/http/tree/master/pkgs/http',
     authors: [],
-    version: '1.3.0',
+    version: '1.4.0',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -8094,14 +8094,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('async'), PackageRef('stack_trace')]);
 
-/// provider 6.1.4
+/// provider 6.1.5
 const _provider = Package(
     name: 'provider',
     description:
         'A wrapper around InheritedWidget to make them easier to use and more reusable.',
     repository: 'https://github.com/rrousselGit/provider',
     authors: [],
-    version: '6.1.4',
+    version: '6.1.5',
     license: '''MIT License
 
 Copyright (c) 2019 Remi Rousselet
@@ -10004,13 +10004,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('term_glyph')
     ]);
 
-/// timezone 0.10.0
+/// timezone 0.10.1
 const _timezone = Package(
     name: 'timezone',
     description: 'Time zone database and time zone aware DateTime.',
     repository: 'https://github.com/srawlins/timezone',
     authors: [],
-    version: '0.10.0',
+    version: '0.10.1',
     license: '''Copyright (c) 2014, timezone project authors.
 All rights reserved.
 
@@ -10971,14 +10971,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// web_socket 1.0.0
+/// web_socket 1.0.1
 const _web_socket = Package(
     name: 'web_socket',
     description:
         'Any easy-to-use library for communicating with WebSockets that has multiple implementations.',
     repository: 'https://github.com/dart-lang/http/tree/master/pkgs/web_socket',
     authors: [],
-    version: '1.0.0',
+    version: '1.0.1',
     license: '''Copyright 2024, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without

@@ -25,12 +25,12 @@ import 'package:snag/provider_models/gifts_provider.dart';
 import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
 import 'package:snag/views/notifications/fetch_notifications.dart';
+import 'package:snag/views/notifications/notifications_model.dart';
 
 void getNotifications(dom.Document document, BuildContext context) {
-  String gifts, won, messages = '0';
-  bool keysAvailable = false;
-  (gifts, won, messages, keysAvailable) = fetchNotifications(document);
-  _updateNotifications(context, gifts, won, messages, keysAvailable);
+  NotificationModel notifications = fetchNotifications(document);
+  _updateNotifications(context, notifications.gifts, notifications.won,
+      notifications.messages, notifications.keysAvailable);
 }
 
 void _updateNotifications(BuildContext context, String gifts, String won,
