@@ -16,8 +16,9 @@
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:html/dom.dart' as dom;
+import 'package:snag/views/notifications/notifications_model.dart';
 
-(String, String, String, bool) fetchNotifications(
+NotificationModel fetchNotifications(
   dom.Document document,
 ) {
   dom.Element notifications =
@@ -44,5 +45,5 @@ import 'package:html/dom.dart' as dom;
               .getElementsByClassName('nav__notification')[0]
               .text
           : '0';
-  return (gifts, won, messages, keysAvailable);
+  return NotificationModel(gifts, won, messages, keysAvailable);
 }

@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
+import 'dart:convert';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
@@ -23,7 +25,7 @@ import 'package:workmanager/workmanager.dart';
 
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/vars/prefs.dart';
-import 'package:snag/views/notifications/fetch_notifications.dart';
+import 'package:snag/views/notifications/notifications_model.dart';
 
 void backgroundTask() {
   Workmanager().initialize(_callbackDispatcher);
@@ -41,11 +43,11 @@ void backgroundTask() {
 void _callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     prefs = await SharedPreferences.getInstance();
-    String data =
-        await fetchBody(url: 'https://www.steamgifts.com/about/brand-assets');
-    dom.Document document = parse(data);
-    int points =
-        int.parse(document.getElementsByClassName('nav__points')[0].text);
+    String data = await fetchBody(
+        url:
+            'https://www.steamgifts.com/account/settings/profile?format=json&include_notifications=1');
+    Map<String, dynamic> json = jsonDecode(data);
+    int points = json['user']['points'];
     bool pointsNotification = prefs.getBool(PrefsKeys.pointsNotification.key)!;
     int pointLimit = prefs.getInt(PrefsKeys.pointLimit.key)!;
 
@@ -57,13 +59,14 @@ void _callbackDispatcher() {
           0, 'Points', 'points', 'Points', points.toString());
       prefs.setBool(PrefsKeys.pointsNotification.key, true);
     }
-    String giftsString, wonString, messagesString = '0';
-    bool keysAvailable = false;
 
-    (giftsString, wonString, messagesString, keysAvailable) =
-        fetchNotifications(document);
+    NotificationModel notifications = NotificationModel(
+        json['user']['notifications']['giveaways_created'].toString(),
+        json['user']['notifications']['giveaways_won'].toString(),
+        json['user']['notifications']['messages'].toString(),
+        json['user']['notifications']['unviewed_keys'] > 0);
 
-    int gifts = int.parse(giftsString);
+    int gifts = int.parse(notifications.gifts);
     if (gifts == 0) {
       prefs.setInt(PrefsKeys.gifts.key, gifts);
     } else {
@@ -77,7 +80,7 @@ void _callbackDispatcher() {
       }
     }
 
-    int won = int.parse(wonString);
+    int won = int.parse(notifications.won);
     if (won == 0) {
       prefs.setInt(PrefsKeys.won.key, won);
     } else {
@@ -99,7 +102,7 @@ void _callbackDispatcher() {
     //   ]).then((items) {});
     // }
 
-    int messages = int.parse(messagesString);
+    int messages = int.parse(notifications.messages);
     if (messages == 0) {
       prefs.setInt(PrefsKeys.messages.key, messages);
     } else {
