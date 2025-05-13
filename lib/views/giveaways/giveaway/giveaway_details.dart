@@ -662,6 +662,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                 Comments(
                     href: widget.href,
                     isGiveaway: true,
+                    firstPage: widget.data,
                     refresh: _controller,
                     isBlacklisted: widget.isBlacklisted),
               ],
