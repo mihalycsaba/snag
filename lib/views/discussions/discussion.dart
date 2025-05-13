@@ -415,6 +415,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
               Comments(
                 href: widget.href,
                 isGiveaway: false,
+                firstPage: widget.data,
                 refresh: widget.controller,
                 closed: _closed,
               ),

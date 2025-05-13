@@ -314,14 +314,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('meta')]);
 
-/// analyzer 7.4.4
+/// analyzer 7.4.5
 const _analyzer = Package(
     name: 'analyzer',
     description:
         'This package provides a library that performs static analysis of Dart code.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/analyzer',
     authors: [],
-    version: '7.4.4',
+    version: '7.4.5',
     license: '''Copyright 2013, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -5009,7 +5009,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('lints')]);
 
-/// flutter_local_notifications 19.1.0
+/// flutter_local_notifications 19.2.0
 const _flutter_local_notifications = Package(
     name: 'flutter_local_notifications',
     description:
@@ -5017,7 +5017,7 @@ const _flutter_local_notifications = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
     authors: [],
-    version: '19.1.0',
+    version: '19.2.0',
     license: '''Copyright 2018 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -5422,7 +5422,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('string_scanner')
     ]);
 
-/// go_router 15.1.1
+/// go_router 15.1.2
 const _go_router = Package(
     name: 'go_router',
     description:
@@ -5430,7 +5430,7 @@ const _go_router = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/packages/go_router',
     authors: [],
-    version: '15.1.1',
+    version: '15.1.2',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -11056,7 +11056,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('web_socket')
     ]);
 
-/// win32 5.12.0
+/// win32 5.13.0
 const _win32 = Package(
     name: 'win32',
     description:
@@ -11065,7 +11065,7 @@ const _win32 = Package(
     homepage: 'https://win32.pub',
     repository: 'https://github.com/halildurmus/win32',
     authors: [],
-    version: '5.12.0',
+    version: '5.13.0',
     license: '''BSD 3-Clause License
 
 Copyright (c) 2024, Halil Durmus

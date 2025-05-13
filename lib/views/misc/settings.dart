@@ -355,7 +355,8 @@ enum _Size {
   zero('0', 0),
   one('+1', 1),
   two('+2', 2),
-  three('+3', 3);
+  three('+3', 3),
+  four('+4', 4);
 
   final String text;
   final int size;

@@ -34,12 +34,14 @@ class Comments extends StatefulWidget {
   const Comments(
       {required this.href,
       required this.isGiveaway,
+      required this.firstPage,
       this.refresh,
       this.isBlacklisted = false,
       this.closed = false,
       super.key});
   final String href;
   final bool isGiveaway;
+  final String firstPage;
   final RefreshController? refresh;
   final bool isBlacklisted;
   final bool closed;
@@ -49,8 +51,9 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  final PagingController<int, CommentModel> _pagingController =
+  late final PagingController<int, CommentModel> _pagingController =
       PagingController(firstPageKey: 1);
+
   String _url = '';
 
   @override
@@ -70,9 +73,11 @@ class _CommentsState extends State<Comments> {
   }
 
   Future<void> _fetchComments(int pageKey, String url) async {
-    String data = await fetchBody(
-        url: '$url?page=${pageKey.toString()}',
-        isBlacklisted: widget.isBlacklisted);
+    String data = pageKey == 1
+        ? widget.firstPage
+        : await fetchBody(
+            url: '$url?page=${pageKey.toString()}',
+            isBlacklisted: widget.isBlacklisted);
     dom.Element container =
         parse(data).getElementsByClassName('widget-container').first;
     List<dom.Element> list = container.getElementsByClassName('comments');
