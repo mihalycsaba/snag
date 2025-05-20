@@ -8,8 +8,6 @@
 
 - android 10 light mode system buttons
 
-- pass first page into comments
-
 - dislay category in discussion
 
 - edit discussion
@@ -20,12 +18,8 @@
 
 - fix comments with too much indent
 
-- notification frequency textfield rework
-
 - sync discussion bookmarks to the site's
-
-- independent font size settings
 
 - only check for notifications between interval
 
-- add filters like age
+- add filters, like age

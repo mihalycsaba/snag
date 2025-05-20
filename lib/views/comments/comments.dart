@@ -51,7 +51,7 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  late final PagingController<int, CommentModel> _pagingController =
+  final PagingController<int, CommentModel> _pagingController =
       PagingController(firstPageKey: 1);
 
   String _url = '';

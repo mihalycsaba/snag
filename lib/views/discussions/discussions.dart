@@ -28,7 +28,7 @@ import 'package:snag/provider_models/discussion_filter_provider.dart';
 import 'package:snag/views/discussions/discussion_filter.dart';
 import 'package:snag/views/discussions/discussion_model.dart';
 import 'package:snag/views/discussions/discussions_list.dart';
-import 'package:snag/views/notifications/initialize_notifications.dart';
+import 'package:snag/common/functions/initialize_notifications.dart';
 
 class Discussions extends StatefulWidget {
   const Discussions({super.key, required this.page});

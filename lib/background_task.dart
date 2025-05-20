@@ -43,79 +43,83 @@ void backgroundTask() {
 void _callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     prefs = await SharedPreferences.getInstance();
-    String data = await fetchBody(
-        url:
-            'https://www.steamgifts.com/account/settings/profile?format=json&include_notifications=1');
-    Map<String, dynamic> json = jsonDecode(data);
-    int points = json['user']['points'];
-    bool pointsNotification = prefs.getBool(PrefsKeys.pointsNotification.key)!;
-    int pointLimit = prefs.getInt(PrefsKeys.pointLimit.key)!;
+    final int currentHour = DateTime.now().hour;
+    if (currentHour >= prefs.getInt(PrefsKeys.intervalStart.key)! &&
+        currentHour <= prefs.getInt(PrefsKeys.intervalEnd.key)!) {
+      String data = await fetchBody(
+          url:
+              'https://www.steamgifts.com/account/settings/profile?format=json&include_notifications=1');
+      Map<String, dynamic> json = jsonDecode(data);
+      int points = json['user']['points'];
+      bool pointsNotification =
+          prefs.getBool(PrefsKeys.pointsNotification.key)!;
+      int pointLimit = prefs.getInt(PrefsKeys.pointLimit.key)!;
 
-    if (points < pointLimit && pointsNotification) {
-      prefs.setBool(PrefsKeys.pointsNotification.key, false);
-    }
-    if (points >= pointLimit && !pointsNotification) {
-      _showNotificationWithDefaultSound(
-          0, 'Points', 'points', 'Points', points.toString());
-      prefs.setBool(PrefsKeys.pointsNotification.key, true);
-    }
+      if (points < pointLimit && pointsNotification) {
+        prefs.setBool(PrefsKeys.pointsNotification.key, false);
+      }
+      if (points >= pointLimit && !pointsNotification) {
+        _showNotificationWithDefaultSound(
+            0, 'Points', 'points', 'Points', points.toString());
+        prefs.setBool(PrefsKeys.pointsNotification.key, true);
+      }
 
-    NotificationModel notifications = NotificationModel(
-        json['user']['notifications']['giveaways_created'].toString(),
-        json['user']['notifications']['giveaways_won'].toString(),
-        json['user']['notifications']['messages'].toString(),
-        json['user']['notifications']['unviewed_keys'] > 0);
+      NotificationModel notifications = NotificationModel(
+          json['user']['notifications']['giveaways_created'].toString(),
+          json['user']['notifications']['giveaways_won'].toString(),
+          json['user']['notifications']['messages'].toString(),
+          json['user']['notifications']['unviewed_keys'] > 0);
 
-    int gifts = int.parse(notifications.gifts);
-    if (gifts == 0) {
-      prefs.setInt(PrefsKeys.gifts.key, gifts);
-    } else {
-      if (gifts > prefs.getInt(PrefsKeys.gifts.key)!) {
+      int gifts = int.parse(notifications.gifts);
+      if (gifts == 0) {
         prefs.setInt(PrefsKeys.gifts.key, gifts);
-        await Future.wait([
-          fetchBody(url: 'https://www.steamgifts.com/giveaways/created')
-        ]).then((items) {
-          _processValues(100, items[0], gifts, 'Created gift ended', true);
-        });
+      } else {
+        if (gifts > prefs.getInt(PrefsKeys.gifts.key)!) {
+          prefs.setInt(PrefsKeys.gifts.key, gifts);
+          await Future.wait([
+            fetchBody(url: 'https://www.steamgifts.com/giveaways/created')
+          ]).then((items) {
+            _processValues(100, items[0], gifts, 'Created gift ended', true);
+          });
+        }
       }
-    }
 
-    int won = int.parse(notifications.won);
-    if (won == 0) {
-      prefs.setInt(PrefsKeys.won.key, won);
-    } else {
-      if (won > prefs.getInt(PrefsKeys.won.key)!) {
+      int won = int.parse(notifications.won);
+      if (won == 0) {
         prefs.setInt(PrefsKeys.won.key, won);
-        await Future.wait(
-                [fetchBody(url: 'https://www.steamgifts.com/giveaways/won')])
-            .then((items) {
-          _processValues(200, items[0], won, 'Won gift', true);
-        });
+      } else {
+        if (won > prefs.getInt(PrefsKeys.won.key)!) {
+          prefs.setInt(PrefsKeys.won.key, won);
+          await Future.wait(
+                  [fetchBody(url: 'https://www.steamgifts.com/giveaways/won')])
+              .then((items) {
+            _processValues(200, items[0], won, 'Won gift', true);
+          });
+        }
       }
-    }
 
-    // if (keysAvailable) {
-    //   prefs.setBool(PrefsKeys.keysAvailable.key, keysAvailable);
-    //   await Future.wait([
-    //     fetchBody(
-    //         url: 'https://www.steamgifts.com/giveaways/won', context: null)
-    //   ]).then((items) {});
-    // }
+      // if (keysAvailable) {
+      //   prefs.setBool(PrefsKeys.keysAvailable.key, keysAvailable);
+      //   await Future.wait([
+      //     fetchBody(
+      //         url: 'https://www.steamgifts.com/giveaways/won', context: null)
+      //   ]).then((items) {});
+      // }
 
-    int messages = int.parse(notifications.messages);
-    if (messages == 0) {
-      prefs.setInt(PrefsKeys.messages.key, messages);
-    } else {
-      if (messages > prefs.getInt(PrefsKeys.messages.key)!) {
+      int messages = int.parse(notifications.messages);
+      if (messages == 0) {
         prefs.setInt(PrefsKeys.messages.key, messages);
-        await Future.wait(
-                [fetchBody(url: 'https://www.steamgifts.com/messages')])
-            .then((items) {
-          _processValues(300, items[0], messages, 'Messages', false);
-        });
+      } else {
+        if (messages > prefs.getInt(PrefsKeys.messages.key)!) {
+          prefs.setInt(PrefsKeys.messages.key, messages);
+          await Future.wait(
+                  [fetchBody(url: 'https://www.steamgifts.com/messages')])
+              .then((items) {
+            _processValues(300, items[0], messages, 'Messages', false);
+          });
+        }
       }
     }
-
     return await Future.value(true);
   });
 }

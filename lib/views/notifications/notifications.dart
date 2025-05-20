@@ -22,7 +22,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/nav/pages.dart';
-import 'package:snag/views/notifications/initialize_notifications.dart';
+import 'package:snag/common/functions/initialize_notifications.dart';
 import 'package:snag/views/notifications/notifications_destination.dart';
 
 class Notifications extends StatefulWidget {
