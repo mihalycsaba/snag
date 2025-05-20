@@ -23,8 +23,8 @@ import 'package:flutter/services.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/views/discussions/discussion.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/game.dart';
+import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/misc/group.dart';
 import 'package:snag/views/misc/user.dart';
 

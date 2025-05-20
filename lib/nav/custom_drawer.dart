@@ -27,7 +27,7 @@ import 'package:snag/nav/go_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/bookmarks/bookmarks.dart';
-import 'package:snag/views/giveaways/open_code.dart';
+import 'package:snag/views/misc/open_code.dart';
 import 'package:snag/views/misc/about.dart';
 import 'package:snag/views/misc/settings.dart';
 import 'package:snag/views/misc/user.dart';

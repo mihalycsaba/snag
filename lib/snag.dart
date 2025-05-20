@@ -39,9 +39,6 @@ import 'package:snag/views/notifications/notifications_destination.dart';
 class Snag extends StatefulWidget {
   const Snag({super.key});
 
-  static SnagState? of(BuildContext context) =>
-      context.findAncestorStateOfType<SnagState>();
-
   @override
   State<Snag> createState() => SnagState();
 }

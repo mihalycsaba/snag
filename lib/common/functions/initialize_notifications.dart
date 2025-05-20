@@ -22,7 +22,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:snag/nav/go_nav.dart';
 import 'package:snag/views/notifications/notification_destination.dart';
 
-//Todo: Move to common, explain what it does
+//Todo: explain what it does
 void initializeNotifications(
     FlutterLocalNotificationsPlugin status, BuildContext context) {
   status.initialize(
@@ -30,10 +30,5 @@ void initializeNotifications(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (details) =>
-          _onDidReceiveNotificationResponse(details, context));
-}
-
-void _onDidReceiveNotificationResponse(
-    NotificationResponse details, BuildContext context) {
-  goNav(context, notificationDestination(details.id!));
+          goNav(context, notificationDestination(details.id!)));
 }

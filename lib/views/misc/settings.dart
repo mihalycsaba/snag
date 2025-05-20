@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 import 'package:html/parser.dart';
 import 'package:open_settings_plus/open_settings_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/notification_permission.dart';
@@ -44,6 +45,12 @@ class Settings extends StatelessWidget {
               horizontal: 12.0, vertical: paddingHeight),
           child: ListView(
             children: [
+              Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text('Notifications',
+                    style: TextStyle(
+                        fontSize: 22.0 + theme.fontSize,
+                        fontWeight: FontWeight.bold)),
+              ),
               notificationsDenied
                   ? const Padding(
                       padding: EdgeInsets.symmetric(vertical: paddingHeight),
@@ -97,6 +104,11 @@ class Settings extends StatelessWidget {
                         const Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: paddingHeight),
+                          child: _IntervalWidget(),
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _PointsWidget(),
                         ),
                         const Padding(
@@ -106,9 +118,21 @@ class Settings extends StatelessWidget {
                         ),
                       ],
                     ),
+              Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text('Sync',
+                    style: TextStyle(
+                        fontSize: 22.0 + theme.fontSize,
+                        fontWeight: FontWeight.bold)),
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
                 child: _SyncWidget(),
+              ),
+              Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text('Appearance',
+                    style: TextStyle(
+                        fontSize: 22.0 + theme.fontSize,
+                        fontWeight: FontWeight.bold)),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight - 7.0),
@@ -117,6 +141,12 @@ class Settings extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
                 child: _FontSizeWidget(),
+              ),
+              Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text('Deep links',
+                    style: TextStyle(
+                        fontSize: 22.0 + theme.fontSize,
+                        fontWeight: FontWeight.bold)),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
@@ -344,7 +374,6 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
           _currentValue = value.ceilToDouble();
           prefs.setInt(PrefsKeys.backgroundFrequency.key,
               _Frequency.values[_currentValue.toInt() - 1].minutes);
-          Workmanager().cancelAll();
           notificationPermission();
         });
   }
@@ -491,5 +520,129 @@ class _ThemeWidgetState extends State<_ThemeWidget> {
         ),
       ],
     );
+  }
+}
+
+typedef _MenuEntry = DropdownMenuEntry<_Hours>;
+
+enum _Hours {
+  zero('00:00', 0),
+  one('01:00', 1),
+  two('02:00', 2),
+  three('03:00', 3),
+  four('04:00', 4),
+  five('05:00', 5),
+  six('06:00', 6),
+  seven('07:00', 7),
+  eight('08:00', 8),
+  nine('09:00', 9),
+  ten('10:00', 10),
+  eleven('11:00', 11),
+  twelve('12:00', 12),
+  thirteen('13:00', 13),
+  fourteen('14:00', 14),
+  fifteen('15:00', 15),
+  sixteen('16:00', 16),
+  seventeen('17:00', 17),
+  eighteen('18:00', 18),
+  nineteen('19:00', 19),
+  twenty('20:00', 20),
+  twentyone('21:00', 21),
+  twentytwo('22:00', 22),
+  twentythree('23:00', 23);
+
+  final String name;
+  final int hour;
+  const _Hours(this.name, this.hour);
+
+  static final List<_MenuEntry> labels = UnmodifiableListView<_MenuEntry>(
+      values.map<_MenuEntry>(
+          (_Hours entry) => _MenuEntry(value: entry, label: entry.name)));
+}
+
+class _IntervalWidget extends StatelessWidget {
+  const _IntervalWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: const Text('Only get notifications between:'),
+        ),
+        Row(
+          children: [
+            _CustomDropdownMenu(
+                label: 'too late',
+                prefsKey: PrefsKeys.intervalStart.key,
+                condition: _intervalEnd),
+            const Text(' and '),
+            _CustomDropdownMenu(
+                label: 'too early',
+                prefsKey: PrefsKeys.intervalEnd.key,
+                condition: _intervalStart),
+            const Text(' hours'),
+          ],
+        )
+      ],
+    );
+  }
+
+  bool _intervalStart(int hour) =>
+      prefs.getInt(PrefsKeys.intervalStart.key)! >= hour;
+
+  bool _intervalEnd(int hour) =>
+      prefs.getInt(PrefsKeys.intervalEnd.key)! <= hour;
+}
+
+class _CustomDropdownMenu extends StatefulWidget {
+  const _CustomDropdownMenu(
+      {required this.label, required this.prefsKey, required this.condition});
+
+  final String label;
+  final String prefsKey;
+  final Function condition;
+
+  @override
+  State<_CustomDropdownMenu> createState() => __CustomDropdownMenuState();
+}
+
+class __CustomDropdownMenuState extends State<_CustomDropdownMenu> {
+  String _label = '';
+  bool _error = false;
+  @override
+  Widget build(BuildContext context) {
+    return DropdownMenu<_Hours>(
+        label: Text(_label, style: const TextStyle(color: Colors.red)),
+        inputDecorationTheme: _error
+            ? InputDecorationTheme(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                ),
+              )
+            : null,
+        width: 130,
+        menuHeight: 400,
+        initialSelection: _Hours.values[prefs.getInt(widget.prefsKey)!],
+        dropdownMenuEntries: _Hours.labels,
+        onSelected: (_Hours? entry) {
+          if (widget.condition(entry!.hour)) {
+            setState(() {
+              _label = widget.label;
+              _error = true;
+            });
+          } else {
+            prefs.setInt(widget.prefsKey, entry.hour);
+            notificationPermission();
+            setState(() {
+              _label = '';
+              _error = false;
+            });
+          }
+        });
   }
 }

@@ -5009,7 +5009,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('lints')]);
 
-/// flutter_local_notifications 19.2.0
+/// flutter_local_notifications 19.2.1
 const _flutter_local_notifications = Package(
     name: 'flutter_local_notifications',
     description:
@@ -5017,7 +5017,7 @@ const _flutter_local_notifications = Package(
     homepage:
         'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
     authors: [],
-    version: '19.2.0',
+    version: '19.2.1',
     license: '''Copyright 2018 Michael Bui. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

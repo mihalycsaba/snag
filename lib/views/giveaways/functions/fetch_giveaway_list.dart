@@ -34,7 +34,6 @@ Future<void> fetchGiveawayList(
     PagingController<int, GiveawayListModel> pagingController,
     BuildContext context) async {
   String data = await fetchBody(url: '$url&page=${pageKey.toString()}');
-  //Todo: maybe move the following into fetchBody
   dom.Document document = parse(data);
   if (context.mounted) {
     getPoints(document, context);

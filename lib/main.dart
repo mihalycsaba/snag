@@ -86,6 +86,10 @@ void main() async {
   if (prefs.getInt(PrefsKeys.fontSize.key) == null) {
     prefs.setInt(PrefsKeys.fontSize.key, 0);
   }
+  if (prefs.getInt(PrefsKeys.intervalStart.key) == null) {
+    prefs.setInt(PrefsKeys.intervalStart.key, 0);
+    prefs.setInt(PrefsKeys.intervalEnd.key, 23);
+  }
 
   if (prefs.getString(PrefsKeys.sessid.key) != null) {
     bool notificationsDenied = await Permission.notification.isDenied;

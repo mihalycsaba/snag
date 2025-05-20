@@ -33,6 +33,8 @@ enum PrefsKeys {
   dynamicColor('dynamicColor'),
   keysAvailable('keysAvailable'),
   fontSize('fontSize'),
+  intervalStart('intervalStart'),
+  intervalEnd('intervalEnd'),
   ;
 
   final String key;

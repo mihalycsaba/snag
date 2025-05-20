@@ -39,7 +39,7 @@ import 'package:snag/views/giveaways/giveaway/giveaway_filter.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_list_tile.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 import 'package:snag/views/misc/logged_out.dart';
-import 'package:snag/views/notifications/initialize_notifications.dart';
+import 'package:snag/common/functions/initialize_notifications.dart';
 
 class GiveawayList extends StatefulWidget {
   const GiveawayList({super.key, required this.page});
