@@ -405,14 +405,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// async 2.12.0
+/// async 2.13.0
 const _async = Package(
     name: 'async',
     description:
         "Utility functions and classes related to the 'dart:async' library.",
     repository: 'https://github.com/dart-lang/core/tree/main/pkgs/async',
     authors: [],
-    version: '2.12.0',
+    version: '2.13.0',
     license: '''Copyright 2015, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -1620,14 +1620,14 @@ SOFTWARE.''',
       PackageRef('json_annotation')
     ]);
 
-/// dart_style 3.0.1
+/// dart_style 3.1.0
 const _dart_style = Package(
     name: 'dart_style',
     description:
         'Opinionated, automatic Dart source code formatter. Provides an API and a CLI tool.',
     repository: 'https://github.com/dart-lang/dart_style',
     authors: [],
-    version: '3.0.1',
+    version: '3.1.0',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
@@ -2489,14 +2489,14 @@ const _dynamic_color = Package(
       PackageRef('material_color_utilities')
     ]);
 
-/// fake_async 1.3.2
+/// fake_async 1.3.3
 const _fake_async = Package(
     name: 'fake_async',
     description:
         'Fake asynchronous events such as timers and microtasks for deterministic testing.',
     repository: 'https://github.com/dart-lang/test/tree/master/pkgs/fake_async',
     authors: [],
-    version: '1.3.2',
+    version: '1.3.3',
     license: '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -3031,13 +3031,13 @@ const _flat_buffers = Package(
     isSdk: false,
     dependencies: []);
 
-/// flutter 3.29.3
+/// flutter 3.32.0
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.29.3',
+    version: '3.32.0',
     license: '''Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -5893,7 +5893,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: [PackageRef('meta')]);
 
-/// leak_tracker 10.0.8
+/// leak_tracker 10.0.9
 const _leak_tracker = Package(
     name: 'leak_tracker',
     description:
@@ -5901,7 +5901,7 @@ const _leak_tracker = Package(
     repository:
         'https://github.com/dart-lang/leak_tracker/tree/main/pkgs/leak_tracker',
     authors: [],
-    version: '10.0.8',
+    version: '10.0.9',
     license: '''Copyright 2022, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -10754,7 +10754,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// vector_graphics_compiler 1.1.16
+/// vector_graphics_compiler 1.1.17
 const _vector_graphics_compiler = Package(
     name: 'vector_graphics_compiler',
     description:
@@ -10762,7 +10762,7 @@ const _vector_graphics_compiler = Package(
     repository:
         'https://github.com/flutter/packages/tree/main/packages/vector_graphics_compiler',
     authors: [],
-    version: '1.1.16',
+    version: '1.1.17',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -10856,14 +10856,14 @@ freely, subject to the following restrictions:
     isSdk: false,
     dependencies: []);
 
-/// vm_service 14.3.1
+/// vm_service 15.0.0
 const _vm_service = Package(
     name: 'vm_service',
     description:
         'A library to communicate with a service implementing the Dart VM service protocol.',
     repository: 'https://github.com/dart-lang/sdk/tree/main/pkg/vm_service',
     authors: [],
-    version: '14.3.1',
+    version: '15.0.0',
     license: '''Copyright 2015, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
