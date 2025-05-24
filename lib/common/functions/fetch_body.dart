@@ -17,26 +17,14 @@
 
 import 'package:http/http.dart';
 
-import 'package:snag/common/functions/get_user.dart';
-import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
 
 Future<String> fetchBody(
-    {required String url,
-    final bool isBlacklisted = false,
-    final bool firstCheck = false}) async {
+    {required String url, final bool isBlacklisted = false}) async {
   Map<String, String> headers = {};
   if (!isBlacklisted) {
     headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
   }
   Response response = await get(Uri.parse(url), headers: headers);
-  if (firstCheck) {
-    if (response.body.contains('nav__sits')) {
-      isLoggedIn = false;
-    } else {
-      await getUser(headers, response);
-      isLoggedIn = true;
-    }
-  }
   return response.body;
 }

@@ -15,26 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
-import 'package:html/dom.dart';
-import 'package:html/parser.dart';
+import 'dart:convert';
+
 import 'package:http/http.dart';
 
-import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/vars/globals.dart';
+import 'package:snag/common/vars/prefs.dart';
 
-Future<void> getUser(Map<String, String> headers, [Response? response]) async {
-  Response loginGet = response ??
-      await get(Uri.parse('https://www.steamgifts.com/about/brand-assets'),
-          headers: headers);
-  Document body = parse(loginGet.body);
-  username = body
-      .getElementsByClassName('nav__avatar-outer-wrap')[0]
-      .attributes['href']!
-      .split('/')
-      .last;
-  avatar = getAvatar(body.body!, 'nav__avatar-inner-wrap');
-  userLevel = double.parse(body
-      .getElementsByClassName('nav__points')[0]
-      .nextElementSibling!
-      .attributes['title']!);
+Future<void> getUser() async {
+  Map<String, String> headers = {};
+  headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
+  Response response = await get(
+      Uri.parse(
+          'https://www.steamgifts.com/account/settings/profile?format=json'),
+      headers: headers);
+  Map<String, dynamic> json = jsonDecode(response.body);
+  if (json['user'] == []) {
+    isLoggedIn = false;
+  } else {
+    isLoggedIn = true;
+    username = json['user']['username'];
+    avatar = json['user']['avatar_medium'];
+    userLevel = json['user']['contributor_level'];
+  }
 }

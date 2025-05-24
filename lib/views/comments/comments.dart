@@ -27,8 +27,17 @@ import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/views/comments/comment_message.dart';
-import 'package:snag/views/comments/comment_model.dart';
 import 'package:snag/views/comments/refresh_controller.dart';
+
+class _CommentModel {
+  CommentMessage message;
+  int messageLength;
+  List<_CommentModel> replies;
+  _CommentModel(
+      {required this.message,
+      required this.messageLength,
+      required this.replies});
+}
 
 class Comments extends StatefulWidget {
   const Comments(
@@ -51,17 +60,23 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  final PagingController<int, CommentModel> _pagingController =
+  final PagingController<int, _CommentModel> _pagingController =
       PagingController(firstPageKey: 1);
+  bool refresh = false;
 
   String _url = '';
+
+  void _refreshComments() {
+    refresh = true;
+    _pagingController.refresh();
+  }
 
   @override
   void initState() {
     _url = 'https://www.steamgifts.com${widget.href}';
     super.initState();
     if (widget.refresh != null) {
-      widget.refresh!.method = _pagingController.refresh;
+      widget.refresh!.method = _refreshComments;
     }
   }
 
@@ -73,7 +88,7 @@ class _CommentsState extends State<Comments> {
   }
 
   Future<void> _fetchComments(int pageKey, String url) async {
-    String data = pageKey == 1
+    String data = pageKey == 1 && refresh == false
         ? widget.firstPage
         : await fetchBody(
             url: '$url?page=${pageKey.toString()}',
@@ -81,7 +96,7 @@ class _CommentsState extends State<Comments> {
     dom.Element container =
         parse(data).getElementsByClassName('widget-container').first;
     List<dom.Element> list = container.getElementsByClassName('comments');
-    List<CommentModel> comments = [];
+    List<_CommentModel> comments = [];
     if (widget.isGiveaway) {
       comments = list.isNotEmpty ? _parseComments(list[0].children) : [];
     } else {
@@ -90,9 +105,9 @@ class _CommentsState extends State<Comments> {
     addPage(comments, _pagingController, pageKey, container);
   }
 
-  List<CommentModel> _parseComments(List<dom.Element> elements,
+  List<_CommentModel> _parseComments(List<dom.Element> elements,
       [bool indented = false]) {
-    List<CommentModel> comments = [];
+    List<_CommentModel> comments = [];
     if (elements.isNotEmpty) {
       for (dom.Element element in elements) {
         List<dom.Element> comment = element.children;
@@ -105,7 +120,7 @@ class _CommentsState extends State<Comments> {
         List<dom.Element> userChildren = user.children;
         List<dom.Element> role =
             comment[0].getElementsByClassName('comment__role-name');
-        comments.add(CommentModel(
+        comments.add(_CommentModel(
             message: CommentMessage(
               data: data,
               id: id,
@@ -120,7 +135,7 @@ class _CommentsState extends State<Comments> {
                   .text!,
               url: _url,
               avatar: getAvatar(comment[0], 'global__image-inner-wrap'),
-              onReply: _pagingController.refresh,
+              onReply: _refreshComments,
               indented: indented,
               closed: widget.closed,
               isBlacklisted: widget.isBlacklisted,
@@ -147,9 +162,9 @@ class _CommentsState extends State<Comments> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedSliverList<int, CommentModel>(
+    return PagedSliverList<int, _CommentModel>(
         pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<CommentModel>(
+        builderDelegate: PagedChildBuilderDelegate<_CommentModel>(
             itemBuilder: (context, comment, index) =>
                 _Comment(comment: comment, indent: 0),
             newPageProgressIndicatorBuilder: (context) =>
@@ -159,7 +174,7 @@ class _CommentsState extends State<Comments> {
 
 class _Comment extends StatelessWidget {
   const _Comment({required this.comment, required this.indent});
-  final CommentModel comment;
+  final _CommentModel comment;
   final double indent;
 
   @override
@@ -181,10 +196,10 @@ class _Comment extends StatelessWidget {
     ]);
   }
 
-  List<Widget> _addReplies(CommentModel comment) {
+  List<Widget> _addReplies(_CommentModel comment) {
     List<Widget> replies = [];
     if (comment.replies.isNotEmpty) {
-      for (CommentModel reply in comment.replies) {
+      for (_CommentModel reply in comment.replies) {
         replies.add(_Comment(comment: reply, indent: indent + 20));
       }
     }

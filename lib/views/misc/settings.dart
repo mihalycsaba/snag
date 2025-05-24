@@ -23,8 +23,8 @@ import 'package:html/parser.dart';
 import 'package:open_settings_plus/open_settings_plus.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/background_task.dart';
 import 'package:snag/common/functions/fetch_body.dart';
-import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
@@ -241,7 +241,7 @@ class _PointsWidgetState extends State<_PointsWidget> {
     if (_formKey.currentState!.validate()) {
       prefs.setInt(PrefsKeys.pointLimit.key, int.parse(_pointLimit.text));
       prefs.setBool(PrefsKeys.pointsNotification.key, false);
-      notificationPermission();
+      backgroundTask();
       _equal = true;
       setState(() {});
     }
@@ -374,7 +374,7 @@ class _NotificationFrequencyState extends State<_NotificationFrequency> {
           _currentValue = value.ceilToDouble();
           prefs.setInt(PrefsKeys.backgroundFrequency.key,
               _Frequency.values[_currentValue.toInt() - 1].minutes);
-          notificationPermission();
+          backgroundTask();
         });
   }
 }
@@ -637,7 +637,7 @@ class __CustomDropdownMenuState extends State<_CustomDropdownMenu> {
             });
           } else {
             prefs.setInt(widget.prefsKey, entry.hour);
-            notificationPermission();
+            backgroundTask();
             setState(() {
               _label = '';
               _error = false;

@@ -65,14 +65,6 @@ class _DiscussionState extends State<Discussion> {
         ? FutureBuilder(
             future: fetchBody(url: _url),
             builder: (context, snapshot) {
-              String? data = snapshot.data;
-              Future<void> pullRefresh() async {
-                String newData = await fetchBody(url: _url);
-                setState(() {
-                  data = newData;
-                });
-              }
-
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Scaffold(
                     appBar: AppBar(
@@ -81,8 +73,9 @@ class _DiscussionState extends State<Discussion> {
                     ),
                     body: const Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasData) {
+                String? data = snapshot.data;
                 return RefreshIndicator(
-                  onRefresh: pullRefresh,
+                  onRefresh: () => Future.sync(() => setState(() {})),
                   edgeOffset:
                       MediaQuery.of(context).viewPadding.top + kToolbarHeight,
                   child: _DiscussionDetails(
