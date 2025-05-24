@@ -21,8 +21,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
 
+import 'package:snag/background_task.dart';
 import 'package:snag/common/functions/get_user.dart';
-import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_back_appbar.dart';
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
               .getElementsByClassName('nav__row is-clickable js__logout')[0]
               .attributes['data-form']!
               .split('=')[2]));
-      notificationPermission();
+      backgroundTask();
       Map<String, String> headers = {};
       headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
       await getUser(headers);

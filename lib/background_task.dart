@@ -20,6 +20,7 @@ import 'dart:convert';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -27,16 +28,20 @@ import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/views/notifications/notifications_model.dart';
 
-void backgroundTask() {
-  Workmanager().initialize(_callbackDispatcher);
-  Workmanager().registerPeriodicTask("bg", "simplePeriodicTask",
-      frequency:
-          Duration(minutes: prefs.getInt(PrefsKeys.backgroundFrequency.key)!),
-      constraints: Constraints(
-        networkType: NetworkType.connected,
-        requiresBatteryNotLow: true,
-        requiresStorageNotLow: true,
-      ));
+void backgroundTask() async {
+  if (await Permission.notification.request().isGranted) {
+    Workmanager().cancelAll();
+    Workmanager().initialize(_callbackDispatcher);
+    Workmanager().registerPeriodicTask("bg", "simplePeriodicTask",
+        frequency:
+            Duration(minutes: prefs.getInt(PrefsKeys.backgroundFrequency.key)!),
+        constraints: Constraints(
+          networkType: NetworkType.connected,
+          requiresBatteryNotLow: true,
+          requiresStorageNotLow: true,
+        ));
+    prefs.setBool(PrefsKeys.notificationsDenied.key, false);
+  }
 }
 
 @pragma('vm:entry-point')

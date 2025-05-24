@@ -23,8 +23,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
+import 'package:snag/background_task.dart';
 import 'package:snag/common/functions/fetch_body.dart';
-import 'package:snag/common/functions/notification_permission.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/objectbox/objectbox.dart';
@@ -97,7 +97,7 @@ void main() async {
     if (notificationsDenied) {
       Workmanager().cancelAll();
     } else {
-      notificationPermission();
+      backgroundTask();
     }
   }
   if (prefs.getString(PrefsKeys.sessid.key) != null) {
