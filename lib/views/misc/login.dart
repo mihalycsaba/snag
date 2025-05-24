@@ -52,9 +52,7 @@ class _LoginState extends State<Login> {
               .attributes['data-form']!
               .split('=')[2]));
       backgroundTask();
-      Map<String, String> headers = {};
-      headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
-      await getUser(headers);
+      await getUser();
       isLoggedIn = true;
       if (!context.mounted) return;
       goNav(context, GiveawayPages.all.route);

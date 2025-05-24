@@ -53,13 +53,6 @@ class _GiveawayState extends State<Giveaway> {
             future: fetchBody(url: _url),
             builder: (context, snapshot) {
               try {
-                Future<void> pullRefresh() async {
-                  String newData = await fetchBody(url: _url);
-                  setState(() {
-                    _data = newData;
-                  });
-                }
-
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasData) {
@@ -77,7 +70,8 @@ class _GiveawayState extends State<Giveaway> {
                                 child: CircularProgressIndicator());
                           } else if (snapshot.hasData) {
                             return RefreshIndicator(
-                                onRefresh: pullRefresh,
+                                onRefresh: () =>
+                                    Future.sync(() => setState(() {})),
                                 child: Scaffold(
                                   //extendBodyBehindAppBar: true,
                                   drawerEnableOpenDragGesture: false,
@@ -111,7 +105,7 @@ class _GiveawayState extends State<Giveaway> {
                     return ErrorPage(error: error, url: _url, type: 'giveaway');
                   }
                   return RefreshIndicator(
-                      onRefresh: pullRefresh,
+                      onRefresh: () => Future.sync(() => setState(() {})),
                       child: Scaffold(
                         //extendBodyBehindAppBar: true,
                         drawerEnableOpenDragGesture: false,

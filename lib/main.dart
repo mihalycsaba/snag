@@ -24,7 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:snag/background_task.dart';
-import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/get_user.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/objectbox/objectbox.dart';
@@ -101,8 +101,7 @@ void main() async {
     }
   }
   if (prefs.getString(PrefsKeys.sessid.key) != null) {
-    await fetchBody(
-        url: 'https://www.steamgifts.com/about/brand-assets', firstCheck: true);
+    await getUser();
   }
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => GiveawayFilterProvider()),
