@@ -20,6 +20,4 @@
 
 - sync discussion bookmarks to the site's
 
-- only check for notifications between interval
-
 - add filters, like age
