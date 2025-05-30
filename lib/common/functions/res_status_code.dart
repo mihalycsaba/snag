@@ -22,8 +22,7 @@ import 'package:http/http.dart';
 import 'package:snag/common/vars/prefs.dart';
 
 Future<int> resStatusCode(String bodyFragment) async {
-  Response response = await post(
-      Uri.parse('https://www.steamgifts.com/ajax.php'),
+  Response response = await post(Uri.parse('https://www.steamgifts.com/ajax.php'),
       headers: <String, String>{
         'Cookie': 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}',
         'Content-Type': 'application/x-www-form-urlencoded'

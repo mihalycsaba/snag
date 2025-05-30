@@ -26,8 +26,7 @@ Future<void> getUser() async {
   Map<String, String> headers = {};
   headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
   Response response = await get(
-      Uri.parse(
-          'https://www.steamgifts.com/account/settings/profile?format=json'),
+      Uri.parse('https://www.steamgifts.com/account/settings/profile?format=json'),
       headers: headers);
   Map<String, dynamic> json = jsonDecode(response.body);
   if (json['user'] == []) {

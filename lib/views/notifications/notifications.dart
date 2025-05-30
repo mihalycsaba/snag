@@ -35,8 +35,7 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
   late NotificationsDestination _destination;
-  final FlutterLocalNotificationsPlugin _status =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _status = FlutterLocalNotificationsPlugin();
   late WidgetStateProperty<Color?> _bgColor;
 
   @override
@@ -78,9 +77,7 @@ class _NotificationsState extends State<Notifications> {
               TextButton(
                 style: ButtonStyle(
                   backgroundColor:
-                      _destination == NotificationsDestination.messages
-                          ? _bgColor
-                          : null,
+                      _destination == NotificationsDestination.messages ? _bgColor : null,
                 ),
                 child: const Text('Messages'),
                 onPressed: () {
@@ -91,9 +88,8 @@ class _NotificationsState extends State<Notifications> {
               ),
               TextButton(
                 style: ButtonStyle(
-                  backgroundColor: _destination == NotificationsDestination.won
-                      ? _bgColor
-                      : null,
+                  backgroundColor:
+                      _destination == NotificationsDestination.won ? _bgColor : null,
                 ),
                 child: const Text('Won'),
                 onPressed: () {
@@ -104,10 +100,9 @@ class _NotificationsState extends State<Notifications> {
               ),
               TextButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        _destination == NotificationsDestination.created
-                            ? _bgColor
-                            : null,
+                    backgroundColor: _destination == NotificationsDestination.created
+                        ? _bgColor
+                        : null,
                   ),
                   child: const Text('Created'),
                   onPressed: () {

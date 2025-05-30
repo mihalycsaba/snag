@@ -90,8 +90,7 @@ class _OpenCodeState extends State<OpenCode> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TextFormField(
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp("[0-9a-zA-Z]"))
+                              FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]"))
                             ],
                             autovalidateMode: AutovalidateMode.disabled,
                             validator: (value) {
@@ -104,13 +103,11 @@ class _OpenCodeState extends State<OpenCode> {
                             },
                             controller: _controller,
                             keyboardType: TextInputType.text,
-                            decoration:
-                                const InputDecoration(labelText: 'Code'),
+                            decoration: const InputDecoration(labelText: 'Code'),
                             onFieldSubmitted: ((value) => _open())),
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () => _open(), child: const Text('Open'))
+                    ElevatedButton(onPressed: () => _open(), child: const Text('Open'))
                   ],
                 ),
               ),
@@ -124,23 +121,19 @@ class _OpenCodeState extends State<OpenCode> {
       Widget destination = Container();
       switch (_selectedEntry) {
         case _MenuLabel.giveaway:
-          destination =
-              Giveaway(href: '/${_selectedEntry.url}/${_controller.text}/');
+          destination = Giveaway(href: '/${_selectedEntry.url}/${_controller.text}/');
           break;
         case _MenuLabel.discussion:
-          destination =
-              Discussion(href: '/${_selectedEntry.url}/${_controller.text}/');
+          destination = Discussion(href: '/${_selectedEntry.url}/${_controller.text}/');
           break;
         case _MenuLabel.user:
           destination = User(name: _controller.text);
           break;
         case _MenuLabel.game:
-          destination =
-              Game(href: '/${_selectedEntry.url}/${_controller.text}/');
+          destination = Game(href: '/${_selectedEntry.url}/${_controller.text}/');
           break;
         case _MenuLabel.group:
-          destination =
-              Group(href: '/${_selectedEntry.url}/${_controller.text}/');
+          destination = Group(href: '/${_selectedEntry.url}/${_controller.text}/');
           break;
       }
       customNav(destination, context);

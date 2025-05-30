@@ -47,8 +47,7 @@ class _DiscussionBookmarksState extends State<DiscussionBookmarks> {
               title: Text(_bookmarks[index].name),
               onTap: () async {
                 await customNav(
-                    Discussion(href: '/discussion/${_bookmarks[index].href}/'),
-                    context);
+                    Discussion(href: '/discussion/${_bookmarks[index].href}/'), context);
                 _bookmarks = objectbox.getDiscussionBookmarks();
                 setState(() {});
               },
@@ -68,10 +67,9 @@ class _DiscussionBookmarksState extends State<DiscussionBookmarks> {
                               TextButton(
                                 child: const Text('Yes'),
                                 onPressed: () {
-                                  objectbox.removeDiscussionBookmark(
-                                      _bookmarks[index].id);
-                                  _bookmarks =
-                                      objectbox.getDiscussionBookmarks();
+                                  objectbox
+                                      .removeDiscussionBookmark(_bookmarks[index].id);
+                                  _bookmarks = objectbox.getDiscussionBookmarks();
                                   setState(() {});
                                   Navigator.pop(context);
                                 },

@@ -73,8 +73,8 @@ class _BookmarksState extends State<Bookmarks> {
                                             .removeAllGiveawayBookmarksExceptFavourite();
                                         context
                                             .read<GiveawayBookmarksProvider>()
-                                            .updateGiveawayBookmarks(objectbox
-                                                .getGiveawayBookmarks());
+                                            .updateGiveawayBookmarks(
+                                                objectbox.getGiveawayBookmarks());
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -88,9 +88,8 @@ class _BookmarksState extends State<Bookmarks> {
           Wrap(alignment: WrapAlignment.spaceEvenly, children: [
             TextButton(
               style: ButtonStyle(
-                backgroundColor: _destination == _BookmarksDestination.giveaways
-                    ? _bgColor
-                    : null,
+                backgroundColor:
+                    _destination == _BookmarksDestination.giveaways ? _bgColor : null,
               ),
               child: const Text('Giveaways'),
               onPressed: () {
@@ -102,9 +101,7 @@ class _BookmarksState extends State<Bookmarks> {
             TextButton(
               style: ButtonStyle(
                 backgroundColor:
-                    _destination == _BookmarksDestination.discussions
-                        ? _bgColor
-                        : null,
+                    _destination == _BookmarksDestination.discussions ? _bgColor : null,
               ),
               child: const Text('Discussions'),
               onPressed: () {
@@ -115,9 +112,8 @@ class _BookmarksState extends State<Bookmarks> {
             ),
             TextButton(
                 style: ButtonStyle(
-                  backgroundColor: _destination == _BookmarksDestination.users
-                      ? _bgColor
-                      : null,
+                  backgroundColor:
+                      _destination == _BookmarksDestination.users ? _bgColor : null,
                 ),
                 onPressed: () {
                   setState(() {
@@ -127,9 +123,8 @@ class _BookmarksState extends State<Bookmarks> {
                 child: const Text('Users')),
             TextButton(
                 style: ButtonStyle(
-                  backgroundColor: _destination == _BookmarksDestination.games
-                      ? _bgColor
-                      : null,
+                  backgroundColor:
+                      _destination == _BookmarksDestination.games ? _bgColor : null,
                 ),
                 onPressed: () {
                   setState(() {
@@ -139,9 +134,8 @@ class _BookmarksState extends State<Bookmarks> {
                 child: const Text('Games')),
             TextButton(
                 style: ButtonStyle(
-                  backgroundColor: _destination == _BookmarksDestination.groups
-                      ? _bgColor
-                      : null,
+                  backgroundColor:
+                      _destination == _BookmarksDestination.groups ? _bgColor : null,
                 ),
                 onPressed: () {
                   setState(() {

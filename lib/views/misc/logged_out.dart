@@ -37,20 +37,17 @@ class LoggedOut extends StatelessWidget {
           children: [
             Expanded(
               flex: 5,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Snag',
-                      style:
-                          TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
-                    ),
-                    const Text(
-                      textAlign: TextAlign.center,
-                      'Client application for SteamGifts',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ]),
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Text(
+                  'Snag',
+                  style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  textAlign: TextAlign.center,
+                  'Client application for SteamGifts',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ]),
             ),
             Expanded(
               flex: 5,
@@ -65,32 +62,28 @@ class LoggedOut extends StatelessWidget {
                           children: [
                             TextSpan(
                                 text: ' steamgifts.com ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 22)),
+                                style:
+                                    TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
                             TextSpan(
-                                text: 'to use this app.',
-                                style: TextStyle(fontSize: 22)),
+                                text: 'to use this app.', style: TextStyle(fontSize: 22)),
                           ])),
                 ),
               ),
             ),
             Expanded(
               flex: 3,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(14.0),
-                      child: Text('If you have an account:',
-                          style: TextStyle(fontSize: 18)),
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Padding(
+                  padding: EdgeInsets.all(14.0),
+                  child: Text('If you have an account:', style: TextStyle(fontSize: 18)),
+                ),
+                FilledButton(
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(fontSize: 26),
                     ),
-                    FilledButton(
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 26),
-                        ),
-                        onPressed: () => context.push(LoginRoute.login.route)),
-                  ]),
+                    onPressed: () => context.push(LoginRoute.login.route)),
+              ]),
             ),
             Expanded(
               flex: 2,

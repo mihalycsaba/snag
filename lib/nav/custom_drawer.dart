@@ -51,12 +51,10 @@ class CustomDrawer extends StatelessWidget {
               leading: CachedNetworkImage(
                   width: 36,
                   imageUrl: avatar,
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.error)),
+                  errorWidget: (context, url, error) => const Icon(Icons.error)),
               title: Text(username,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0 + theme.fontSize)),
+                      fontWeight: FontWeight.bold, fontSize: 14.0 + theme.fontSize)),
               subtitle: Text('Level $userLevel',
                   style: TextStyle(fontSize: 12.0 + theme.fontSize)),
               onTap: () => customNav(User(name: username), context),
@@ -70,8 +68,7 @@ class CustomDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: _ExpansionListView(
-                      pages: PagesList.giveawaypages,
-                      map: GiveawayPages.widgetsMap),
+                      pages: PagesList.giveawaypages, map: GiveawayPages.widgetsMap),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
@@ -88,8 +85,7 @@ class CustomDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: _ExpansionListView(
-                      pages: PagesList.discussionpages,
-                      map: DiscussionPages.widgetsMap),
+                      pages: PagesList.discussionpages, map: DiscussionPages.widgetsMap),
                 ),
               ]),
           const Divider(height: 0),

@@ -18,6 +18,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +30,7 @@ import 'package:snag/background_task.dart';
 import 'package:snag/common/functions/get_user.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/common/vars/prefs.dart';
+import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/objectbox.dart';
 import 'package:snag/provider_models/discussion_filter_provider.dart';
 import 'package:snag/provider_models/entered_filter_provider.dart';
@@ -37,7 +41,16 @@ import 'package:snag/provider_models/messages_provider.dart';
 import 'package:snag/provider_models/points_provider.dart';
 import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
-import 'package:snag/snag.dart';
+import 'package:snag/views/discussions/discussion.dart';
+import 'package:snag/views/giveaways/entered/entered_list.dart';
+import 'package:snag/views/giveaways/game.dart';
+import 'package:snag/views/giveaways/giveaway/giveaway.dart';
+import 'package:snag/views/misc/group.dart';
+import 'package:snag/views/misc/login.dart';
+import 'package:snag/views/misc/user.dart';
+import 'package:snag/views/notifications/notification_destination.dart';
+import 'package:snag/views/notifications/notifications.dart';
+import 'package:snag/views/notifications/notifications_destination.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +64,8 @@ void main() async {
   );
   // make flutter draw behind navigation bar
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  String destination = await _notificationDestination();
+
   prefs = await SharedPreferences.getInstance();
   if (prefs.getString(PrefsKeys.sessid.key) == null) prefs.clear();
   if (prefs.getInt(PrefsKeys.gifts.key) == null) {
@@ -113,5 +128,157 @@ void main() async {
     ChangeNotifierProvider(create: (_) => MessagesProvider()),
     ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
-  ], child: const Snag()));
+  ], child: Snag(destination: destination)));
+}
+
+Future<String> _notificationDestination() async {
+  FlutterLocalNotificationsPlugin status = FlutterLocalNotificationsPlugin();
+  status.initialize(const InitializationSettings(
+    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+  ));
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+      await status.getNotificationAppLaunchDetails();
+
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    int id = notificationAppLaunchDetails?.notificationResponse?.id ?? 0;
+    return notificationDestination(id);
+  } else {
+    return GiveawayPages.all.route;
+  }
+}
+
+class Snag extends StatefulWidget {
+  const Snag({required this.destination, super.key});
+
+  final String destination;
+
+  @override
+  State<Snag> createState() => SnagState();
+}
+
+class SnagState extends State<Snag> {
+  final List<RouteBase> _routes = [];
+  late GoRouter _router;
+
+  @override
+  void initState() {
+    for (Pages item in PagesList.giveawaypages.pages) {
+      _routes.add(_customGoRoute(item.route, GiveawayPages.widgetsMap[item.route]!));
+    }
+    for (Pages item in PagesList.discussionpages.pages) {
+      _routes.add(_customGoRoute(item.route, DiscussionPages.widgetsMap[item.route]!));
+    }
+    _routes.add(_customGoRoute(NotificationsRoute.created.route,
+        Notifications(NotificationsDestination.created)));
+    _routes.add(_customGoRoute(
+        NotificationsRoute.won.route, Notifications(NotificationsDestination.won)));
+    _routes.add(_customGoRoute(NotificationsRoute.messages.route,
+        Notifications(NotificationsDestination.messages)));
+    _routes.add(_customGoRoute(Entered.entered.route, EnteredList()));
+    _routes.add(_customGoRoute(LoginRoute.login.route, Login()));
+    _routes.add(_giveawayGoRoute('/:id'));
+    _routes.add(_giveawayGoRoute('/:id/:name'));
+    _routes.add(_discussionGoRoute('/:id'));
+    _routes.add(_discussionGoRoute('/:id/:name'));
+    _routes.add(_userGoRoute('/:id'));
+    _routes.add(_userGoRoute('/:id/:name'));
+    _routes.add(_groupGoRoute('/:id'));
+    _routes.add(_groupGoRoute('/:id/:name'));
+    _routes.add(_gameGoRoute('/:id'));
+    _routes.add(_gameGoRoute('/:id/:name'));
+
+    _router = GoRouter(initialLocation: widget.destination, routes: _routes);
+    super.initState();
+  }
+
+  ThemeData _customTheme({bool dark = false, required ColorScheme? colorScheme}) {
+    ColorScheme scheme = colorScheme ??
+        ColorScheme.fromSeed(
+            brightness: dark ? Brightness.dark : Brightness.light,
+            seedColor: const Color.fromARGB(255, 0, 83, 125));
+    return ThemeData(
+      textTheme: Theme.of(context).textTheme.apply(
+            fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
+            displayColor: scheme.onSurface,
+            bodyColor: scheme.onSurface,
+            decorationColor: scheme.onSurface,
+          ),
+      visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+      colorScheme: scheme,
+      useMaterial3: true,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
+      return Consumer<ThemeProvider>(
+          builder: (context, theme, child) => MaterialApp.router(
+              title: 'Snag',
+              theme:
+                  _customTheme(colorScheme: theme.dynamicColor ? lightColorScheme : null),
+              darkTheme: _customTheme(
+                  colorScheme: theme.dynamicColor ? darkColorScheme : null, dark: true),
+              themeMode: ThemeMode.system,
+              themeAnimationDuration: Durations.short2,
+              themeAnimationCurve: Curves.linear,
+              routerConfig: _router));
+    });
+  }
+
+  GoRoute _customGoRoute(String route, Widget page) {
+    return GoRoute(
+      path: route,
+      pageBuilder: (context, state) => NoTransitionPage(key: UniqueKey(), child: page),
+    );
+  }
+
+  GoRoute _giveawayGoRoute(String route) {
+    return GoRoute(
+        path: '${GiveawayRoute.giveaway.route}$route',
+        pageBuilder: (context, state) => NoTransitionPage(
+            key: UniqueKey(),
+            child: Giveaway(
+                href:
+                    "${GiveawayRoute.giveaway.route}/${state.pathParameters['id']!}/${state.pathParameters['name'] ?? ''}")));
+  }
+
+  GoRoute _discussionGoRoute(String route) {
+    return GoRoute(
+        path: '${DiscussionRoute.discussion.route}$route',
+        pageBuilder: (context, state) => NoTransitionPage(
+            key: UniqueKey(),
+            child: Discussion(
+                href:
+                    "${DiscussionRoute.discussion.route}/${state.pathParameters['id']!}/${state.pathParameters['name'] ?? ''}")));
+  }
+
+  GoRoute _userGoRoute(String route) {
+    return GoRoute(
+        path: '${UserRoute.user.route}$route',
+        pageBuilder: (context, state) => NoTransitionPage(
+            key: UniqueKey(), child: User(name: state.pathParameters['id']!)));
+  }
+
+  GoRoute _groupGoRoute(String route) {
+    return GoRoute(
+        path: '${GroupRoute.group.route}$route',
+        pageBuilder: (context, state) => NoTransitionPage(
+            key: UniqueKey(),
+            child: Group(
+              href:
+                  '${GroupRoute.group.route}/${state.pathParameters['id']}/${state.pathParameters['name'] ?? ''}',
+            )));
+  }
+
+  GoRoute _gameGoRoute(String route) {
+    return GoRoute(
+        path: '${GameRoute.game.route}$route',
+        pageBuilder: (context, state) => NoTransitionPage(
+            key: UniqueKey(),
+            child: Game(
+              href:
+                  '${GameRoute.game.route}/${state.pathParameters['id']}/${state.pathParameters['name'] ?? ''}',
+            )));
+  }
 }

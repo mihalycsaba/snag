@@ -58,9 +58,7 @@ class _EnteredListState extends State<EnteredList> {
     _bgColor = buttonBackgroundColor(context);
     _pagingController.addPageRequestListener((pageKey) => fetchGiveawayList(
         pageKey,
-        Entered.entered.url +
-            _sort +
-            context.read<EnteredFilterProvider>().filter,
+        Entered.entered.url + _sort + context.read<EnteredFilterProvider>().filter,
         _parseEnteredList,
         _pagingController,
         context));
@@ -68,9 +66,7 @@ class _EnteredListState extends State<EnteredList> {
 
   List<GiveawayListModel> _parseEnteredList(String data, int pageKey) {
     List<GiveawayListModel> giveaways = [];
-    parse(data)
-        .getElementsByClassName('table__row-inner-wrap')
-        .forEach((element) {
+    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
       giveaways.add(_parseEnteredListElement(element));
     });
     return giveaways;
@@ -80,14 +76,11 @@ class _EnteredListState extends State<EnteredList> {
     dom.Document item = parse(element.innerHtml);
     dom.Element name = item.getElementsByClassName('table__column__heading')[0];
     List<dom.Element> heading = item.getElementsByClassName('is-faded');
-    List<dom.Element> img =
-        item.getElementsByClassName('table_image_thumbnail');
+    List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
     String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
     image = image == '' ? '' : image?.substring(21, image.length - 2);
-    String remaining = item
-        .getElementsByClassName('table__column--width-fill')[0]
-        .children[1]
-        .text;
+    String remaining =
+        item.getElementsByClassName('table__column--width-fill')[0].children[1].text;
     String? points = heading.last.text;
     return GiveawayListModel(
         level: 0,
@@ -96,9 +89,8 @@ class _EnteredListState extends State<EnteredList> {
         name: name.firstChild!.text!.trim(),
         copies: heading.length == 1 ? null : heading[0].text,
         points: int.parse(points.substring(1, points.length - 2)),
-        entries: item
-            .getElementsByClassName('table__column--width-small text-center')[0]
-            .text,
+        entries:
+            item.getElementsByClassName('table__column--width-small text-center')[0].text,
         image: image == ''
             ? const Icon(Icons.error)
             : CachedNetworkImage(
@@ -108,8 +100,7 @@ class _EnteredListState extends State<EnteredList> {
         href: name.attributes['href']!,
         entered: true,
         remaining: remaining,
-        notEnded:
-            !remaining.contains('Ended') && !remaining.contains('Deleted'),
+        notEnded: !remaining.contains('Ended') && !remaining.contains('Deleted'),
         inviteOnly: false,
         group: false,
         whitelist: false,
@@ -154,8 +145,7 @@ class _EnteredListState extends State<EnteredList> {
                       }),
                   TextButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            _sort == '&sort=deleted' ? _bgColor : null,
+                        backgroundColor: _sort == '&sort=deleted' ? _bgColor : null,
                       ),
                       child: const Text('Deleted'),
                       onPressed: () {
@@ -168,8 +158,7 @@ class _EnteredListState extends State<EnteredList> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextButton(
                         style: ButtonStyle(
-                          backgroundColor:
-                              _sort == '&sort=all' ? _bgColor : null,
+                          backgroundColor: _sort == '&sort=all' ? _bgColor : null,
                         ),
                         child: const Text('All'),
                         onPressed: () {
@@ -183,8 +172,7 @@ class _EnteredListState extends State<EnteredList> {
               ),
               Flexible(
                 child: RefreshIndicator(
-                    onRefresh: () =>
-                        Future.sync(() => _pagingController.refresh()),
+                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
                     child: Consumer<ThemeProvider>(
                       builder: (context, theme, child) =>
                           PagedListView<int, GiveawayListModel>(
@@ -193,22 +181,18 @@ class _EnteredListState extends State<EnteredList> {
                               pagingController: _pagingController,
                               builderDelegate:
                                   PagedChildBuilderDelegate<GiveawayListModel>(
-                                      itemBuilder: (context, giveaway, index) =>
-                                          Column(
+                                      itemBuilder: (context, giveaway, index) => Column(
                                             children: [
                                               _EnteredListTile(
                                                 giveaway: giveaway,
                                                 onTileChange: (giveaway) =>
                                                     changeGiveawayState(
-                                                        giveaway,
-                                                        context,
-                                                        setState),
+                                                        giveaway, context, setState),
                                               ),
                                             ],
                                           ),
-                                      newPageProgressIndicatorBuilder:
-                                          (context) =>
-                                              PagedProgressIndicator())),
+                                      newPageProgressIndicatorBuilder: (context) =>
+                                          PagedProgressIndicator())),
                     )),
               ),
             ],
@@ -238,24 +222,21 @@ class _EnteredListTileState extends State<_EnteredListTile> {
           dense: CustomListTileTheme.dense,
           selected: widget.giveaway.notEnded,
           leading: SizedBox(
-              width: CustomListTileTheme.leadingWidth,
-              child: widget.giveaway.image),
+              width: CustomListTileTheme.leadingWidth, child: widget.giveaway.image),
           title: Row(
             children: [
               Flexible(
                 //flexible wraps the text if it is too long
                 child: Text(widget.giveaway.name,
                     style: TextStyle(
-                        fontSize:
-                            CustomListTileTheme.titleTextSize + theme.fontSize),
+                        fontSize: CustomListTileTheme.titleTextSize + theme.fontSize),
                     overflow: CustomListTileTheme.overflow),
               ),
               widget.giveaway.copies != null
                   ? Text(
                       ' ${widget.giveaway.copies}',
                       style: TextStyle(
-                          fontSize: CustomListTileTheme.titleTextSize +
-                              theme.fontSize),
+                          fontSize: CustomListTileTheme.titleTextSize + theme.fontSize),
                     )
                   : Container()
             ],
@@ -265,15 +246,14 @@ class _EnteredListTileState extends State<_EnteredListTile> {
               Text(
                 '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
                 style: TextStyle(
-                    fontSize: CustomListTileTheme.subtitleTextSize +
-                        theme.fontSize / 1.9),
+                    fontSize:
+                        CustomListTileTheme.subtitleTextSize + theme.fontSize / 1.9),
               ),
               Icon(Icons.groups, size: 14.0 + theme.fontSize / 1.9),
-              Text(
-                  ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
+              Text(' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
                   style: TextStyle(
-                      fontSize: CustomListTileTheme.subtitleTextSize +
-                          theme.fontSize / 1.9))
+                      fontSize:
+                          CustomListTileTheme.subtitleTextSize + theme.fontSize / 1.9))
             ],
           ),
           trailing: widget.giveaway.notEnded
@@ -288,8 +268,7 @@ class _EnteredListTileState extends State<_EnteredListTile> {
               : null,
           onTap: () async {
             widget.giveaway.entered =
-                await customNav(Giveaway(href: widget.giveaway.href!), context)
-                    as bool;
+                await customNav(Giveaway(href: widget.giveaway.href!), context) as bool;
 
             setState(() {});
           }),
@@ -342,8 +321,8 @@ class _EnteredFilterDialogState extends State<_EnteredFilterDialog> {
 
   @override
   void initState() {
-    _search = TextEditingController(
-        text: context.read<EnteredFilterProvider>().model.search);
+    _search =
+        TextEditingController(text: context.read<EnteredFilterProvider>().model.search);
     super.initState();
   }
 
@@ -370,9 +349,7 @@ class _EnteredFilterDialogState extends State<_EnteredFilterDialog> {
           TextButton(
               child: const Text('Clear'),
               onPressed: () {
-                context
-                    .read<EnteredFilterProvider>()
-                    .updateModel(SimpleFilterModel());
+                context.read<EnteredFilterProvider>().updateModel(SimpleFilterModel());
                 context.read<EnteredFilterProvider>().updateFilter('');
                 Navigator.of(context).pop();
               }),

@@ -21,29 +21,21 @@ import 'package:snag/views/notifications/notifications_model.dart';
 NotificationModel fetchNotifications(
   dom.Document document,
 ) {
-  dom.Element notifications =
-      document.getElementsByClassName('nav__right-container')[0];
-  String gifts =
-      notifications.children[0].innerHtml.contains('nav__notification')
-          ? notifications.children[0]
-              .getElementsByClassName('nav__notification')[0]
-              .text
-          : '0';
+  dom.Element notifications = document.getElementsByClassName('nav__right-container')[0];
+  String gifts = notifications.children[0].innerHtml.contains('nav__notification')
+      ? notifications.children[0].getElementsByClassName('nav__notification')[0].text
+      : '0';
   String won = '0';
   bool keysAvailable = false;
   if (notifications.children[1].innerHtml.contains('nav__notification')) {
     dom.Element nav = notifications.children[1];
     won = nav.getElementsByClassName('nav__notification')[0].text;
-    keysAvailable = nav
-        .getElementsByClassName('nav__notification fade_infinite')
-        .isNotEmpty;
+    keysAvailable =
+        nav.getElementsByClassName('nav__notification fade_infinite').isNotEmpty;
   }
 
-  String messages =
-      notifications.children[2].innerHtml.contains('nav__notification')
-          ? notifications.children[2]
-              .getElementsByClassName('nav__notification')[0]
-              .text
-          : '0';
+  String messages = notifications.children[2].innerHtml.contains('nav__notification')
+      ? notifications.children[2].getElementsByClassName('nav__notification')[0].text
+      : '0';
   return NotificationModel(gifts, won, messages, keysAvailable);
 }

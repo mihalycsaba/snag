@@ -43,13 +43,12 @@ class ObjectBox {
 
   static Future<ObjectBox> create() async {
     final store = await openStore(
-        directory: p.join(
-            (await getApplicationDocumentsDirectory()).path, "obx-bookmarks"));
+        directory:
+            p.join((await getApplicationDocumentsDirectory()).path, "obx-bookmarks"));
     return ObjectBox._create(store);
   }
 
-  String _hrefSplit(String href, String split) =>
-      href.split('$split/')[1].split('/')[0];
+  String _hrefSplit(String href, String split) => href.split('$split/')[1].split('/')[0];
 
   // giveaways
   void addGiveawayBookmark(
@@ -122,8 +121,7 @@ class ObjectBox {
   void removeDiscussionBookmark(int id) => _discussionBookmarkBox.remove(id);
   List<DiscussionBookmarkModel> getDiscussionBookmarked(String href) =>
       _discussionBookmarkBox
-          .query(DiscussionBookmarkModel_.href
-              .equals(_hrefSplit(href, 'discussion')))
+          .query(DiscussionBookmarkModel_.href.equals(_hrefSplit(href, 'discussion')))
           .build()
           .find();
   List<DiscussionBookmarkModel> getDiscussionBookmarks() =>
@@ -137,12 +135,9 @@ class ObjectBox {
         name: name,
       ));
   void removeUserBookmark(int id) => _userBookmarkBox.remove(id);
-  List<UserBookmarkModel> getUserBookmarked(String name) => _userBookmarkBox
-      .query(UserBookmarkModel_.name.equals(name))
-      .build()
-      .find();
-  List<UserBookmarkModel> getUserBookmarks() =>
-      _userBookmarkBox.query().build().find();
+  List<UserBookmarkModel> getUserBookmarked(String name) =>
+      _userBookmarkBox.query(UserBookmarkModel_.name.equals(name)).build().find();
+  List<UserBookmarkModel> getUserBookmarks() => _userBookmarkBox.query().build().find();
 
   // games
   void addGameBookmark({
@@ -152,10 +147,7 @@ class ObjectBox {
     required String appid,
   }) =>
       _gameBookmarkBox.put(GameBookmarkModel(
-          name: name,
-          href: _hrefSplit(href, 'game'),
-          type: type,
-          appid: appid));
+          name: name, href: _hrefSplit(href, 'game'), type: type, appid: appid));
 
   void removeGameBookmark(int id) => _gameBookmarkBox.remove(id);
 
@@ -164,8 +156,7 @@ class ObjectBox {
       .build()
       .find();
 
-  List<GameBookmarkModel> getGameBookmarks() =>
-      _gameBookmarkBox.query().build().find();
+  List<GameBookmarkModel> getGameBookmarks() => _gameBookmarkBox.query().build().find();
 
   // groups
   void addGroupBookmark({

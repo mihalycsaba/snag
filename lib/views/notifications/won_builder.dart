@@ -95,8 +95,7 @@ class _WonBuilderState extends State<WonBuilder> {
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: Consumer<ThemeProvider>(
           builder: (context, theme, child) => PagedListView<int, _WonListModel>(
-              itemExtent: CustomPagedListTheme.itemExtent +
-                  addItemExtent(theme.fontSize),
+              itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<_WonListModel>(
                 itemBuilder: (context, giveaway, index) => Column(
@@ -106,19 +105,17 @@ class _WonBuilderState extends State<WonBuilder> {
                       child: ListTile(
                         selected: giveaway.notReceived,
                         contentPadding: CustomListTileTheme.contentPadding,
-                        minVerticalPadding:
-                            CustomListTileTheme.minVerticalPadding,
+                        minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                         dense: CustomListTileTheme.dense,
                         leading: SizedBox(
                           width: CustomListTileTheme.leadingWidth,
                           child: giveaway.image,
                         ),
                         title: Consumer<ThemeProvider>(
-                          builder: (context, theme, child) => Text(
-                              giveaway.name,
+                          builder: (context, theme, child) => Text(giveaway.name,
                               style: TextStyle(
-                                  fontSize: CustomListTileTheme.titleTextSize +
-                                      theme.fontSize),
+                                  fontSize:
+                                      CustomListTileTheme.titleTextSize + theme.fontSize),
                               overflow: CustomListTileTheme.overflow),
                         ),
                         subtitle: Consumer<ThemeProvider>(
@@ -134,31 +131,25 @@ class _WonBuilderState extends State<WonBuilder> {
                           children: [
                             giveaway.keyButton != null
                                 ? Consumer<ThemeProvider>(
-                                    builder: (context, theme, child) =>
-                                        TextButton(
-                                            child: Text('Open gift',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        12.0 + theme.fontSize)),
-                                            onPressed: () async {
-                                              await resMapAjax(
-                                                      giveaway.keyButton!)
-                                                  .then((value) {
-                                                _pagingController.refresh();
-                                              });
-                                            }),
+                                    builder: (context, theme, child) => TextButton(
+                                        child: Text('Open gift',
+                                            style: TextStyle(
+                                                fontSize: 12.0 + theme.fontSize)),
+                                        onPressed: () async {
+                                          await resMapAjax(giveaway.keyButton!)
+                                              .then((value) {
+                                            _pagingController.refresh();
+                                          });
+                                        }),
                                   )
-                                : giveaway.keyIsRedeemable &&
-                                        giveaway.notReceived
+                                : giveaway.keyIsRedeemable && giveaway.notReceived
                                     ? Consumer<ThemeProvider>(
-                                        builder: (context, theme, child) =>
-                                            TextButton(
-                                                onPressed: () => urlLauncher(
-                                                    giveaway.redeemKeyLink!),
-                                                child: Text('Redeem',
-                                                    style: TextStyle(
-                                                        fontSize: 12.0 +
-                                                            theme.fontSize))),
+                                        builder: (context, theme, child) => TextButton(
+                                            onPressed: () =>
+                                                urlLauncher(giveaway.redeemKeyLink!),
+                                            child: Text('Redeem',
+                                                style: TextStyle(
+                                                    fontSize: 12.0 + theme.fontSize))),
                                       )
                                     : !giveaway.keyIsRedeemable &&
                                             giveaway.notReceived &&
@@ -170,8 +161,8 @@ class _WonBuilderState extends State<WonBuilder> {
                                         : giveaway.notReceived &&
                                                 giveaway.giftLinkAvailable
                                             ? TextButton(
-                                                onPressed: () => urlLauncher(
-                                                    giveaway.giftLink!),
+                                                onPressed: () =>
+                                                    urlLauncher(giveaway.giftLink!),
                                                 child: Text(
                                                   'Link',
                                                 ))
@@ -193,14 +184,12 @@ class _WonBuilderState extends State<WonBuilder> {
                                   )
                           ],
                         ),
-                        onTap: () =>
-                            customNav(Giveaway(href: giveaway.href), context),
+                        onTap: () => customNav(Giveaway(href: giveaway.href), context),
                       ),
                     ),
                   ],
                 ),
-                newPageProgressIndicatorBuilder: (context) =>
-                    PagedProgressIndicator(),
+                newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator(),
               )),
         ));
   }
@@ -216,9 +205,7 @@ class _WonBuilderState extends State<WonBuilder> {
 
   List<_WonListModel> parseWonList(String data) {
     List<_WonListModel> wonList = [];
-    parse(data)
-        .getElementsByClassName('table__row-inner-wrap')
-        .forEach((element) {
+    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
       wonList.add(parseWonListElement(element));
     });
     return wonList;
@@ -227,8 +214,7 @@ class _WonBuilderState extends State<WonBuilder> {
   _WonListModel parseWonListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
     dom.Element name = item.getElementsByClassName('table__column__heading')[0];
-    List<dom.Element> img =
-        item.getElementsByClassName('table_image_thumbnail');
+    List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
     String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
     image = image == '' ? '' : image?.substring(21, image.length - 2);
     List<dom.Element> redeemKey =
@@ -238,16 +224,13 @@ class _WonBuilderState extends State<WonBuilder> {
     List<dom.Element> giftLink =
         item.getElementsByClassName('table__column__secondary-link');
     bool giftLinkAvailable = giftLink.isNotEmpty;
-    dom.Element feedback =
-        item.getElementsByClassName('table__column--gift-feedback')[0];
+    dom.Element feedback = item.getElementsByClassName('table__column--gift-feedback')[0];
     bool active = feedback.nodes.length > 3;
-    bool notReceived = item
-            .getElementsByClassName('table__gift-feedback-awaiting-reply')
-            .isNotEmpty &&
-        item
-            .getElementsByClassName(
-                'table__gift-feedback-awaiting-reply is-hidden')
-            .isEmpty;
+    bool notReceived =
+        item.getElementsByClassName('table__gift-feedback-awaiting-reply').isNotEmpty &&
+            item
+                .getElementsByClassName('table__gift-feedback-awaiting-reply is-hidden')
+                .isEmpty;
     return _WonListModel(
         name: name.text,
         image: image == ''
@@ -258,20 +241,14 @@ class _WonBuilderState extends State<WonBuilder> {
               ),
         opened: item.getElementsByClassName('view_key_btn').isEmpty,
         href: name.attributes['href']!,
-        time: item
-            .getElementsByClassName('table__column--width-fill')[0]
-            .children[1]
-            .text,
+        time:
+            item.getElementsByClassName('table__column--width-fill')[0].children[1].text,
         notReceived: notReceived,
         keyIsRedeemable: keyIsRedeemable,
-        keyButton:
-            keyButton.isNotEmpty ? keyButton[0].attributes['data-form']! : null,
-        winnerId: active
-            ? feedback.children[0].children[3].attributes['value']
-            : null,
+        keyButton: keyButton.isNotEmpty ? keyButton[0].attributes['data-form']! : null,
+        winnerId: active ? feedback.children[0].children[3].attributes['value'] : null,
         active: active,
-        redeemKeyLink:
-            keyIsRedeemable ? redeemKey[0].attributes['href']! : null,
+        redeemKeyLink: keyIsRedeemable ? redeemKey[0].attributes['href']! : null,
         giftLinkAvailable: giftLinkAvailable,
         giftLink: giftLinkAvailable ? giftLink[0].attributes['href']! : null);
   }

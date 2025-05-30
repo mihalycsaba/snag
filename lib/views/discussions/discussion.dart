@@ -68,21 +68,16 @@ class _DiscussionState extends State<Discussion> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Scaffold(
                     appBar: AppBar(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.inversePrimary,
+                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                     ),
                     body: const Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasData) {
                 String? data = snapshot.data;
                 return RefreshIndicator(
                   onRefresh: () => Future.sync(() => setState(() {})),
-                  edgeOffset:
-                      MediaQuery.of(context).viewPadding.top + kToolbarHeight,
+                  edgeOffset: MediaQuery.of(context).viewPadding.top + kToolbarHeight,
                   child: _DiscussionDetails(
-                      href: widget.href,
-                      url: _url,
-                      data: data!,
-                      controller: _controller),
+                      href: widget.href, url: _url, data: data!, controller: _controller),
                 );
               }
               return Container();
@@ -135,53 +130,37 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
     try {
       dom.Document document = parse(widget.data);
       _comment = document.getElementsByClassName('comments')[0];
-      _desctiption =
-          _comment.getElementsByClassName('comment__description markdown')[0];
-      dom.Element user =
-          _comment.getElementsByClassName('comment__username')[0];
+      _desctiption = _comment.getElementsByClassName('comment__description markdown')[0];
+      dom.Element user = _comment.getElementsByClassName('comment__username')[0];
       _username = user.text;
       List<dom.Element> userChildren = user.children;
-      _userHref =
-          userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null;
-      _ago = _comment
-          .getElementsByClassName('comment__actions')[0]
-          .nodes[1]
-          .nodes[0]
-          .text!;
+      _userHref = userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null;
+      _ago =
+          _comment.getElementsByClassName('comment__actions')[0].nodes[1].nodes[0].text!;
       _name = document
           .getElementsByClassName('page__heading__breadcrumbs')[0]
           .children[4]
           .firstChild!
           .text!;
       _closed = document
-          .getElementsByClassName(
-              'page__heading__button page__heading__button--red')
+          .getElementsByClassName('page__heading__button page__heading__button--red')
           .isNotEmpty;
-      _poll = document
-          .getElementsByClassName('poll__view-results-container')
-          .isNotEmpty;
+      _poll = document.getElementsByClassName('poll__view-results-container').isNotEmpty;
       _patron = _comment.getElementsByClassName('fa fa-star').isNotEmpty;
       _role = _comment.getElementsByClassName('comment__role-name');
       if (_poll) {
-        _question = document
-            .getElementsByClassName('table__heading')[0]
-            .nodes[1]
-            .text!
-            .trim();
+        _question =
+            document.getElementsByClassName('table__heading')[0].nodes[1].text!.trim();
         document
-            .getElementsByClassName(
-                'table__row-outer-wrap poll__answer-container')
+            .getElementsByClassName('table__row-outer-wrap poll__answer-container')
             .forEach((element) {
           int votes = int.parse(element.attributes['data-votes']!);
           _total += votes;
           _answers.add(_AnswerModel(
-              answer: element
-                  .getElementsByClassName('table__column__heading')[0]
-                  .text
-                  .trim(),
+              answer:
+                  element.getElementsByClassName('table__column__heading')[0].text.trim(),
               votes: votes,
-              id: element
-                  .nodes[1].nodes[3].nodes[1].nodes[5].attributes['value']!,
+              id: element.nodes[1].nodes[3].nodes[1].nodes[5].attributes['value']!,
               voted: element.className.contains('is-selected')));
         });
       }
@@ -222,11 +201,10 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
+                  padding: EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
                   child: GestureDetector(
-                    onTap: () => SharePlus.instance
-                        .share(ShareParams(uri: Uri.parse(widget.url))),
+                    onTap: () =>
+                        SharePlus.instance.share(ShareParams(uri: Uri.parse(widget.url))),
                     child: Icon(
                       Icons.share,
                     ),
@@ -257,8 +235,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                             name: _username,
                             userHref: _userHref,
                             ago: _ago,
-                            avatar:
-                                getAvatar(_comment, 'global__image-inner-wrap'),
+                            avatar: getAvatar(_comment, 'global__image-inner-wrap'),
                             patron: _patron,
                             role: _role.isNotEmpty ? _role[0].text.trim() : '',
                           ),
@@ -266,18 +243,15 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                               ? Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
                                         child: Consumer<ThemeProvider>(
-                                          builder: (context, theme, child) =>
-                                              Text(
+                                          builder: (context, theme, child) => Text(
                                             _question,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    16.0 + theme.fontSize),
+                                                fontSize: 16.0 + theme.fontSize),
                                           ),
                                         ),
                                       ),
@@ -304,37 +278,29 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                           child: Card.filled(
                                             elevation: 0.1,
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 6.0),
+                                                padding:
+                                                    const EdgeInsets.only(right: 6.0),
                                                 child: Column(
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                          MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Flexible(
                                                             child: Text(
-                                                                _answers[index]
-                                                                    .answer)),
+                                                                _answers[index].answer)),
                                                         SizedBox(
                                                             width: 12,
-                                                            child: _answers[
-                                                                        index]
-                                                                    .voted
+                                                            child: _answers[index].voted
                                                                 ? Icon(
-                                                                    Icons
-                                                                        .circle,
+                                                                    Icons.circle,
                                                                     size: 16,
-                                                                    color: Colors
-                                                                        .green,
+                                                                    color: Colors.green,
                                                                   )
                                                                 : Icon(
-                                                                    Icons
-                                                                        .circle_outlined,
+                                                                    Icons.circle_outlined,
                                                                     size: 16,
                                                                   ))
                                                       ],
@@ -342,8 +308,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                                     _results
                                                         ? Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                    .only(
+                                                                const EdgeInsets.only(
                                                                     top: 8.0),
                                                             child: Row(
                                                               children: [
@@ -353,20 +318,27 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                                                       '${_answers[index].votes} votes'),
                                                                 ),
                                                                 Flexible(
-                                                                  child:
-                                                                      SizedBox(
+                                                                  child: SizedBox(
                                                                     height: 8,
-                                                                    child: FractionallySizedBox(
-                                                                        widthFactor: _answers[index].votes / _total,
-                                                                        child: Divider(
-                                                                          color: _answers[index].voted
-                                                                              ? Colors.green
-                                                                              : Colors.grey[500],
-                                                                          height:
-                                                                              0,
-                                                                          thickness:
-                                                                              8,
-                                                                        )),
+                                                                    child:
+                                                                        FractionallySizedBox(
+                                                                            widthFactor:
+                                                                                _answers[index]
+                                                                                        .votes /
+                                                                                    _total,
+                                                                            child:
+                                                                                Divider(
+                                                                              color: _answers[
+                                                                                          index]
+                                                                                      .voted
+                                                                                  ? Colors
+                                                                                      .green
+                                                                                  : Colors
+                                                                                      .grey[500],
+                                                                              height: 0,
+                                                                              thickness:
+                                                                                  8,
+                                                                            )),
                                                                   ),
                                                                 )
                                                               ],
@@ -471,8 +443,5 @@ class _AnswerModel {
   bool voted;
 
   _AnswerModel(
-      {required this.answer,
-      required this.votes,
-      required this.id,
-      required this.voted});
+      {required this.answer, required this.votes, required this.id, required this.voted});
 }

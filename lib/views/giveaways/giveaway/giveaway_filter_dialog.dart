@@ -48,8 +48,8 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
 
   @override
   void initState() {
-    _search = TextEditingController(
-        text: context.read<GiveawayFilterProvider>().model.search);
+    _search =
+        TextEditingController(text: context.read<GiveawayFilterProvider>().model.search);
     _minLevel = TextEditingController(
         text: context.read<GiveawayFilterProvider>().model.minLevel);
     _maxLevel = TextEditingController(
@@ -153,9 +153,7 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
           TextButton(
             child: const Text('Clear'),
             onPressed: () {
-              context
-                  .read<GiveawayFilterProvider>()
-                  .updateModel(GiveawayFilterModel());
+              context.read<GiveawayFilterProvider>().updateModel(GiveawayFilterModel());
               context.read<GiveawayFilterProvider>().updateFilter('');
               Navigator.of(context).pop();
             },
@@ -195,19 +193,18 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
                 if (_onlyRegionRestricted) {
                   filter = '$filter&region_restricted=true';
                 }
-                context.read<GiveawayFilterProvider>().updateModel(
-                    GiveawayFilterModel(
-                        search: _search.text.trim(),
-                        minLevel: _minLevel.text,
-                        maxLevel: _maxLevel.text,
-                        minEntries: _minEntries.text,
-                        maxEntries: _maxEntries.text,
-                        minPoints: _minPoints.text,
-                        maxPoints: _maxPoints.text,
-                        minCopies: _minCopies.text,
-                        maxCopies: _maxCopies.text,
-                        hideEntered: _hideEntered,
-                        onlyRegionRestricted: _onlyRegionRestricted));
+                context.read<GiveawayFilterProvider>().updateModel(GiveawayFilterModel(
+                    search: _search.text.trim(),
+                    minLevel: _minLevel.text,
+                    maxLevel: _maxLevel.text,
+                    minEntries: _minEntries.text,
+                    maxEntries: _maxEntries.text,
+                    minPoints: _minPoints.text,
+                    maxPoints: _maxPoints.text,
+                    minCopies: _minCopies.text,
+                    maxCopies: _maxCopies.text,
+                    hideEntered: _hideEntered,
+                    onlyRegionRestricted: _onlyRegionRestricted));
                 context.read<GiveawayFilterProvider>().updateFilter(filter);
                 Navigator.of(context).pop();
               }
@@ -243,8 +240,8 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
     return null;
   }
 
-  String? minLimitValidator(String? value, TextEditingController maxLimit,
-      int minNumber, int maxNumber) {
+  String? minLimitValidator(
+      String? value, TextEditingController maxLimit, int minNumber, int maxNumber) {
     if (value != null && value.isNotEmpty) {
       int? number = int.tryParse(value);
       if (number != null) {
@@ -263,8 +260,8 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
     return null;
   }
 
-  String? maxLimitValidator(String? value, TextEditingController minLimit,
-      int minNumber, int maxNumber) {
+  String? maxLimitValidator(
+      String? value, TextEditingController minLimit, int minNumber, int maxNumber) {
     if (value != null && value.isNotEmpty) {
       int? number = int.tryParse(value);
       if (number != null) {
@@ -279,9 +276,7 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
   }
 
   int maxCalc(TextEditingController maxController, int number) {
-    return maxController.text.isNotEmpty
-        ? int.parse(maxController.text)
-        : number + 1;
+    return maxController.text.isNotEmpty ? int.parse(maxController.text) : number + 1;
   }
 }
 

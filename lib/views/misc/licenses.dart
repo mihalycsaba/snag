@@ -38,23 +38,21 @@ class Licenses extends StatelessWidget {
                       surfaceTintColor: CustomCardTheme.surfaceTintColor,
                       elevation: CustomCardTheme.elevation - 1,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4.0, vertical: 8.0),
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 15),
                                 child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
+                                  crossAxisAlignment: CrossAxisAlignment.baseline,
                                   textBaseline: TextBaseline.ideographic,
                                   children: [
                                     Flexible(
                                       child: Text(allDependencies[index].name,
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18)),
+                                              fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     const Text('  version: '),
                                     Text(allDependencies[index].version),
@@ -67,21 +65,17 @@ class Licenses extends StatelessWidget {
                               ),
                               allDependencies[index].repository != null
                                   ? Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text('Repository: '),
                                         Flexible(
                                           child: GestureDetector(
                                             onTap: () => urlLauncher(
-                                              allDependencies[index]
-                                                  .repository!,
+                                              allDependencies[index].repository!,
                                             ),
                                             child: Text(
-                                              allDependencies[index]
-                                                  .repository!,
-                                              style: const TextStyle(
-                                                  color: Colors.blue),
+                                              allDependencies[index].repository!,
+                                              style: const TextStyle(color: Colors.blue),
                                             ),
                                           ),
                                         ),
@@ -90,8 +84,7 @@ class Licenses extends StatelessWidget {
                                   : Container(),
                               allDependencies[index].homepage != null
                                   ? Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const Text('Homepage: '),
                                         Flexible(
@@ -99,11 +92,9 @@ class Licenses extends StatelessWidget {
                                             onTap: () => urlLauncher(
                                               allDependencies[index].homepage!,
                                             ),
-                                            child: Text(
-                                                allDependencies[index]
-                                                    .homepage!,
-                                                style: const TextStyle(
-                                                    color: Colors.blue)),
+                                            child: Text(allDependencies[index].homepage!,
+                                                style:
+                                                    const TextStyle(color: Colors.blue)),
                                           ),
                                         ),
                                       ],
@@ -113,12 +104,10 @@ class Licenses extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Card(
                                     elevation: 0.1,
-                                    surfaceTintColor:
-                                        Color.fromARGB(255, 0, 0, 0),
+                                    surfaceTintColor: Color.fromARGB(255, 0, 0, 0),
                                     child: Padding(
                                       padding: const EdgeInsets.all(6.0),
-                                      child:
-                                          Text(allDependencies[index].license!),
+                                      child: Text(allDependencies[index].license!),
                                     )),
                               )
                             ]),

@@ -64,19 +64,15 @@ class _GiveawayState extends State<Giveaway> {
                         future: fetchBody(url: _url, isBlacklisted: true),
                         builder: (context, snapshot) {
                           _data = snapshot.data;
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
                           } else if (snapshot.hasData) {
                             return RefreshIndicator(
-                                onRefresh: () =>
-                                    Future.sync(() => setState(() {})),
+                                onRefresh: () => Future.sync(() => setState(() {})),
                                 child: Scaffold(
                                   //extendBodyBehindAppBar: true,
                                   drawerEnableOpenDragGesture: false,
-                                  drawer:
-                                      const CustomDrawer(giveawaysOpen: true),
+                                  drawer: const CustomDrawer(giveawaysOpen: true),
                                   body: _data != null
                                       ? GiveawayDetails(
                                           href: widget.href,
@@ -90,12 +86,11 @@ class _GiveawayState extends State<Giveaway> {
                         });
                   } else if (error.contains('required Steam groups')) {
                     return ErrorPage(
-                        error:
-                            'You are not a member of the required Steam groups.',
+                        error: 'You are not a member of the required Steam groups.',
                         url: _url,
                         type: 'giveaway');
-                  } else if (error.contains(
-                      "not a member of the giveaway creator's whitelist.")) {
+                  } else if (error
+                      .contains("not a member of the giveaway creator's whitelist.")) {
                     return ErrorPage(
                         error:
                             "You are not a member of the giveaway creator's whitelist.",

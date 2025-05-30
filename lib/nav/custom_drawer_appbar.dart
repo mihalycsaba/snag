@@ -28,8 +28,7 @@ import 'package:snag/provider_models/points_provider.dart';
 import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
 
-class CustomDrawerAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomDrawerAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomDrawerAppBar(
       {required this.name, required this.showPoints, this.filter, super.key})
       : preferredSize = const Size.fromHeight(kToolbarHeight);
@@ -96,8 +95,7 @@ class CustomDrawerAppBar extends StatelessWidget
                 : Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: InkWell(
-                      onTap: () =>
-                          context.push(NotificationsRoute.messages.route),
+                      onTap: () => context.push(NotificationsRoute.messages.route),
                       child: Badge.count(
                         count: int.parse(user.messages),
                         child: const Icon(Icons.mail),

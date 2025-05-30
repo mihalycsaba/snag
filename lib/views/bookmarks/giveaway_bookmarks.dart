@@ -54,8 +54,7 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
               itemBuilder: (BuildContext context, int index) {
                 String remaining = '';
                 bool ended = false;
-                (remaining, ended) =
-                    _calcRemaining(user.giveaways[index].remainingStamp);
+                (remaining, ended) = _calcRemaining(user.giveaways[index].remainingStamp);
                 return Consumer<ThemeProvider>(
                   builder: (context, theme, child) => ListTile(
                     contentPadding: CustomListTileTheme.contentPadding,
@@ -65,33 +64,29 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                     selectedColor: Colors.grey[600],
                     title: Text(user.giveaways[index].name,
                         style: TextStyle(
-                            fontSize: CustomListTileTheme.titleTextSize +
-                                theme.fontSize),
+                            fontSize: CustomListTileTheme.titleTextSize + theme.fontSize),
                         overflow: CustomListTileTheme.overflow),
                     subtitle: Text(
                         '${_calcSeconds(user.giveaways[index].agoStamp)} ago - $remaining',
                         style: TextStyle(
-                            fontSize: CustomListTileTheme.subtitleTextSize +
-                                theme.fontSize)),
+                            fontSize:
+                                CustomListTileTheme.subtitleTextSize + theme.fontSize)),
                     leading: SizedBox(
                       width: CustomListTileTheme.leadingWidth,
                       child: CachedNetworkImage(
                         imageUrl:
                             'https://shared.akamai.steamstatic.com/store_item_assets/steam/${user.giveaways[index].type}s/${user.giveaways[index].appid}/capsule_184x69.jpg',
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                     onTap: () async {
                       await customNav(
-                          Giveaway(
-                              href: '/giveaway/${user.giveaways[index].gaId}/'),
+                          Giveaway(href: '/giveaway/${user.giveaways[index].gaId}/'),
                           context);
                       if (context.mounted) {
                         context
                             .read<GiveawayBookmarksProvider>()
-                            .updateGiveawayBookmarks(
-                                objectbox.getGiveawayBookmarks());
+                            .updateGiveawayBookmarks(objectbox.getGiveawayBookmarks());
                       }
                     },
                     trailing: Row(
@@ -114,8 +109,7 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                                 type: user.giveaways[index].type,
                                 appid: user.giveaways[index].appid,
                                 agoStamp: user.giveaways[index].agoStamp,
-                                remainingStamp:
-                                    user.giveaways[index].remainingStamp,
+                                remainingStamp: user.giveaways[index].remainingStamp,
                                 favourite: !user.giveaways[index].favourite);
                             context
                                 .read<GiveawayBookmarksProvider>()
@@ -138,8 +132,8 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                                   children: [
                                     TextSpan(
                                         text: user.giveaways[index].name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
+                                        style:
+                                            const TextStyle(fontWeight: FontWeight.bold)),
                                     TextSpan(text: ' bookmark?')
                                   ])),
                               actions: [
@@ -150,8 +144,8 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                                 TextButton(
                                   child: const Text('Yes'),
                                   onPressed: () {
-                                    objectbox.removeGiveawayBookmark(
-                                        user.giveaways[index].id);
+                                    objectbox
+                                        .removeGiveawayBookmark(user.giveaways[index].id);
                                     context
                                         .read<GiveawayBookmarksProvider>()
                                         .updateGiveawayBookmarks(

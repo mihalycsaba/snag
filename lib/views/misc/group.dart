@@ -88,8 +88,7 @@ class _GroupState extends State<Group> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController
-        .addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
+    _pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -120,8 +119,7 @@ class _GroupState extends State<Group> {
                     IconButton(
                         onPressed: () {
                           if (_bookmarked) {
-                            _bookmark =
-                                objectbox.getGroupBookmarked(widget.href);
+                            _bookmark = objectbox.getGroupBookmarked(widget.href);
                             objectbox.removeGroupBookmark(_bookmark[0].id);
                           } else {
                             objectbox.addGroupBookmark(
@@ -131,27 +129,23 @@ class _GroupState extends State<Group> {
                             _bookmarked = !_bookmarked;
                           });
                         },
-                        icon: Icon(_bookmarked
-                            ? Icons.bookmark
-                            : Icons.bookmark_border)),
+                        icon: Icon(_bookmarked ? Icons.bookmark : Icons.bookmark_border)),
                     IconButton(
                         icon: const Icon(Icons.share),
-                        onPressed: () => SharePlus.instance
-                            .share(ShareParams(uri: Uri.parse(_url)))),
+                        onPressed: () =>
+                            SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
                     IconButton(
                         onPressed: () => urlLauncher(_group.steam),
                         icon: FaIcon(FontAwesomeIcons.steamSymbol))
                   ],
                 ),
                 body: RefreshIndicator(
-                    onRefresh: () =>
-                        Future.sync(() => _pagingController.refresh()),
+                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
                     child: CustomScrollView(slivers: <Widget>[
                       SliverToBoxAdapter(
                           child: Center(
                               child: Card(
-                                  surfaceTintColor:
-                                      CustomCardTheme.surfaceTintColor,
+                                  surfaceTintColor: CustomCardTheme.surfaceTintColor,
                                   elevation: CustomCardTheme.elevation,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -169,41 +163,32 @@ class _GroupState extends State<Group> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                    'First Giveaway: ${_group.first}',
+                                                Text('First Giveaway: ${_group.first}',
                                                     style: _detailsTextStyle),
                                                 Row(
                                                   children: [
                                                     Text('Last Giveaway: ',
-                                                        style:
-                                                            _detailsTextStyle),
+                                                        style: _detailsTextStyle),
                                                     Text(_group.last,
-                                                        style: _group.last
-                                                                .contains(
-                                                                    'Open')
-                                                            ? TextStyle(
-                                                                color: Colors
-                                                                    .green,
-                                                                fontSize:
-                                                                    _fontSize)
-                                                            : _detailsTextStyle)
+                                                        style:
+                                                            _group.last.contains('Open')
+                                                                ? TextStyle(
+                                                                    color: Colors.green,
+                                                                    fontSize: _fontSize)
+                                                                : _detailsTextStyle)
                                                   ],
                                                 ),
-                                                Text(
-                                                    'Average Entries: ${_group.average}',
+                                                Text('Average Entries: ${_group.average}',
                                                     style: _detailsTextStyle),
-                                                Text(
-                                                    'Giveaways: ${_group.giveaways}',
+                                                Text('Giveaways: ${_group.giveaways}',
                                                     style: _detailsTextStyle),
                                               ]),
                                         ),
                                       ),
                                       Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                                'Contributors: ${_group.contributors}',
+                                            Text('Contributors: ${_group.contributors}',
                                                 style: _detailsTextStyle),
                                             Text('Winners: ${_group.winners}',
                                                 style: _detailsTextStyle),
@@ -216,42 +201,33 @@ class _GroupState extends State<Group> {
                                   )))),
                       PagedSliverList(
                           pagingController: _pagingController,
-                          builderDelegate:
-                              PagedChildBuilderDelegate<GiveawayListModel>(
-                            itemBuilder: (context, giveaway, index) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GiveawayListTile(
-                                    giveaway: giveaway,
-                                    onTileChange: () => changeGiveawayState(
-                                        giveaway, context, setState),
-                                  ),
-                                ]),
+                          builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                            itemBuilder: (context, giveaway, index) =>
+                                Column(mainAxisSize: MainAxisSize.min, children: [
+                              GiveawayListTile(
+                                giveaway: giveaway,
+                                onTileChange: () =>
+                                    changeGiveawayState(giveaway, context, setState),
+                              ),
+                            ]),
                             newPageProgressIndicatorBuilder: (context) =>
                                 PagedProgressIndicator(),
                           ))
                     ])))
             : LoggedOut()
-        : ErrorPage(
-            error: _exception,
-            url: _url,
-            stackTrace: _stackTrace,
-            type: 'group');
+        : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'group');
   }
 
   void _fetchPage(int pageKey, BuildContext context) async {
     try {
-      String data =
-          await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
+      String data = await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
 
       dom.Document document = parse(data);
-      dom.Element container =
-          document.getElementsByClassName('widget-container')[0];
+      dom.Element container = document.getElementsByClassName('widget-container')[0];
       if (pageKey == 1) {
         _url =
             'https://www.steamgifts.com${container.getElementsByClassName('page__heading__breadcrumbs').first.nodes.first.attributes['href']}/';
-        dom.Element featured =
-            document.getElementsByClassName('featured__inner-wrap')[0];
+        dom.Element featured = document.getElementsByClassName('featured__inner-wrap')[0];
         List<dom.Element> details =
             featured.getElementsByClassName('featured__table__column');
         dom.Element sidebar = container.getElementsByClassName('sidebar')[0];

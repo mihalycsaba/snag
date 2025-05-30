@@ -114,13 +114,12 @@ class _UserState extends State<User> {
     _bgColor = buttonBackgroundColor(context);
     _giveawayPagingController.addPageRequestListener(
         (pageKey) => _fetchGiveawayList(pageKey, '$_url$_list', context));
-    _discussionsPagingController.addPageRequestListener((pageKey) =>
-        fetchDiscussions(
-            user: true,
-            pagingController: _discussionsPagingController,
-            pageKey: pageKey,
-            url: '$_url/discussions/search?',
-            context: context));
+    _discussionsPagingController.addPageRequestListener((pageKey) => fetchDiscussions(
+        user: true,
+        pagingController: _discussionsPagingController,
+        pageKey: pageKey,
+        url: '$_url/discussions/search?',
+        context: context));
   }
 
   @override
@@ -146,8 +145,7 @@ class _UserState extends State<User> {
                       }
                     },
                   ),
-                  title:
-                      Text(widget.name, style: const TextStyle(fontSize: 18)),
+                  title: Text(widget.name, style: const TextStyle(fontSize: 18)),
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   actions: <Widget>[
                     _isUser
@@ -160,13 +158,12 @@ class _UserState extends State<User> {
                                         setState(() {
                                           _notLoading = false;
                                         });
-                                        _changeListState(_ListType.whitelist,
-                                            _user.whitelisted!);
+                                        _changeListState(
+                                            _ListType.whitelist, _user.whitelisted!);
                                       }
                                     : null,
                                 child: _user.whitelisted!
-                                    ? Icon(Icons.favorite,
-                                        color: Colors.lightBlueAccent)
+                                    ? Icon(Icons.favorite, color: Colors.lightBlueAccent)
                                     : Icon(Icons.favorite_outline)),
                           ),
                     _isUser
@@ -221,14 +218,13 @@ class _UserState extends State<User> {
                                   _bookmarked = !_bookmarked;
                                 });
                               },
-                              child: Icon(_bookmarked
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border),
+                              child: Icon(
+                                  _bookmarked ? Icons.bookmark : Icons.bookmark_border),
                             ),
                           ),
                     InkWell(
-                      onTap: () => SharePlus.instance
-                          .share(ShareParams(uri: Uri.parse(_url))),
+                      onTap: () =>
+                          SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
                       child: Icon(Icons.share),
                     ),
                     Padding(
@@ -240,8 +236,7 @@ class _UserState extends State<User> {
                   ],
                 ),
                 body: RefreshIndicator(
-                  onRefresh: () =>
-                      Future.sync(() => _giveawayPagingController.refresh()),
+                  onRefresh: () => Future.sync(() => _giveawayPagingController.refresh()),
                   child: Center(
                     child: Column(
                       children: [
@@ -252,15 +247,13 @@ class _UserState extends State<User> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                SizedBox(
-                                    width: 80, height: 80, child: _user.image),
+                                SizedBox(width: 80, height: 80, child: _user.image),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: SizedBox(
                                     width: 170,
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Role: ${_user.role}',
@@ -274,11 +267,9 @@ class _UserState extends State<User> {
                                             ),
                                             Text(
                                               _user.online,
-                                              style: _user.online
-                                                      .contains('Online')
+                                              style: _user.online.contains('Online')
                                                   ? TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 12)
+                                                      color: Colors.green, fontSize: 12)
                                                   : _detailsTextStyle,
                                             ),
                                           ],
@@ -325,8 +316,7 @@ class _UserState extends State<User> {
                           children: [
                             TextButton(
                                 style: ButtonStyle(
-                                  backgroundColor:
-                                      _list == '' ? _bgColor : null,
+                                  backgroundColor: _list == '' ? _bgColor : null,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -366,36 +356,29 @@ class _UserState extends State<User> {
                         Flexible(
                           child: _list == '/discussions'
                               ? DiscussionsList(
-                                  pagingController:
-                                      _discussionsPagingController)
+                                  pagingController: _discussionsPagingController)
                               : Consumer<ThemeProvider>(
-                                  builder: (context, theme, child) => PagedListView<
-                                          int, GiveawayListModel>(
-                                      itemExtent:
-                                          CustomPagedListTheme.itemExtent +
-                                              addItemExtent(theme.fontSize),
-                                      pagingController:
-                                          _giveawayPagingController,
-                                      builderDelegate: PagedChildBuilderDelegate<
-                                              GiveawayListModel>(
-                                          itemBuilder: (context, giveaway,
-                                                  index) =>
-                                              Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  GiveawayListTile(
-                                                    giveaway: giveaway,
-                                                    onTileChange: () =>
-                                                        changeGiveawayState(
-                                                            giveaway,
-                                                            context,
-                                                            setState),
+                                  builder: (context, theme, child) => PagedListView<int,
+                                          GiveawayListModel>(
+                                      itemExtent: CustomPagedListTheme.itemExtent +
+                                          addItemExtent(theme.fontSize),
+                                      pagingController: _giveawayPagingController,
+                                      builderDelegate:
+                                          PagedChildBuilderDelegate<GiveawayListModel>(
+                                              itemBuilder: (context, giveaway, index) =>
+                                                  Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      GiveawayListTile(
+                                                        giveaway: giveaway,
+                                                        onTileChange: () =>
+                                                            changeGiveawayState(giveaway,
+                                                                context, setState),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                          newPageProgressIndicatorBuilder:
-                                              (context) =>
-                                                  PagedProgressIndicator())),
+                                              newPageProgressIndicatorBuilder:
+                                                  (context) => PagedProgressIndicator())),
                                 ),
                         ),
                       ],
@@ -403,20 +386,14 @@ class _UserState extends State<User> {
                   ),
                 ))
             : LoggedOut()
-        : ErrorPage(
-            error: _exception,
-            url: _url,
-            stackTrace: _stackTrace,
-            type: 'user');
+        : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'user');
   }
 
-  Future<void> _fetchGiveawayList(
-      int pageKey, String page, BuildContext context) async {
+  Future<void> _fetchGiveawayList(int pageKey, String page, BuildContext context) async {
     String data = await fetchBody(url: '$page?page=${pageKey.toString()}');
     _isUser = widget.name == username;
     try {
-      dom.Element container =
-          parse(data).getElementsByClassName('widget-container')[0];
+      dom.Element container = parse(data).getElementsByClassName('widget-container')[0];
 
       if (pageKey == 1 && _list == '') {
         dom.Element header =
@@ -473,24 +450,26 @@ class _UserState extends State<User> {
                 .text
                 .trim(),
             level: jsonDecode(details[1]
-                    .getElementsByClassName('featured__table__row')[3]
-                    .getElementsByClassName('featured__table__row__right')[0]
-                    .children[0]
-                    .attributes['data-ui-tooltip']!)['rows'][0]['columns'][1]
-                ['name'],
+                .getElementsByClassName('featured__table__row')[3]
+                .getElementsByClassName('featured__table__row__right')[0]
+                .children[0]
+                .attributes['data-ui-tooltip']!)['rows'][0]['columns'][1]['name'],
             steam: _isUser
                 ? buttons.children[0].attributes['href']!
                 : buttons.children[3].attributes['href']!,
             id: _isUser
                 ? null
-                : buttons
-                    .children[0].children[0].children[2].attributes['value']!,
+                : buttons.children[0].children[0].children[2].attributes['value']!,
             whitelisted: _isUser
                 ? null
                 : buttons
                     .getElementsByClassName('sidebar__shortcut__whitelist is-selected')
                     .isNotEmpty,
-            blacklisted: _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
+            blacklisted: _isUser
+                ? null
+                : buttons
+                    .getElementsByClassName('sidebar__shortcut__blacklist is-selected')
+                    .isNotEmpty);
         setState(() {});
       }
       List<GiveawayListModel> giveaways = parseList(container, widget.name);
@@ -513,14 +492,10 @@ class _UserState extends State<User> {
     Map responseMap = await resMapAjax(body);
     if (responseMap['type'] == 'success') {
       if (type == _ListType.whitelist) {
-        !_user.whitelisted! && _user.blacklisted!
-            ? _user.blacklisted = false
-            : null;
+        !_user.whitelisted! && _user.blacklisted! ? _user.blacklisted = false : null;
         _user.whitelisted = !_user.whitelisted!;
       } else {
-        !_user.blacklisted! && _user.whitelisted!
-            ? _user.whitelisted = false
-            : null;
+        !_user.blacklisted! && _user.whitelisted! ? _user.whitelisted = false : null;
         _user.blacklisted = !_user.blacklisted!;
       }
       setState(() {
@@ -529,7 +504,7 @@ class _UserState extends State<User> {
     }
   }
 
-  _changeBookmark() {
+  void _changeBookmark() {
     if (_bookmarked) {
       _bookmark = objectbox.getUserBookmarked(widget.name);
       objectbox.removeUserBookmark(_bookmark.first.id);

@@ -63,8 +63,7 @@ class _DiscussionFilterDialog extends StatefulWidget {
   const _DiscussionFilterDialog();
 
   @override
-  State<_DiscussionFilterDialog> createState() =>
-      _DiscussionFilterDialogState();
+  State<_DiscussionFilterDialog> createState() => _DiscussionFilterDialogState();
 }
 
 class _DiscussionFilterDialogState extends State<_DiscussionFilterDialog> {
@@ -102,9 +101,7 @@ class _DiscussionFilterDialogState extends State<_DiscussionFilterDialog> {
           TextButton(
               child: const Text('Clear'),
               onPressed: () {
-                context
-                    .read<DiscussionFilterProvider>()
-                    .updateModel(SimpleFilterModel());
+                context.read<DiscussionFilterProvider>().updateModel(SimpleFilterModel());
                 context.read<DiscussionFilterProvider>().updateFilter('');
                 Navigator.of(context).pop();
               }),
@@ -116,8 +113,9 @@ class _DiscussionFilterDialogState extends State<_DiscussionFilterDialog> {
                   if (_search.text != '') {
                     filter = '$filter&q=${_search.text.trim()}';
                   }
-                  context.read<DiscussionFilterProvider>().updateModel(
-                      SimpleFilterModel(search: _search.text.trim()));
+                  context
+                      .read<DiscussionFilterProvider>()
+                      .updateModel(SimpleFilterModel(search: _search.text.trim()));
                   context.read<DiscussionFilterProvider>().updateFilter(filter);
 
                   Navigator.of(context).pop();

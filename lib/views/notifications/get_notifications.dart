@@ -33,8 +33,8 @@ void getNotifications(dom.Document document, BuildContext context) {
       notifications.messages, notifications.keysAvailable);
 }
 
-void _updateNotifications(BuildContext context, String gifts, String won,
-    String messages, bool keysAvailable) {
+void _updateNotifications(
+    BuildContext context, String gifts, String won, String messages, bool keysAvailable) {
   context.read<GiftsProvider>().updateGifts(gifts);
   context.read<WonProvider>().updateWon(won, keysAvailable);
   context.read<MessagesProvider>().updateMessages(messages);
