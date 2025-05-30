@@ -34,9 +34,7 @@ class _CommentModel {
   int messageLength;
   List<_CommentModel> replies;
   _CommentModel(
-      {required this.message,
-      required this.messageLength,
-      required this.replies});
+      {required this.message, required this.messageLength, required this.replies});
 }
 
 class Comments extends StatefulWidget {
@@ -83,18 +81,15 @@ class _CommentsState extends State<Comments> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pagingController
-        .addPageRequestListener((pageKey) => _fetchComments(pageKey, _url));
+    _pagingController.addPageRequestListener((pageKey) => _fetchComments(pageKey, _url));
   }
 
   Future<void> _fetchComments(int pageKey, String url) async {
     String data = pageKey == 1 && refresh == false
         ? widget.firstPage
         : await fetchBody(
-            url: '$url?page=${pageKey.toString()}',
-            isBlacklisted: widget.isBlacklisted);
-    dom.Element container =
-        parse(data).getElementsByClassName('widget-container').first;
+            url: '$url?page=${pageKey.toString()}', isBlacklisted: widget.isBlacklisted);
+    dom.Element container = parse(data).getElementsByClassName('widget-container').first;
     List<dom.Element> list = container.getElementsByClassName('comments');
     List<_CommentModel> comments = [];
     if (widget.isGiveaway) {
@@ -112,22 +107,19 @@ class _CommentsState extends State<Comments> {
       for (dom.Element element in elements) {
         List<dom.Element> comment = element.children;
         List<dom.Element> replies = comment[1].children;
-        dom.Element data = comment[0]
-            .getElementsByClassName('comment__description markdown')[0];
+        dom.Element data =
+            comment[0].getElementsByClassName('comment__description markdown')[0];
         String id = element.attributes['data-comment-id']!;
-        dom.Element user =
-            comment[0].getElementsByClassName('comment__username')[0];
+        dom.Element user = comment[0].getElementsByClassName('comment__username')[0];
         List<dom.Element> userChildren = user.children;
-        List<dom.Element> role =
-            comment[0].getElementsByClassName('comment__role-name');
+        List<dom.Element> role = comment[0].getElementsByClassName('comment__role-name');
         comments.add(_CommentModel(
             message: CommentMessage(
               data: data,
               id: id,
               name: user.text,
-              userHref: userChildren.isNotEmpty
-                  ? userChildren[0].attributes['href']!
-                  : null,
+              userHref:
+                  userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null,
               ago: comment[0]
                   .getElementsByClassName('comment__actions')[0]
                   .nodes[1]
@@ -146,11 +138,9 @@ class _CommentsState extends State<Comments> {
                       .text
                   : '',
               undelete: comment[0]
-                  .getElementsByClassName(
-                      'comment__actions__button js__comment-undelete')
+                  .getElementsByClassName('comment__actions__button js__comment-undelete')
                   .isNotEmpty,
-              patron:
-                  comment[0].getElementsByClassName('fa fa-star').isNotEmpty,
+              patron: comment[0].getElementsByClassName('fa fa-star').isNotEmpty,
               role: role.isNotEmpty ? role[0].text.trim() : '',
             ),
             messageLength: data.text.trim().length,
@@ -167,8 +157,7 @@ class _CommentsState extends State<Comments> {
         builderDelegate: PagedChildBuilderDelegate<_CommentModel>(
             itemBuilder: (context, comment, index) =>
                 _Comment(comment: comment, indent: 0),
-            newPageProgressIndicatorBuilder: (context) =>
-                PagedProgressIndicator()));
+            newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator()));
   }
 }
 

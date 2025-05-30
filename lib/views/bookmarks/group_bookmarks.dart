@@ -46,8 +46,7 @@ class _GroupBookmarksState extends State<GroupBookmarks> {
           return ListTile(
             title: Text(_bookmarks[index].name),
             onTap: () async {
-              await customNav(
-                  Group(href: '/group/${_bookmarks[index].href}/'), context);
+              await customNav(Group(href: '/group/${_bookmarks[index].href}/'), context);
               _bookmarks = objectbox.getGroupBookmarks();
               setState(() {});
             },
@@ -67,8 +66,7 @@ class _GroupBookmarksState extends State<GroupBookmarks> {
                             TextButton(
                               child: const Text('Yes'),
                               onPressed: () {
-                                objectbox
-                                    .removeGroupBookmark(_bookmarks[index].id);
+                                objectbox.removeGroupBookmark(_bookmarks[index].id);
                                 _bookmarks = objectbox.getGroupBookmarks();
                                 setState(() {});
                                 Navigator.pop(context);

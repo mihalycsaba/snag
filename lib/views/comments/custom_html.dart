@@ -82,11 +82,9 @@ class CustomHtml extends StatelessWidget {
   void _checkUrl(String url, BuildContext context) {
     if (url.startsWith('/')) url = 'https://www.steamgifts.com$url';
     if (url.contains('steamgifts.com/giveaway/')) {
-      customNav(
-          Giveaway(href: url.substring(url.indexOf('.com') + 4)), context);
+      customNav(Giveaway(href: url.substring(url.indexOf('.com') + 4)), context);
     } else if (url.contains('steamgifts.com/discussion/')) {
-      customNav(
-          Discussion(href: url.substring(url.indexOf('.com') + 4)), context);
+      customNav(Discussion(href: url.substring(url.indexOf('.com') + 4)), context);
     } else {
       urlLauncher(url);
     }

@@ -119,10 +119,10 @@ class _CommentEditorState extends State<CommentEditor> {
                     String text = _controller.text;
                     String selectedText = selection.textInside(text);
                     showDialog(
-                        context: context,
-                        builder: (context) => _CommentDialog(
-                            selectedText: selectedText,
-                            name: 'Link')).then((value) {
+                            context: context,
+                            builder: (context) =>
+                                _CommentDialog(selectedText: selectedText, name: 'Link'))
+                        .then((value) {
                       _controller.text =
                           '${text.substring(0, selection.start)}[${value[0]}](${value[1]})${text.substring(selection.end, text.length)}';
                     });
@@ -134,10 +134,10 @@ class _CommentEditorState extends State<CommentEditor> {
                   String text = _controller.text;
                   String selectedText = selection.textInside(text);
                   showDialog(
-                      context: context,
-                      builder: (context) => _CommentDialog(
-                          selectedText: selectedText,
-                          name: 'Image')).then((value) {
+                          context: context,
+                          builder: (context) =>
+                              _CommentDialog(selectedText: selectedText, name: 'Image'))
+                      .then((value) {
                     _controller.text =
                         '${text.substring(0, selection.start)}![${value[0]}](${value[1]})${text.substring(selection.end, text.length)}';
                   });
@@ -183,8 +183,8 @@ class _CommentEditorState extends State<CommentEditor> {
     _controller.text =
         '${text.substring(0, selection.start)}$formater$selectedText$formater${text.substring(selection.end, text.length)}';
     if (empty) {
-      _controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: cursor + formater.length));
+      _controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: cursor + formater.length));
     }
   }
 
@@ -227,10 +227,7 @@ class _CommentDialogState extends State<_CommentDialog> {
                     controller: _text,
                     type: TextInputType.text,
                     textCapitalization: TextCapitalization.sentences),
-                _TextRow(
-                    title: widget.name,
-                    controller: _link,
-                    type: TextInputType.url),
+                _TextRow(title: widget.name, controller: _link, type: TextInputType.url),
               ],
             )),
         actions: [

@@ -25,6 +25,7 @@ import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/functions/initialize_notifications.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/nav/custom_drawer.dart';
@@ -39,7 +40,6 @@ import 'package:snag/views/giveaways/giveaway/giveaway_filter.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_list_tile.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 import 'package:snag/views/misc/logged_out.dart';
-import 'package:snag/common/functions/initialize_notifications.dart';
 
 class GiveawayList extends StatefulWidget {
   const GiveawayList({super.key, required this.page});
@@ -49,12 +49,10 @@ class GiveawayList extends StatefulWidget {
   State<GiveawayList> createState() => _GiveawayListState();
 }
 
-class _GiveawayListState extends State<GiveawayList>
-    with WidgetsBindingObserver {
+class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver {
   final PagingController<int, GiveawayListModel> _pagingController =
       PagingController(firstPageKey: 1);
-  final FlutterLocalNotificationsPlugin _status =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _status = FlutterLocalNotificationsPlugin();
   bool _refresh = false;
 
   @override
@@ -77,17 +75,12 @@ class _GiveawayListState extends State<GiveawayList>
   List<GiveawayListModel> _parseGiveawayList(String data, int pageKey) {
     List<GiveawayListModel> giveaways = [];
     dom.Document document = parse(data);
-    if (document
-        .getElementsByClassName('pinned-giveaways__outer-wrap')
-        .isEmpty) {
-      document
-          .getElementsByClassName('giveaway__row-outer-wrap')
-          .forEach((element) {
+    if (document.getElementsByClassName('pinned-giveaways__outer-wrap').isEmpty) {
+      document.getElementsByClassName('giveaway__row-outer-wrap').forEach((element) {
         giveaways.add(parseGiveawayListElement(element));
       });
     } else {
-      if (pageKey == 1 && widget.page.name == 'All' ||
-          widget.page.name == 'Multiple') {
+      if (pageKey == 1 && widget.page.name == 'All' || widget.page.name == 'Multiple') {
         parse(document
                 .getElementsByClassName('pinned-giveaways__outer-wrap')[0]
                 .innerHtml)
@@ -145,30 +138,26 @@ class _GiveawayListState extends State<GiveawayList>
             drawer: const CustomDrawer(giveawaysOpen: true),
             body: Center(
               child: RefreshIndicator(
-                  onRefresh: () =>
-                      Future.sync(() => _pagingController.refresh()),
+                  onRefresh: () => Future.sync(() => _pagingController.refresh()),
                   child: Consumer<ThemeProvider>(
                     builder: (context, theme, child) =>
                         PagedListView<int, GiveawayListModel>(
                             itemExtent: CustomPagedListTheme.itemExtent +
                                 addItemExtent(theme.fontSize),
                             pagingController: _pagingController,
-                            builderDelegate:
-                                PagedChildBuilderDelegate<GiveawayListModel>(
-                                    itemBuilder: (context, giveaway, index) =>
-                                        Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            GiveawayListTile(
-                                              giveaway: giveaway,
-                                              onTileChange: () =>
-                                                  changeGiveawayState(giveaway,
-                                                      context, setState),
-                                            ),
-                                          ],
+                            builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                                itemBuilder: (context, giveaway, index) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GiveawayListTile(
+                                          giveaway: giveaway,
+                                          onTileChange: () => changeGiveawayState(
+                                              giveaway, context, setState),
                                         ),
-                                    newPageProgressIndicatorBuilder:
-                                        (context) => PagedProgressIndicator())),
+                                      ],
+                                    ),
+                                newPageProgressIndicatorBuilder: (context) =>
+                                    PagedProgressIndicator())),
                   )),
             ))
         : LoggedOut();

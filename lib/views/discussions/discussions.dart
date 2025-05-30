@@ -41,8 +41,7 @@ class Discussions extends StatefulWidget {
 class _DiscussionsState extends State<Discussions> {
   final PagingController<int, DiscussionModel> _pagingController =
       PagingController(firstPageKey: 1);
-  final FlutterLocalNotificationsPlugin _status =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _status = FlutterLocalNotificationsPlugin();
 
   @override
   void didChangeDependencies() {

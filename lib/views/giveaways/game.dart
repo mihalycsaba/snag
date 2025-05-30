@@ -82,8 +82,7 @@ class _GameState extends State<Game> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController
-        .addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
+    _pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -129,9 +128,7 @@ class _GameState extends State<Game> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Icon(_bookmarked
-                            ? Icons.bookmark
-                            : Icons.bookmark_border),
+                        child: Icon(_bookmarked ? Icons.bookmark : Icons.bookmark_border),
                       ),
                     ),
                     InkWell(
@@ -139,13 +136,12 @@ class _GameState extends State<Game> {
                           padding: const EdgeInsets.all(10.0),
                           child: const Icon(Icons.share),
                         ),
-                        onTap: () => SharePlus.instance
-                            .share(ShareParams(uri: Uri.parse(_url)))),
+                        onTap: () =>
+                            SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
                   ],
                 ),
                 body: RefreshIndicator(
-                  onRefresh: () =>
-                      Future.sync(() => _pagingController.refresh()),
+                  onRefresh: () => Future.sync(() => _pagingController.refresh()),
                   child: CustomScrollView(slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: Center(
@@ -155,12 +151,10 @@ class _GameState extends State<Game> {
                           child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Total giveaways: ${_game.totalGiveaways}',
@@ -176,8 +170,7 @@ class _GameState extends State<Game> {
                                           )
                                         ]),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Received: ${_game.received}',
@@ -198,47 +191,34 @@ class _GameState extends State<Game> {
                       ),
                     ),
                     Consumer<ThemeProvider>(
-                      builder: (context, theme, child) =>
-                          PagedSliverList<int, GiveawayListModel>(
-                              itemExtent: CustomPagedListTheme.itemExtent +
-                                  addItemExtent(theme.fontSize),
-                              pagingController: _pagingController,
-                              builderDelegate:
-                                  PagedChildBuilderDelegate<GiveawayListModel>(
-                                      itemBuilder: (context, giveaway, index) =>
-                                          Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                GiveawayListTile(
-                                                  giveaway: giveaway,
-                                                  onTileChange: () =>
-                                                      changeGiveawayState(
-                                                          giveaway,
-                                                          context,
-                                                          setState),
-                                                ),
-                                              ]),
-                                      newPageProgressIndicatorBuilder:
-                                          (context) =>
-                                              PagedProgressIndicator())),
+                      builder: (context, theme, child) => PagedSliverList<int,
+                              GiveawayListModel>(
+                          itemExtent: CustomPagedListTheme.itemExtent +
+                              addItemExtent(theme.fontSize),
+                          pagingController: _pagingController,
+                          builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                              itemBuilder: (context, giveaway, index) =>
+                                  Column(mainAxisSize: MainAxisSize.min, children: [
+                                    GiveawayListTile(
+                                      giveaway: giveaway,
+                                      onTileChange: () => changeGiveawayState(
+                                          giveaway, context, setState),
+                                    ),
+                                  ]),
+                              newPageProgressIndicatorBuilder: (context) =>
+                                  PagedProgressIndicator())),
                     ),
                   ]),
                 ),
               )
             : LoggedOut()
-        : ErrorPage(
-            error: _exception,
-            stackTrace: _stackTrace,
-            url: _url,
-            type: 'game');
+        : ErrorPage(error: _exception, stackTrace: _stackTrace, url: _url, type: 'game');
   }
 
   void _fetchPage(int pageKey, BuildContext context) async {
     try {
-      String data =
-          await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
-      dom.Element container =
-          parse(data).getElementsByClassName('widget-container')[0];
+      String data = await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
+      dom.Element container = parse(data).getElementsByClassName('widget-container')[0];
       if (pageKey == 1) {
         _url =
             'https://www.steamgifts.com${container.getElementsByClassName('page__heading__breadcrumbs').first.nodes.first.attributes['href']}/';
@@ -254,10 +234,8 @@ class _GameState extends State<Game> {
         List<dom.Element> details =
             featured.getElementsByClassName('featured__table__column');
         _game = _GameModel(
-          name: featured
-              .getElementsByClassName('featured__heading__medium')[0]
-              .text
-              .trim(),
+          name:
+              featured.getElementsByClassName('featured__heading__medium')[0].text.trim(),
           totalGiveaways: details[0]
               .getElementsByClassName('featured__table__row')[0]
               .getElementsByClassName('featured__table__row__right')[0]

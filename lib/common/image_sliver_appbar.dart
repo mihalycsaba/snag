@@ -31,8 +31,7 @@ class ImageSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      systemOverlayStyle:
-          SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       automaticallyImplyLeading: false,
       expandedHeight: 150 + appbarHeight,
       //floating: true,

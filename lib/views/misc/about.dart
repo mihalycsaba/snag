@@ -56,87 +56,74 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
               child: RotationTransition(
                 turns: _animation,
                 child: GestureDetector(
-                  onTap: () => _controller
-                      .forward()
-                      .whenCompleteOrCancel(_controller.reset),
+                  onTap: () =>
+                      _controller.forward().whenCompleteOrCancel(_controller.reset),
                   child: SizedBox(
                       width: 290,
                       height: 290,
-                      child: SvgPicture(
-                          AssetBytesLoader('assets/snag_fg.svg.vec'))),
+                      child: SvgPicture(AssetBytesLoader('assets/snag_fg.svg.vec'))),
                 ),
               ),
             ),
             Expanded(
                 flex: 2,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FutureBuilder(
-                        future: PackageInfo.fromPlatform(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Text(
-                                '${snapshot.data?.appName} version: ${snapshot.data?.version}',
-                                style: TextStyle(fontSize: 16));
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Created by ', style: TextStyle(fontSize: 16)),
-                            GestureDetector(
-                              onTap: () =>
-                                  customNav(User(name: 'GoatPimp'), context),
-                              child: Text('GoatPimp',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            )
-                          ],
-                        ),
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Powered by ', style: TextStyle(fontSize: 16)),
-                            GestureDetector(
-                              onTap: () => urlLauncher('https://flutter.dev/'),
-                              child: Text('Flutter 🩵',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.lightBlueAccent)),
-                            )
-                          ]),
-                    ])),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  FutureBuilder(
+                    future: PackageInfo.fromPlatform(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Text(
+                            '${snapshot.data?.appName} version: ${snapshot.data?.version}',
+                            style: TextStyle(fontSize: 16));
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Created by ', style: TextStyle(fontSize: 16)),
+                        GestureDetector(
+                          onTap: () => customNav(User(name: 'GoatPimp'), context),
+                          child: Text('GoatPimp',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('Powered by ', style: TextStyle(fontSize: 16)),
+                    GestureDetector(
+                      onTap: () => urlLauncher('https://flutter.dev/'),
+                      child: Text('Flutter 🩵',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.lightBlueAccent)),
+                    )
+                  ]),
+                ])),
             Expanded(
                 flex: 4,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => urlLauncher(
-                              'https://github.com/mihalycsaba/snag'),
-                          child: Text('Source code',
-                              style: TextStyle(fontSize: 18))),
-                      TextButton(
-                          onPressed: () => urlLauncher(
-                              'https://github.com/mihalycsaba/snag/issues'),
-                          child: Text('Report an issue',
-                              style: TextStyle(fontSize: 18))),
-                      TextButton(
-                          onPressed: () => customNav(Licenses(), context),
-                          child: Text('Open source licenses',
-                              style: TextStyle(fontSize: 18))),
-                    ])),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  TextButton(
+                      onPressed: () => urlLauncher('https://github.com/mihalycsaba/snag'),
+                      child: Text('Source code', style: TextStyle(fontSize: 18))),
+                  TextButton(
+                      onPressed: () =>
+                          urlLauncher('https://github.com/mihalycsaba/snag/issues'),
+                      child: Text('Report an issue', style: TextStyle(fontSize: 18))),
+                  TextButton(
+                      onPressed: () => customNav(Licenses(), context),
+                      child:
+                          Text('Open source licenses', style: TextStyle(fontSize: 18))),
+                ])),
             Expanded(
                 flex: 4,
                 child: Column(children: [
@@ -149,15 +136,13 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                           children: [
                             TextSpan(
                                 text: 'cg',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                                style:
+                                    TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                             TextSpan(
-                                text: ' for creating ',
-                                style: TextStyle(fontSize: 16)),
+                                text: ' for creating ', style: TextStyle(fontSize: 16)),
                           ])),
                       GestureDetector(
-                        onTap: () =>
-                            urlLauncher('https://steamgifts.com/', true),
+                        onTap: () => urlLauncher('https://steamgifts.com/', true),
                         child: Text('steamgifts.com',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -180,8 +165,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                               )),
                         ),
                         GestureDetector(
-                          onTap: () =>
-                              urlLauncher('https://www.patreon.com/steamgifts'),
+                          onTap: () => urlLauncher('https://www.patreon.com/steamgifts'),
                           child: Text('Patreon',
                               style: TextStyle(
                                   fontSize: 16,

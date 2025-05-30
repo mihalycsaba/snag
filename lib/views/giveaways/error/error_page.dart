@@ -58,15 +58,12 @@ class ErrorPage extends StatelessWidget {
                   ),
                   Center(
                       child: Text(
-                    stackTrace == null
-                        ? error
-                        : 'Most likely the URL is invalid.',
+                    stackTrace == null ? error : 'Most likely the URL is invalid.',
                     style: TextStyle(color: Colors.blue, fontSize: 18),
                   )),
                   Column(
                     children: [
-                      Text('URL: $url',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('URL: $url', style: TextStyle(fontWeight: FontWeight.bold)),
                       stackTrace != null ? Text(error) : Container(),
                       stackTrace != null ? Text(stackTrace!) : Container(),
                     ],
@@ -99,11 +96,9 @@ class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: <Widget>[
         GestureDetector(
-          onTap: () =>
-              SharePlus.instance.share(ShareParams(uri: Uri.parse(url))),
+          onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse(url))),
           child: const Padding(
-            padding: EdgeInsets.only(
-                left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
+            padding: EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
             child: Icon(
               Icons.share,
             ),

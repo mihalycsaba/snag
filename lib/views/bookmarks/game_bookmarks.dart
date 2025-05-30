@@ -81,8 +81,7 @@ class _GameBookmarksState extends State<GameBookmarks> {
                               TextButton(
                                 child: const Text('Yes'),
                                 onPressed: () {
-                                  objectbox
-                                      .removeGameBookmark(_bookmarks[index].id);
+                                  objectbox.removeGameBookmark(_bookmarks[index].id);
                                   _bookmarks = objectbox.getGameBookmarks();
                                   setState(() {});
                                   Navigator.pop(context);

@@ -87,10 +87,7 @@ class _GiveawayDetailsModel extends GiveawayModel {
 
 class GiveawayDetails extends StatefulWidget {
   const GiveawayDetails(
-      {required this.href,
-      required this.data,
-      this.isBlacklisted = false,
-      super.key});
+      {required this.href, required this.data, this.isBlacklisted = false, super.key});
   final String href;
   final String data;
   final bool isBlacklisted;
@@ -152,26 +149,22 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
           'featured__column featured__column--width-fill text-right')[0];
       dom.Node ago = createdElement.nodes[0];
       _agoStamp = ago.attributes['data-timestamp']!;
-      dom.Element remaining =
-          _document.getElementsByClassName('featured__column')[0];
+      dom.Element remaining = _document.getElementsByClassName('featured__column')[0];
       String remainingText = remaining.text.trim();
       bool notStarted = remainingText.contains('Begins');
       _remainingStamp = remaining.nodes[2].attributes['data-timestamp']!;
-      List<dom.Element> sidebarError =
-          _document.getElementsByClassName('sidebar__error');
-      String? error =
-          sidebarError.isNotEmpty ? sidebarError[0].text.trim() : null;
-      _name =
-          _document.getElementsByClassName('featured__heading__medium')[0].text;
+      List<dom.Element> sidebarError = _document.getElementsByClassName('sidebar__error');
+      String? error = sidebarError.isNotEmpty ? sidebarError[0].text.trim() : null;
+      _name = _document.getElementsByClassName('featured__heading__medium')[0].text;
       String winners = !notStarted
           ? _document
               .getElementsByClassName('sidebar__navigation__item__link')[2]
               .attributes['href']!
           : '';
-      List<dom.Element> entries = _document.getElementsByClassName(
-          'sidebar__navigation__item__count live__entry-count');
-      List<dom.Element> lvl = _document
-          .getElementsByClassName('featured__column--contributor-level');
+      List<dom.Element> entries = _document
+          .getElementsByClassName('sidebar__navigation__item__count live__entry-count');
+      List<dom.Element> lvl =
+          _document.getElementsByClassName('featured__column--contributor-level');
       _giveaway = _GiveawayDetailsModel(
         name: _name,
         entries: entries.isNotEmpty ? entries[0].text : '0',
@@ -181,22 +174,15 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
             width: 200,
             height: 180,
             child: DecoratedBox(
-                decoration: BoxDecoration(color: Colors.grey),
-                child: Icon(Icons.error)),
+                decoration: BoxDecoration(color: Colors.grey), child: Icon(Icons.error)),
           ),
           imageUrl: 'https://steamcdn-a.akamaihd.net/steam/$_type'
               's/$_appid/header.jpg',
         ),
         href: widget.href,
-        entered: _document
-                .getElementsByClassName('sidebar__entry-insert')
-                .isNotEmpty &&
-            _document
-                .getElementsByClassName('sidebar__entry-delete is-hidden')
-                .isEmpty &&
-            _document
-                .getElementsByClassName('sidebar__error is-disabled')
-                .isEmpty,
+        entered: _document.getElementsByClassName('sidebar__entry-insert').isNotEmpty &&
+            _document.getElementsByClassName('sidebar__entry-delete is-hidden').isEmpty &&
+            _document.getElementsByClassName('sidebar__error is-disabled').isEmpty,
         remaining: remainingText,
         points: int.parse(points.substring(1, points.length - 2)),
         copies: noCopies ? null : headingSmall[0].text,
@@ -214,13 +200,11 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
         notEnded: !remainingText.contains('Ended'),
         notStarted: !notStarted,
         error: error,
-        inviteOnly: _document
-            .getElementsByClassName('featured__column--invite-only')
-            .isNotEmpty,
+        inviteOnly:
+            _document.getElementsByClassName('featured__column--invite-only').isNotEmpty,
         group: groupNotEmpty,
-        whitelist: _document
-            .getElementsByClassName('featured__column--whitelist')
-            .isNotEmpty,
+        whitelist:
+            _document.getElementsByClassName('featured__column--whitelist').isNotEmpty,
         region: _document
             .getElementsByClassName('featured__column--region-restricted')
             .isNotEmpty,
@@ -231,16 +215,13 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                 .getElementsByClassName(
                     'featured__outer-wrap featured__outer-wrap--giveaway')[0]
                 .attributes['data-game-id']!,
-        hidden: _document
-            .getElementsByClassName('featured__giveaway__hide')
-            .isEmpty,
+        hidden: _document.getElementsByClassName('featured__giveaway__hide').isEmpty,
         more: _document
             .getElementsByClassName('featured__heading')[0]
             .children[moreIndex]
             .attributes['href']!,
-        level: lvl.isEmpty
-            ? 0
-            : int.parse(lvl[0].text.substring(6, lvl[0].text.length - 1)),
+        level:
+            lvl.isEmpty ? 0 : int.parse(lvl[0].text.substring(6, lvl[0].text.length - 1)),
       );
       _descriptionText =
           _document.getElementsByClassName('page__description__display-state');
@@ -316,8 +297,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
               physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               slivers: <Widget>[
-                ImageSliverAppBar(
-                    appbarHeight: _appbarHeight, image: _giveaway.image),
+                ImageSliverAppBar(appbarHeight: _appbarHeight, image: _giveaway.image),
                 SliverAppBar(
                   primary: false,
                   toolbarHeight: kToolbarHeight + _padding,
@@ -336,8 +316,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                         Builder(
                             builder: (context) => IconButton(
                                   icon: const Icon(Icons.menu),
-                                  onPressed: () =>
-                                      Scaffold.of(context).openDrawer(),
+                                  onPressed: () => Scaffold.of(context).openDrawer(),
                                 ))
                       ],
                     ),
@@ -403,17 +382,15 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Icon(
-                              _bookmarked
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border,
+                              _bookmarked ? Icons.bookmark : Icons.bookmark_border,
                             ),
                           )),
                     ),
                     _CustomIconPadding(
                       padding: _padding,
                       child: InkWell(
-                        onTap: () => SharePlus.instance
-                            .share(ShareParams(uri: Uri.parse(_url))),
+                        onTap: () =>
+                            SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
@@ -432,40 +409,39 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                           )),
                     ),
                     MenuAnchor(
-                        builder: (context, controller, child) =>
-                            _CustomIconPadding(
-                                padding: _padding,
-                                child: InkWell(
-                                  onTap: () {
-                                    if (controller.isOpen) {
-                                      controller.close();
-                                    } else {
-                                      controller.open();
-                                    }
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.more_vert_outlined),
-                                  ),
-                                )),
+                        builder: (context, controller, child) => _CustomIconPadding(
+                            padding: _padding,
+                            child: InkWell(
+                              onTap: () {
+                                if (controller.isOpen) {
+                                  controller.close();
+                                } else {
+                                  controller.open();
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.more_vert_outlined),
+                              ),
+                            )),
                         menuChildren: [
                           CustomMenuItem(
                               icon: Icons.person,
                               text: _giveaway.creator!,
-                              onPressed: () => customNav(
-                                  User(name: _giveaway.creator!), context)),
+                              onPressed: () =>
+                                  customNav(User(name: _giveaway.creator!), context)),
                           _giveaway.group
                               ? CustomMenuItem(
                                   icon: Icons.groups,
                                   text: 'Groups',
-                                  onPressed: () => customNav(
-                                      Groups(groupUrl: _groupUrl), context))
+                                  onPressed: () =>
+                                      customNav(Groups(groupUrl: _groupUrl), context))
                               : Container(),
                           CustomMenuItem(
                               icon: Icons.search,
                               text: 'More Giveaways',
-                              onPressed: () => customNav(
-                                  Game(href: _giveaway.more), context)),
+                              onPressed: () =>
+                                  customNav(Game(href: _giveaway.more), context)),
                           _giveaway.winners != null
                               ? CustomMenuItem(
                                   icon: Icons.emoji_events,
@@ -503,11 +479,10 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                 )),
                             Row(children: [
                               GestureDetector(
-                                  onTap: () => customNav(
-                                      User(name: _giveaway.creator!), context),
+                                  onTap: () =>
+                                      customNav(User(name: _giveaway.creator!), context),
                                   child: Consumer<ThemeProvider>(
-                                      builder: (context, theme, child) =>
-                                          Row(children: [
+                                      builder: (context, theme, child) => Row(children: [
                                             Icon(Icons.person,
                                                 size: 16.0 + theme.fontSize),
                                             Text(_giveaway.creator!,
@@ -519,8 +494,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               const Spacer(),
                               _giveaway.copies != null
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
+                                      padding: const EdgeInsets.only(right: 4.0),
                                       child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
@@ -533,31 +507,25 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                   child: Text('Level ${_giveaway.level}'))
                             ]),
                             Consumer<ThemeProvider>(
-                              builder: (context, theme, child) =>
-                                  Row(children: [
+                              builder: (context, theme, child) => Row(children: [
                                 Icon(Icons.group, size: 14.0 + theme.fontSize),
                                 const SizedBox(width: 1),
                                 Text(
                                   '${_giveaway.entries} entries ',
                                   style: TextStyle(
-                                      fontSize:
-                                          _detailsFontSize + theme.fontSize),
+                                      fontSize: _detailsFontSize + theme.fontSize),
                                 ),
-                                Icon(Icons.calendar_today,
-                                    size: 10.0 + theme.fontSize),
+                                Icon(Icons.calendar_today, size: 10.0 + theme.fontSize),
                                 const SizedBox(width: 1),
                                 Text('${_giveaway.ago!} ago',
                                     style: TextStyle(
-                                        fontSize:
-                                            _detailsFontSize + theme.fontSize)),
+                                        fontSize: _detailsFontSize + theme.fontSize)),
                                 const Spacer(),
-                                Icon(Icons.schedule,
-                                    size: 12.0 + theme.fontSize),
+                                Icon(Icons.schedule, size: 12.0 + theme.fontSize),
                                 SizedBox(width: 1),
                                 Text(_giveaway.remaining.toLowerCase(),
                                     style: TextStyle(
-                                        fontSize:
-                                            _detailsFontSize + theme.fontSize)),
+                                        fontSize: _detailsFontSize + theme.fontSize)),
                               ]),
                             )
                           ],
@@ -582,26 +550,20 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                           ? TextButton(
                                               onPressed: _giveaway.entered ||
                                                       context
-                                                              .read<
-                                                                  PointsProvider>()
+                                                              .read<PointsProvider>()
                                                               .points >=
                                                           _giveaway.points!
                                                   ? () async {
                                                       await changeGiveawayState(
-                                                          _giveaway,
-                                                          context,
-                                                          setState);
+                                                          _giveaway, context, setState);
                                                     }
                                                   : null,
                                               child: _giveaway.entered
-                                                  ? Text(
-                                                      'Leave (${_giveaway.points}P)')
-                                                  : Text(
-                                                      'Enter (${_giveaway.points}P)'))
+                                                  ? Text('Leave (${_giveaway.points}P)')
+                                                  : Text('Enter (${_giveaway.points}P)'))
                                           : Container()
                                       : Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
+                                          padding: const EdgeInsets.only(left: 8.0),
                                           child: Text(_giveaway.error!),
                                         )),
                           TextButton(
@@ -628,13 +590,12 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               : Container(),
                           _giveaway.group
                               ? InkWell(
-                                  onTap: () => customNav(
-                                      Groups(groupUrl: _groupUrl), context),
+                                  onTap: () =>
+                                      customNav(Groups(groupUrl: _groupUrl), context),
                                   child: Padding(
                                     padding: _iconPadding,
                                     child: Icon(Icons.groups,
-                                        size: _iconSize + 4,
-                                        color: Colors.green),
+                                        size: _iconSize + 4, color: Colors.green),
                                   ),
                                 )
                               : Container(),
@@ -642,8 +603,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               ? Padding(
                                   padding: _iconPadding,
                                   child: Icon(Icons.favorite,
-                                      size: _iconSize,
-                                      color: Colors.pinkAccent),
+                                      size: _iconSize, color: Colors.pinkAccent),
                                 )
                               : Container(),
                           _giveaway.region
@@ -725,8 +685,7 @@ class CustomMenuItem extends StatelessWidget {
               child: Icon(icon),
             ),
             Text(text,
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.normal)),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
           ],
         ),
       ),
@@ -742,7 +701,6 @@ class _CustomIconPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(top: padding, right: 6), child: child);
+    return Padding(padding: EdgeInsets.only(top: padding, right: 6), child: child);
   }
 }

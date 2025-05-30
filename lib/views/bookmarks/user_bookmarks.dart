@@ -56,8 +56,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
                     context: context,
                     builder: (context) => AlertDialog(
                             title: const Text('Delete'),
-                            content: const Text(
-                                'Do you want to delete this bookmark?'),
+                            content: const Text('Do you want to delete this bookmark?'),
                             actions: [
                               TextButton(
                                 child: const Text('Cancel'),
@@ -66,8 +65,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
                               TextButton(
                                 child: const Text('Yes'),
                                 onPressed: () {
-                                  objectbox
-                                      .removeUserBookmark(_bookmarks[index].id);
+                                  objectbox.removeUserBookmark(_bookmarks[index].id);
                                   _bookmarks = objectbox.getUserBookmarks();
                                   setState(() {});
                                   Navigator.pop(context);

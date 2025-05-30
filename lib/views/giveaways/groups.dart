@@ -41,8 +41,7 @@ class _GroupsState extends State<Groups> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    String data =
-        await fetchBody(url: 'https://www.steamgifts.com/${widget.groupUrl}');
+    String data = await fetchBody(url: 'https://www.steamgifts.com/${widget.groupUrl}');
     dom.Document document = parse(data);
     document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
       dom.Element group = element

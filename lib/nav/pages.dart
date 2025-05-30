@@ -77,23 +77,17 @@ class GiveawayPages extends Pages {
       "Wishlist",
       "/wishlist");
   static const group = GiveawayPages(
-      "https://www.steamgifts.com/giveaways/search?type=group",
-      "Group",
-      "/group");
+      "https://www.steamgifts.com/giveaways/search?type=group", "Group", "/group");
   static const dlc = GiveawayPages(
       "https://www.steamgifts.com/giveaways/search?dlc=true", "DLC", "/dlc");
   static const multi = GiveawayPages(
-      "https://www.steamgifts.com/giveaways/search?copy_min=2",
-      "Multiple",
-      "/multiple");
+      "https://www.steamgifts.com/giveaways/search?copy_min=2", "Multiple", "/multiple");
   static const recommended = GiveawayPages(
       "https://www.steamgifts.com/giveaways/search?type=recommended",
       "Recommended",
       "/recommended");
   static const latest = GiveawayPages(
-      "https://www.steamgifts.com/giveaways/search?type=new",
-      "Latest",
-      "/latest");
+      "https://www.steamgifts.com/giveaways/search?type=new", "Latest", "/latest");
 
   static Map<String, Widget> get widgetsMap => {
         all.route: const GiveawayList(page: GiveawayPages.all),
@@ -110,9 +104,7 @@ class GiveawayPages extends Pages {
 
 class Entered extends Pages {
   static const entered = Entered(
-      "https://www.steamgifts.com/giveaways/entered/search?",
-      "Entered",
-      "/entered");
+      "https://www.steamgifts.com/giveaways/entered/search?", "Entered", "/entered");
 
   const Entered(super._url, super._name, super._route);
 }
@@ -139,17 +131,13 @@ class DiscussionPages extends Pages {
       "Game Showcase",
       "/game-showcase");
   static const general = DiscussionPages(
-      "https://www.steamgifts.com/discussions/general/search?",
-      "General",
-      "/general");
+      "https://www.steamgifts.com/discussions/general/search?", "General", "/general");
   static const recruitment = DiscussionPages(
       "https://www.steamgifts.com/discussions/group-recruitment/search?",
       "Group Recruitment",
       "/group-recruitment");
   static const hardware = DiscussionPages(
-      "https://www.steamgifts.com/discussions/hardware/search?",
-      "Hardware",
-      "/hardware");
+      "https://www.steamgifts.com/discussions/hardware/search?", "Hardware", "/hardware");
   static const help = DiscussionPages(
     "https://www.steamgifts.com/discussions/help/search?",
     "Help",
@@ -189,8 +177,7 @@ class DiscussionPages extends Pages {
   static Map<String, Widget> get widgetsMap => {
         all.route: const Discussions(page: DiscussionPages.all),
         tools.route: const Discussions(page: DiscussionPages.tools),
-        announcements.route:
-            const Discussions(page: DiscussionPages.announcements),
+        announcements.route: const Discussions(page: DiscussionPages.announcements),
         suggestions.route: const Discussions(page: DiscussionPages.suggestions),
         deals.route: const Discussions(page: DiscussionPages.deals),
         showcase.route: const Discussions(page: DiscussionPages.showcase),

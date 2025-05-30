@@ -43,8 +43,7 @@ class DiscussionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, theme, child) => PagedListView<int, DiscussionModel>(
-        itemExtent:
-            CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
+        itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
         pagingController: pagingController,
         builderDelegate: PagedChildBuilderDelegate<DiscussionModel>(
           itemBuilder: (context, discussion, index) => Column(
@@ -59,8 +58,7 @@ class DiscussionsList extends StatelessWidget {
                   height: 40,
                   child: CachedNetworkImage(
                     imageUrl: discussion.avatar,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
                 title: Consumer<ThemeProvider>(
@@ -84,9 +82,8 @@ class DiscussionsList extends StatelessWidget {
                               child: Text(
                                 discussion.title,
                                 style: TextStyle(
-                                    fontSize:
-                                        CustomListTileTheme.titleTextSize +
-                                            theme.fontSize),
+                                    fontSize: CustomListTileTheme.titleTextSize +
+                                        theme.fontSize),
                                 overflow: CustomListTileTheme.overflow,
                               ),
                             ),
@@ -105,13 +102,11 @@ class DiscussionsList extends StatelessWidget {
                                   2 +
                                   theme.fontSize / 1.9),
                         ])),
-                onTap: () =>
-                    customNav(Discussion(href: discussion.href), context),
+                onTap: () => customNav(Discussion(href: discussion.href), context),
               ),
             ],
           ),
-          newPageProgressIndicatorBuilder: (context) =>
-              PagedProgressIndicator(),
+          newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator(),
         ),
       ),
     );
@@ -137,8 +132,7 @@ Future<void> fetchDiscussions(
 List<DiscussionModel> _parseDiscussionList(dom.Document document) {
   List<DiscussionModel> discussions = [];
   document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
-    dom.Element heading =
-        element.getElementsByClassName('table__column__heading')[0];
+    dom.Element heading = element.getElementsByClassName('table__column__heading')[0];
     List<dom.Element> secondary =
         element.getElementsByClassName('table__column__secondary-link');
     List<dom.Element> last =
@@ -149,17 +143,15 @@ List<DiscussionModel> _parseDiscussionList(dom.Document document) {
         user: secondary[1].text,
         href: heading.attributes['href']!,
         avatar: getAvatar(element, 'table_image_avatar'),
-        closed: element
-            .getElementsByClassName('icon-red icon-heading fa fa-lock')
-            .isNotEmpty,
+        closed:
+            element.getElementsByClassName('icon-red icon-heading fa fa-lock').isNotEmpty,
         comments: secondary[2].text,
         created: secondary[0].nextElementSibling!.text,
         last: last.isNotEmpty
             ? ' · L: ${last[0].nodes[1].text!.split(' ago').first} ago'
             : '',
-        poll: element
-            .getElementsByClassName('icon-heading fa fa-align-left')
-            .isNotEmpty));
+        poll:
+            element.getElementsByClassName('icon-heading fa fa-align-left').isNotEmpty));
   });
   return discussions;
 }

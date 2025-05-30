@@ -80,17 +80,14 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
     return RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: Consumer<ThemeProvider>(
-          builder: (context, theme, child) => PagedListView<int,
-                  CreatedListModel>(
-              itemExtent: CustomPagedListTheme.itemExtent +
-                  addItemExtent(theme.fontSize),
+          builder: (context, theme, child) => PagedListView<int, CreatedListModel>(
+              itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<CreatedListModel>(
                   itemBuilder: (context, created, index) => Column(children: [
                         ListTile(
                             contentPadding: CustomListTileTheme.contentPadding,
-                            minVerticalPadding:
-                                CustomListTileTheme.minVerticalPadding,
+                            minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                             dense: CustomListTileTheme.dense,
                             selected: !created.received,
                             leading: SizedBox(
@@ -98,34 +95,28 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
                               child: created.image,
                             ),
                             title: Consumer<ThemeProvider>(
-                              builder: (context, theme, child) => Text(
-                                  created.name,
+                              builder: (context, theme, child) => Text(created.name,
                                   style: TextStyle(
-                                      fontSize:
-                                          CustomListTileTheme.titleTextSize +
-                                              theme.fontSize),
+                                      fontSize: CustomListTileTheme.titleTextSize +
+                                          theme.fontSize),
                                   overflow: CustomListTileTheme.overflow),
                             ),
                             subtitle: Consumer<ThemeProvider>(
                               builder: (context, theme, child) => Text(
                                 created.time,
                                 style: TextStyle(
-                                    fontSize:
-                                        CustomListTileTheme.subtitleTextSize +
-                                            theme.fontSize),
+                                    fontSize: CustomListTileTheme.subtitleTextSize +
+                                        theme.fontSize),
                               ),
                             ),
-                            onTap: () => customNav(
-                                Giveaway(href: created.href), context),
+                            onTap: () => customNav(Giveaway(href: created.href), context),
                             trailing: created.sendLink != null
                                 ? TextButton(
                                     child: Text('Winners'),
                                     onPressed: () => customNav(
-                                      Winners(
-                                          link: created.sendLink!, self: true),
+                                      Winners(link: created.sendLink!, self: true),
                                       context,
-                                    ).then(
-                                        (value) => _pagingController.refresh()),
+                                    ).then((value) => _pagingController.refresh()),
                                   )
                                 : null),
                       ]),
@@ -145,9 +136,7 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
 
   List<CreatedListModel> parseCreatedList(String data) {
     List<CreatedListModel> createdList = [];
-    parse(data)
-        .getElementsByClassName('table__row-inner-wrap')
-        .forEach((element) {
+    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
       createdList.add(parseCreatedListElement(element));
     });
     return createdList;
@@ -155,8 +144,7 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
 
   CreatedListModel parseCreatedListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
-    List<dom.Element> img =
-        item.getElementsByClassName('table_image_thumbnail');
+    List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
     String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
     image = image == '' ? '' : image?.substring(21, image.length - 2);
     List<dom.Element> status =
@@ -168,8 +156,7 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
         : links.length == 1
             ? links[0]
             : links[1];
-    dom.Element heading =
-        item.getElementsByClassName('table__column__heading')[0];
+    dom.Element heading = item.getElementsByClassName('table__column__heading')[0];
     return CreatedListModel(
         name: heading.text,
         image: image == ''

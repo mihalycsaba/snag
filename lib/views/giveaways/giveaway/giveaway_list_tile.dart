@@ -30,8 +30,7 @@ import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 typedef TileChangeCallback = void Function();
 
 class GiveawayListTile extends StatefulWidget {
-  const GiveawayListTile(
-      {required this.giveaway, this.onTileChange, super.key});
+  const GiveawayListTile({required this.giveaway, this.onTileChange, super.key});
   final GiveawayListModel giveaway;
   final TileChangeCallback? onTileChange;
 
@@ -48,8 +47,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
   @override
   void initState() {
     super.initState();
-    _copies =
-        widget.giveaway.copies != null ? ' ${widget.giveaway.copies}' : null;
+    _copies = widget.giveaway.copies != null ? ' ${widget.giveaway.copies}' : null;
     _points = widget.giveaway.points != null
         ? '${widget.giveaway.points.toString()}P · '
         : null;
@@ -66,8 +64,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
           dense: CustomListTileTheme.dense,
           selected: widget.giveaway.entered,
           leading: SizedBox(
-              width: CustomListTileTheme.leadingWidth,
-              child: widget.giveaway.image),
+              width: CustomListTileTheme.leadingWidth, child: widget.giveaway.image),
           title: Row(
             children: [
               Flexible(
@@ -75,8 +72,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
                 child: Text(
                   widget.giveaway.name,
                   style: TextStyle(
-                    fontSize:
-                        CustomListTileTheme.titleTextSize + theme.fontSize,
+                    fontSize: CustomListTileTheme.titleTextSize + theme.fontSize,
                   ),
                   overflow: CustomListTileTheme.overflow,
                 ),
@@ -85,8 +81,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
                   ? Text(
                       _copies!,
                       style: TextStyle(
-                        fontSize:
-                            CustomListTileTheme.titleTextSize + theme.fontSize,
+                        fontSize: CustomListTileTheme.titleTextSize + theme.fontSize,
                       ),
                     )
                   : Container()
@@ -95,8 +90,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
           subtitle: Row(
             children: [
               widget.giveaway.inviteOnly
-                  ? Icon(Icons.lock,
-                      size: CustomListTileTheme.iconSize + theme.fontSize)
+                  ? Icon(Icons.lock, size: CustomListTileTheme.iconSize + theme.fontSize)
                   : Container(),
               widget.giveaway.group
                   ? Icon(Icons.groups,
@@ -117,27 +111,21 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
               widget.giveaway.points != null
                   ? Text(_points!,
                       style: TextStyle(
-                          fontSize: CustomListTileTheme.subtitleTextSize +
-                              theme.fontSize))
+                          fontSize:
+                              CustomListTileTheme.subtitleTextSize + theme.fontSize))
                   : Container(),
               Text(_gaLevel,
                   style: TextStyle(
-                      fontSize:
-                          CustomListTileTheme.subtitleTextSize + theme.fontSize,
-                      color: widget.giveaway.level <= userLevel
-                          ? null
-                          : Colors.red)),
+                      fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize,
+                      color: widget.giveaway.level <= userLevel ? null : Colors.red)),
               Text('${widget.giveaway.entries} ',
                   style: TextStyle(
-                    fontSize:
-                        CustomListTileTheme.subtitleTextSize + theme.fontSize,
+                    fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize,
                   )),
-              Icon(Icons.people,
-                  size: CustomListTileTheme.iconSize + theme.fontSize),
+              Icon(Icons.people, size: CustomListTileTheme.iconSize + theme.fontSize),
               Text(_remaining,
                   style: TextStyle(
-                      fontSize: CustomListTileTheme.subtitleTextSize +
-                          theme.fontSize))
+                      fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize))
             ],
           ),
           trailing: widget.onTileChange != null &&
@@ -161,8 +149,9 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
               : const SizedBox(height: 0, width: 0),
           onTap: widget.giveaway.href != null
               ? () async {
-                  widget.giveaway.entered = await customNav(
-                      Giveaway(href: widget.giveaway.href!), context) as bool;
+                  widget.giveaway.entered =
+                      await customNav(Giveaway(href: widget.giveaway.href!), context)
+                          as bool;
                   setState(() {});
                 }
               : null),

@@ -33,8 +33,7 @@ void backgroundTask() async {
     Workmanager().cancelAll();
     Workmanager().initialize(_callbackDispatcher);
     Workmanager().registerPeriodicTask("bg", "simplePeriodicTask",
-        frequency:
-            Duration(minutes: prefs.getInt(PrefsKeys.backgroundFrequency.key)!),
+        frequency: Duration(minutes: prefs.getInt(PrefsKeys.backgroundFrequency.key)!),
         constraints: Constraints(
           networkType: NetworkType.connected,
           requiresBatteryNotLow: true,
@@ -56,8 +55,7 @@ void _callbackDispatcher() {
               'https://www.steamgifts.com/account/settings/profile?format=json&include_notifications=1');
       Map<String, dynamic> json = jsonDecode(data);
       int points = json['user']['points'];
-      bool pointsNotification =
-          prefs.getBool(PrefsKeys.pointsNotification.key)!;
+      bool pointsNotification = prefs.getBool(PrefsKeys.pointsNotification.key)!;
       int pointLimit = prefs.getInt(PrefsKeys.pointLimit.key)!;
 
       if (points < pointLimit && pointsNotification) {
@@ -81,9 +79,9 @@ void _callbackDispatcher() {
       } else {
         if (gifts > prefs.getInt(PrefsKeys.gifts.key)!) {
           prefs.setInt(PrefsKeys.gifts.key, gifts);
-          await Future.wait([
-            fetchBody(url: 'https://www.steamgifts.com/giveaways/created')
-          ]).then((items) {
+          await Future.wait(
+                  [fetchBody(url: 'https://www.steamgifts.com/giveaways/created')])
+              .then((items) {
             _processValues(100, items[0], gifts, 'Created gift ended', true);
           });
         }
@@ -95,8 +93,7 @@ void _callbackDispatcher() {
       } else {
         if (won > prefs.getInt(PrefsKeys.won.key)!) {
           prefs.setInt(PrefsKeys.won.key, won);
-          await Future.wait(
-                  [fetchBody(url: 'https://www.steamgifts.com/giveaways/won')])
+          await Future.wait([fetchBody(url: 'https://www.steamgifts.com/giveaways/won')])
               .then((items) {
             _processValues(200, items[0], won, 'Won gift', true);
           });
@@ -117,8 +114,7 @@ void _callbackDispatcher() {
       } else {
         if (messages > prefs.getInt(PrefsKeys.messages.key)!) {
           prefs.setInt(PrefsKeys.messages.key, messages);
-          await Future.wait(
-                  [fetchBody(url: 'https://www.steamgifts.com/messages')])
+          await Future.wait([fetchBody(url: 'https://www.steamgifts.com/messages')])
               .then((items) {
             _processValues(300, items[0], messages, 'Messages', false);
           });
@@ -153,8 +149,7 @@ void _giftNotificationsList(List<_NotificationDetailsModel> notificationsList,
 
 void _messageNotificationsList(
     List<_NotificationDetailsModel> notificationsList, String data, int i) {
-  dom.Element message =
-      parse(data).getElementsByClassName('comment__summary')[i];
+  dom.Element message = parse(data).getElementsByClassName('comment__summary')[i];
   notificationsList.add(_NotificationDetailsModel(
       message.getElementsByClassName('comment__username')[0].text.trim(),
       message.getElementsByClassName('comment__description')[0].text.trim()));
@@ -186,9 +181,9 @@ Future _showNotificationWithDefaultSound(
   status.initialize(settings);
 
   if (summary) {
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(channelId, channelName,
-            groupKey: groupKey, setAsGroupSummary: true);
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+        channelId, channelName,
+        groupKey: groupKey, setAsGroupSummary: true);
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     status.show(id, name, value, notificationDetails);
@@ -200,8 +195,7 @@ Future _showNotificationWithDefaultSound(
   }
 }
 
-NotificationDetails _notificationDetails(
-    String channelId, String channelName, bool group,
+NotificationDetails _notificationDetails(String channelId, String channelName, bool group,
     [String? groupKey]) {
   AndroidNotificationDetails androidPlatformChannelSpecifics;
   if (group) {

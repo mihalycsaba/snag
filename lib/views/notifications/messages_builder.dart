@@ -93,19 +93,16 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
               onRefresh: () => Future.sync(() => _pagingController.refresh()),
               child: PagedListView<int, _MessagesListModel>(
                   pagingController: _pagingController,
-                  builderDelegate:
-                      PagedChildBuilderDelegate<_MessagesListModel>(
-                          itemBuilder: (context, message, index) =>
-                              GestureDetector(
-                                //onTap: () => customNav(
-                                //Giveaway('go/comment/${message.id}'), context),
-                                child: message is _ReplyModel
-                                    ? _userReplyEntry(reply: message.message!)
-                                    : _messageEntry(
-                                        message: message as _MessageModel),
-                              ),
-                          newPageProgressIndicatorBuilder: (context) =>
-                              PagedProgressIndicator()))),
+                  builderDelegate: PagedChildBuilderDelegate<_MessagesListModel>(
+                      itemBuilder: (context, message, index) => GestureDetector(
+                            //onTap: () => customNav(
+                            //Giveaway('go/comment/${message.id}'), context),
+                            child: message is _ReplyModel
+                                ? _userReplyEntry(reply: message.message!)
+                                : _messageEntry(message: message as _MessageModel),
+                          ),
+                      newPageProgressIndicatorBuilder: (context) =>
+                          PagedProgressIndicator()))),
         ),
       ],
     );
@@ -113,17 +110,12 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
 
   void _fetchMessagesList(int pageKey, BuildContext context) async {
     String data = await fetchBody(
-        url:
-            'https://www.steamgifts.com/messages/search?page=${pageKey.toString()}');
+        url: 'https://www.steamgifts.com/messages/search?page=${pageKey.toString()}');
     dom.Document document = parse(data);
-    var notifications =
-        document.getElementsByClassName('nav__right-container')[0];
-    String messages =
-        notifications.children[2].innerHtml.contains('nav__notification')
-            ? notifications.children[2]
-                .getElementsByClassName('nav__notification')[0]
-                .text
-            : '0';
+    var notifications = document.getElementsByClassName('nav__right-container')[0];
+    String messages = notifications.children[2].innerHtml.contains('nav__notification')
+        ? notifications.children[2].getElementsByClassName('nav__notification')[0].text
+        : '0';
     if (!context.mounted) return;
     context.read<MessagesProvider>().updateMessages(messages);
     prefs.setInt(PrefsKeys.messages.key, int.parse(messages));
@@ -153,19 +145,15 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
   }
 
   _ReplyModel _parseReplyElement(dom.Element element) {
-    dom.Element user =
-        element.getElementsByClassName('comment__username')[0].children[0];
-    List<dom.Element> role =
-        element.getElementsByClassName('comment__role-name');
+    dom.Element user = element.getElementsByClassName('comment__username')[0].children[0];
+    List<dom.Element> role = element.getElementsByClassName('comment__role-name');
     return _ReplyModel(
         message: CommentMessage(
-          data: element
-              .getElementsByClassName('comment__description markdown')[0],
+          data: element.getElementsByClassName('comment__description markdown')[0],
           name: user.text,
           userHref: user.attributes['href']!,
           avatar: getAvatar(element, 'global__image-inner-wrap'),
-          active:
-              element.getElementsByClassName('comment__envelope').isNotEmpty,
+          active: element.getElementsByClassName('comment__envelope').isNotEmpty,
           ago: element
               .getElementsByClassName('comment__actions')[0]
               .nodes[1]
@@ -174,16 +162,13 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
           patron: element.getElementsByClassName('fa fa-star').isNotEmpty,
           role: role.isNotEmpty ? role[0].text.trim() : '',
         ),
-        id: element
-            .getElementsByClassName('comment__summary')[0]
-            .attributes['id']!);
+        id: element.getElementsByClassName('comment__summary')[0].attributes['id']!);
   }
 
   _MessageModel _parseMessageElement(dom.Element element) {
     List<dom.Element> comment =
         element.getElementsByClassName('comments__entity__description');
-    dom.Element title =
-        element.getElementsByClassName('comments__entity__name')[0];
+    dom.Element title = element.getElementsByClassName('comments__entity__name')[0];
     return _MessageModel(
       message: comment.isNotEmpty ? CommentMessage(data: comment[0]) : null,
       title: title.text,
@@ -202,8 +187,8 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
     return ExpansionTile(
         title: Consumer<ThemeProvider>(
           builder: (context, theme, child) => Text(message.title,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 18.0 + theme.fontSize),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0 + theme.fontSize),
               textAlign: TextAlign.left),
         ),
         trailing: Row(
@@ -273,8 +258,7 @@ class _MarkWidgetState extends State<_MarkWidget> {
   }
 
   void _mark() async {
-    String body =
-        'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=read_messages';
+    String body = 'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=read_messages';
     Map responseMap = await resMap(body, 'https://www.steamgifts.com/messages');
     if (responseMap['type'] == 'success') {
       if (!mounted) return;

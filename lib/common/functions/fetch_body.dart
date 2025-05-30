@@ -19,8 +19,7 @@ import 'package:http/http.dart';
 
 import 'package:snag/common/vars/prefs.dart';
 
-Future<String> fetchBody(
-    {required String url, final bool isBlacklisted = false}) async {
+Future<String> fetchBody({required String url, final bool isBlacklisted = false}) async {
   Map<String, String> headers = {};
   if (!isBlacklisted) {
     headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';

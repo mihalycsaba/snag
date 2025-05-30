@@ -70,8 +70,7 @@ class CommentMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dom.Element> images =
-        data.getElementsByClassName('comment__toggle-attached');
+    List<dom.Element> images = data.getElementsByClassName('comment__toggle-attached');
     List<Widget> attachedImages = [];
     if (images.isNotEmpty) {
       for (dom.Element image in data.getElementsByTagName('img')) {
@@ -81,13 +80,9 @@ class CommentMessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        avatar != null
-            ? Padding(padding: const EdgeInsets.only(top: 10))
-            : Container(),
+        avatar != null ? Padding(padding: const EdgeInsets.only(top: 10)) : Container(),
         GestureDetector(
-          onTap: userHref != null
-              ? () => customNav(User(name: name!), context)
-              : null,
+          onTap: userHref != null ? () => customNav(User(name: name!), context) : null,
           child: Row(
             children: [
               avatar != null
@@ -96,8 +91,7 @@ class CommentMessage extends StatelessWidget {
                       height: 30,
                       child: CachedNetworkImage(
                         imageUrl: avatar!,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     )
                   : Container(),
@@ -110,9 +104,8 @@ class CommentMessage extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 16.0 + theme.fontSize,
                               fontWeight: FontWeight.bold,
-                              color: active
-                                  ? Theme.of(context).colorScheme.primary
-                                  : null),
+                              color:
+                                  active ? Theme.of(context).colorScheme.primary : null),
                         ),
                       ))
                   : Container(),
@@ -131,15 +124,13 @@ class CommentMessage extends StatelessWidget {
                         children: [
                           Icon(Icons.access_time,
                               size: 10,
-                              color: active
-                                  ? Theme.of(context).colorScheme.primary
-                                  : null),
+                              color:
+                                  active ? Theme.of(context).colorScheme.primary : null),
                           const SizedBox(
                             width: 1,
                           ),
                           Consumer<ThemeProvider>(
-                            builder: (context, theme, child) => Text(
-                                '${ago!} ago',
+                            builder: (context, theme, child) => Text('${ago!} ago',
                                 style: TextStyle(
                                     fontSize: 10.0 + theme.fontSize,
                                     color: active
@@ -158,8 +149,7 @@ class CommentMessage extends StatelessWidget {
                 border: indented
                     ? Border(
                         left: BorderSide(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary))
+                            width: 2, color: Theme.of(context).colorScheme.primary))
                     : null),
             child: CustomHtml(data: data, active: active)),
         Row(
@@ -190,8 +180,8 @@ class CommentMessage extends StatelessWidget {
                         context: context,
                         builder: (context) => AlertDialog(
                               title: const Text('Delete'),
-                              content: Text(
-                                  'Are you sure you want to delete this comment?'),
+                              content:
+                                  Text('Are you sure you want to delete this comment?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -248,14 +238,13 @@ class CommentMessage extends StatelessWidget {
                 ? InkWell(
                     onTap: () async {
                       await customNav(
-                          CommentEditor(
-                              data: data, id: id!, name: name!, url: url!),
+                          CommentEditor(data: data, id: id!, name: name!, url: url!),
                           context);
                       onReply!();
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, bottom: 5.0),
+                      padding:
+                          const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0),
                       child: Icon(
                         Icons.comment_outlined,
                         color: Theme.of(context).textTheme.bodyLarge?.color,

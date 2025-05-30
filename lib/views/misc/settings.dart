@@ -33,23 +33,20 @@ import 'package:snag/provider_models/theme_provider.dart';
 class Settings extends StatelessWidget {
   const Settings({super.key});
   static const double paddingHeight = 11.0;
-  static bool notificationsDenied =
-      prefs.getBool(PrefsKeys.notificationsDenied.key)!;
+  static bool notificationsDenied = prefs.getBool(PrefsKeys.notificationsDenied.key)!;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomBackAppBar(name: 'Settings'),
         body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 12.0, vertical: paddingHeight),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: paddingHeight),
           child: ListView(
             children: [
               Consumer<ThemeProvider>(
                 builder: (context, theme, child) => Text('Notifications',
                     style: TextStyle(
-                        fontSize: 22.0 + theme.fontSize,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 22.0 + theme.fontSize, fontWeight: FontWeight.bold)),
               ),
               notificationsDenied
                   ? const Padding(
@@ -67,8 +64,7 @@ class Settings extends StatelessWidget {
                   : Column(
                       children: [
                         const Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: paddingHeight),
+                          padding: EdgeInsets.symmetric(vertical: paddingHeight),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -81,8 +77,7 @@ class Settings extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: paddingHeight),
+                          padding: const EdgeInsets.symmetric(vertical: paddingHeight),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -91,8 +86,8 @@ class Settings extends StatelessWidget {
                                     "Disable battery optimization for this app, to keep getting notifications even if you don't use the app for a while. Find this app in the All apps list."),
                               ),
                               GestureDetector(
-                                onTap: () => OpenSettingsPlusAndroid()
-                                    .ignoreBatteryOptimization(),
+                                onTap: () =>
+                                    OpenSettingsPlusAndroid().ignoreBatteryOptimization(),
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Icon(Icons.settings),
@@ -102,18 +97,15 @@ class Settings extends StatelessWidget {
                           ),
                         ),
                         const Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: paddingHeight),
+                          padding: EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _IntervalWidget(),
                         ),
                         const Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: paddingHeight),
+                          padding: EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _PointsWidget(),
                         ),
                         const Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: paddingHeight),
+                          padding: EdgeInsets.symmetric(vertical: paddingHeight),
                           child: _NotificationFrequency(),
                         ),
                       ],
@@ -121,8 +113,7 @@ class Settings extends StatelessWidget {
               Consumer<ThemeProvider>(
                 builder: (context, theme, child) => Text('Sync',
                     style: TextStyle(
-                        fontSize: 22.0 + theme.fontSize,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 22.0 + theme.fontSize, fontWeight: FontWeight.bold)),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
@@ -131,8 +122,7 @@ class Settings extends StatelessWidget {
               Consumer<ThemeProvider>(
                 builder: (context, theme, child) => Text('Appearance',
                     style: TextStyle(
-                        fontSize: 22.0 + theme.fontSize,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 22.0 + theme.fontSize, fontWeight: FontWeight.bold)),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight - 7.0),
@@ -145,8 +135,7 @@ class Settings extends StatelessWidget {
               Consumer<ThemeProvider>(
                 builder: (context, theme, child) => Text('Deep links',
                     style: TextStyle(
-                        fontSize: 22.0 + theme.fontSize,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 22.0 + theme.fontSize, fontWeight: FontWeight.bold)),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: paddingHeight),
@@ -155,8 +144,8 @@ class Settings extends StatelessWidget {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 const Flexible(
-                    child: Text(
-                        'You should be able to find these settings in this list:')),
+                    child:
+                        Text('You should be able to find these settings in this list:')),
                 GestureDetector(
                   onTap: () => OpenSettingsPlusAndroid().manageDefaultApps(),
                   child: Padding(
@@ -195,8 +184,8 @@ class _PointsWidget extends StatefulWidget {
 
 class _PointsWidgetState extends State<_PointsWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _pointLimit = TextEditingController(
-      text: prefs.getInt(PrefsKeys.pointLimit.key).toString());
+  final TextEditingController _pointLimit =
+      TextEditingController(text: prefs.getInt(PrefsKeys.pointLimit.key).toString());
   bool _equal = true;
 
   @override
@@ -213,11 +202,8 @@ class _PointsWidgetState extends State<_PointsWidget> {
                 textAlign: TextAlign.end,
                 controller: _pointLimit,
                 keyboardType: TextInputType.number,
-                onChanged: (value) => _equal = _changed(
-                    value,
-                    prefs.getInt(PrefsKeys.pointLimit.key).toString(),
-                    _equal,
-                    setState),
+                onChanged: (value) => _equal = _changed(value,
+                    prefs.getInt(PrefsKeys.pointLimit.key).toString(), _equal, setState),
                 maxLines: 1,
                 decoration: InputDecoration(
                   isDense: true,
@@ -230,8 +216,7 @@ class _PointsWidgetState extends State<_PointsWidget> {
               ),
             ),
           ),
-          ElevatedButton(
-              onPressed: _equal ? null : _saveLimit, child: const Text('Save'))
+          ElevatedButton(onPressed: _equal ? null : _saveLimit, child: const Text('Save'))
         ],
       ),
     );
@@ -261,8 +246,7 @@ class _PointsWidgetState extends State<_PointsWidget> {
     return null;
   }
 
-  bool _changed(
-      String value, String? frequency, bool equal, Function callback) {
+  bool _changed(String value, String? frequency, bool equal, Function callback) {
     equal = true;
     if (value != frequency) {
       equal = false;
@@ -481,12 +465,10 @@ class _SyncWidgetState extends State<_SyncWidget> {
   }
 
   Future<void> _fetch(BuildContext context) async {
-    String data = await fetchBody(
-        url: 'https://www.steamgifts.com/account/settings/profile');
-    _message = parse(data)
-        .getElementsByClassName('notification notification')[0]
-        .text
-        .trim();
+    String data =
+        await fetchBody(url: 'https://www.steamgifts.com/account/settings/profile');
+    _message =
+        parse(data).getElementsByClassName('notification notification')[0].text.trim();
     setState(() {
       _buttonEnabled = true;
     });
@@ -555,9 +537,8 @@ enum _Hours {
   final int hour;
   const _Hours(this.name, this.hour);
 
-  static final List<_MenuEntry> labels = UnmodifiableListView<_MenuEntry>(
-      values.map<_MenuEntry>(
-          (_Hours entry) => _MenuEntry(value: entry, label: entry.name)));
+  static final List<_MenuEntry> labels = UnmodifiableListView<_MenuEntry>(values
+      .map<_MenuEntry>((_Hours entry) => _MenuEntry(value: entry, label: entry.name)));
 }
 
 class _IntervalWidget extends StatelessWidget {
@@ -590,11 +571,9 @@ class _IntervalWidget extends StatelessWidget {
     );
   }
 
-  bool _intervalStart(int hour) =>
-      prefs.getInt(PrefsKeys.intervalStart.key)! >= hour;
+  bool _intervalStart(int hour) => prefs.getInt(PrefsKeys.intervalStart.key)! >= hour;
 
-  bool _intervalEnd(int hour) =>
-      prefs.getInt(PrefsKeys.intervalEnd.key)! <= hour;
+  bool _intervalEnd(int hour) => prefs.getInt(PrefsKeys.intervalEnd.key)! <= hour;
 }
 
 class _CustomDropdownMenu extends StatefulWidget {

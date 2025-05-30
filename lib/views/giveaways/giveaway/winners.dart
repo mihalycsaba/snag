@@ -85,51 +85,64 @@ class _WinnersState extends State<Winners> {
         body: RefreshIndicator(
             onRefresh: () => Future.sync(() => _pagingController.refresh()),
             child: Consumer<ThemeProvider>(
-              builder: (context, theme, child) =>
-                  PagedListView<int, WinnerModel>(
-                itemExtent: CustomPagedListTheme.itemExtent +
-                    addItemExtent(theme.fontSize),
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
-                  itemBuilder: (context, item, index) => ListTile(
-                      contentPadding: CustomListTileTheme.contentPadding,
-                      minVerticalPadding:
-                          CustomListTileTheme.minVerticalPadding,
-                      dense: CustomListTileTheme.dense,
-                      leading: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CachedNetworkImage(
-                          imageUrl: item.image,
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
-                      title: Text(item.name),
-                      subtitle: widget.self ? Text(item.email!) : null,
-                      onTap: item.anonymous
-                          ? null
-                          : () => customNav(User(name: item.name), context),
-                      trailing: widget.self
-                          ? TextButton(
-                              onPressed: item.sent
+                builder: (context, theme, child) => PagedListView<int, WinnerModel>(
+                    itemExtent:
+                        CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
+                    pagingController: _pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
+                      itemBuilder: (context, item, index) => Consumer<ThemeProvider>(
+                          builder: (context, theme, child) => ListTile(
+                              contentPadding: CustomListTileTheme.contentPadding,
+                              minVerticalPadding: CustomListTileTheme.minVerticalPadding,
+                              dense: CustomListTileTheme.dense,
+                              leading: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CachedNetworkImage(
+                                  imageUrl: item.image,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
+                              title: Text(
+                                item.name,
+                                style: TextStyle(
+                                    fontSize: CustomListTileTheme.titleTextSize +
+                                        theme.fontSize),
+                              ),
+                              subtitle: widget.self
+                                  ? Text(
+                                      item.email!,
+                                      style: TextStyle(
+                                          fontSize: CustomListTileTheme.subtitleTextSize +
+                                              theme.fontSize),
+                                    )
+                                  : null,
+                              onTap: item.anonymous
                                   ? null
-                                  : () async {
-                                      int statusCode = await resStatusCode(
-                                          '&action=1&do=sent_feedback&winner_id=${item.id}');
-                                      if (statusCode == 200) {
-                                        setState(() {
-                                          item.sent = true;
-                                        });
-                                      }
-                                    },
-                              child: const Text('Send'))
-                          : null),
-                  newPageProgressIndicatorBuilder: (context) =>
-                      const PagedProgressIndicator(),
-                ),
-              ),
-            )));
+                                  : () => customNav(User(name: item.name), context),
+                              trailing: widget.self
+                                  ? TextButton(
+                                      onPressed: item.sent
+                                          ? null
+                                          : () async {
+                                              int statusCode = await resStatusCode(
+                                                  '&action=1&do=sent_feedback&winner_id=${item.id}');
+                                              if (statusCode == 200) {
+                                                setState(() {
+                                                  item.sent = true;
+                                                });
+                                              }
+                                            },
+                                      child: Text('Send',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  CustomListTileTheme.titleTextSize +
+                                                      theme.fontSize)))
+                                  : null)),
+                      newPageProgressIndicatorBuilder: (context) =>
+                          const PagedProgressIndicator(),
+                    )))));
   }
 
   Future<void> fetchWinnerList(int pageKey, BuildContext context) async {
@@ -144,9 +157,7 @@ class _WinnersState extends State<Winners> {
 
   List<WinnerModel> parseWinnerList(String data) {
     List<WinnerModel> winnerList = [];
-    parse(data)
-        .getElementsByClassName('table__row-inner-wrap')
-        .forEach((element) {
+    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
       winnerList.add(parseWinnerListElement(element));
     });
     return winnerList;
@@ -154,8 +165,7 @@ class _WinnersState extends State<Winners> {
 
   WinnerModel parseWinnerListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
-    dom.Element heading =
-        item.getElementsByClassName('table__column__heading')[0];
+    dom.Element heading = item.getElementsByClassName('table__column__heading')[0];
     return WinnerModel(
         id: widget.self
             ? item
@@ -176,8 +186,7 @@ class _WinnersState extends State<Winners> {
             : null,
         sent: widget.self
             ? item
-                .getElementsByClassName(
-                    'table__gift-sent is-clickable is-hidden')
+                .getElementsByClassName('table__gift-sent is-clickable is-hidden')
                 .isEmpty
             : false,
         anonymous: heading.children.isEmpty);

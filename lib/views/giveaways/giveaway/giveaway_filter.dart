@@ -37,8 +37,7 @@ class GiveawayFilter extends StatelessWidget {
         onTap: () async {
           String filter = context.read<GiveawayFilterProvider>().filter;
           await showDialog(
-              context: context,
-              builder: (context) => const GiveawayFilterDialog());
+              context: context, builder: (context) => const GiveawayFilterDialog());
           if (context.mounted) {
             if (filter != context.read<GiveawayFilterProvider>().filter) {
               pagingController.refresh();
@@ -46,10 +45,9 @@ class GiveawayFilter extends StatelessWidget {
           }
         },
         child: Consumer<GiveawayFilterProvider>(
-            builder: (context, user, child) =>
-                user.model == GiveawayFilterModel()
-                    ? const Icon(Icons.filter_alt_off)
-                    : Icon(Icons.filter_alt, color: Colors.green[400])),
+            builder: (context, user, child) => user.model == GiveawayFilterModel()
+                ? const Icon(Icons.filter_alt_off)
+                : Icon(Icons.filter_alt, color: Colors.green[400])),
       ),
     );
   }

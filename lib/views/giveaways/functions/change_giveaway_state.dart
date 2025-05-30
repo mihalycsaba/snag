@@ -35,8 +35,7 @@ Future<void> changeGiveawayState(
 
   if (responseMap['type'] == 'success') {
     if (prefs.getBool(PrefsKeys.pointsNotification.key)! &&
-        int.parse(responseMap['points']) <
-            prefs.getInt(PrefsKeys.pointLimit.key)!) {
+        int.parse(responseMap['points']) < prefs.getInt(PrefsKeys.pointLimit.key)!) {
       prefs.setBool(PrefsKeys.pointsNotification.key, false);
     }
     if (context.mounted) {
