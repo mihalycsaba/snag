@@ -163,8 +163,9 @@ class _UserState extends State<User> {
                                       }
                                     : null,
                                 child: _user.whitelisted!
-                                    ? Icon(Icons.favorite, color: Colors.lightBlueAccent)
-                                    : Icon(Icons.favorite_outline)),
+                                    ? const Icon(Icons.favorite,
+                                        color: Colors.lightBlueAccent)
+                                    : const Icon(Icons.favorite_outline)),
                           ),
                     _isUser
                         ? Container()
@@ -204,8 +205,8 @@ class _UserState extends State<User> {
                                             )
                                     : null,
                                 child: _user.blacklisted!
-                                    ? Icon(Icons.block, color: Colors.red)
-                                    : Icon(Icons.block)),
+                                    ? const Icon(Icons.block, color: Colors.red)
+                                    : const Icon(Icons.block)),
                           ),
                     _isUser
                         ? Container()
@@ -225,13 +226,13 @@ class _UserState extends State<User> {
                     InkWell(
                       onTap: () =>
                           SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
-                      child: Icon(Icons.share),
+                      child: const Icon(Icons.share),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: IconButton(
                           onPressed: () => urlLauncher(_user.steam),
-                          icon: FaIcon(FontAwesomeIcons.steamSymbol)),
+                          icon: const FaIcon(FontAwesomeIcons.steamSymbol)),
                     )
                   ],
                 ),
@@ -261,14 +262,14 @@ class _UserState extends State<User> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Online: ',
                                               style: _detailsTextStyle,
                                             ),
                                             Text(
                                               _user.online,
                                               style: _user.online.contains('Online')
-                                                  ? TextStyle(
+                                                  ? const TextStyle(
                                                       color: Colors.green, fontSize: 12)
                                                   : _detailsTextStyle,
                                             ),
@@ -378,14 +379,15 @@ class _UserState extends State<User> {
                                                     ],
                                                   ),
                                               newPageProgressIndicatorBuilder:
-                                                  (context) => PagedProgressIndicator())),
+                                                  (context) =>
+                                                      const PagedProgressIndicator())),
                                 ),
                         ),
                       ],
                     ),
                   ),
                 ))
-            : LoggedOut()
+            : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'user');
   }
 

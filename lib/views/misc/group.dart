@@ -136,7 +136,7 @@ class _GroupState extends State<Group> {
                             SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
                     IconButton(
                         onPressed: () => urlLauncher(_group.steam),
-                        icon: FaIcon(FontAwesomeIcons.steamSymbol))
+                        icon: const FaIcon(FontAwesomeIcons.steamSymbol))
                   ],
                 ),
                 body: RefreshIndicator(
@@ -167,12 +167,12 @@ class _GroupState extends State<Group> {
                                                     style: _detailsTextStyle),
                                                 Row(
                                                   children: [
-                                                    Text('Last Giveaway: ',
+                                                    const Text('Last Giveaway: ',
                                                         style: _detailsTextStyle),
                                                     Text(_group.last,
                                                         style:
                                                             _group.last.contains('Open')
-                                                                ? TextStyle(
+                                                                ? const TextStyle(
                                                                     color: Colors.green,
                                                                     fontSize: _fontSize)
                                                                 : _detailsTextStyle)
@@ -211,10 +211,10 @@ class _GroupState extends State<Group> {
                               ),
                             ]),
                             newPageProgressIndicatorBuilder: (context) =>
-                                PagedProgressIndicator(),
+                                const PagedProgressIndicator(),
                           ))
                     ])))
-            : LoggedOut()
+            : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'group');
   }
 

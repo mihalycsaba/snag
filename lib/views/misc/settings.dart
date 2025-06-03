@@ -38,7 +38,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomBackAppBar(name: 'Settings'),
+        appBar: const CustomBackAppBar(name: 'Settings'),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: paddingHeight),
           child: ListView(
@@ -86,10 +86,10 @@ class Settings extends StatelessWidget {
                                     "Disable battery optimization for this app, to keep getting notifications even if you don't use the app for a while. Find this app in the All apps list."),
                               ),
                               GestureDetector(
-                                onTap: () =>
-                                    OpenSettingsPlusAndroid().ignoreBatteryOptimization(),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                onTap: () => const OpenSettingsPlusAndroid()
+                                    .ignoreBatteryOptimization(),
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
                                   child: Icon(Icons.settings),
                                 ),
                               )
@@ -147,9 +147,9 @@ class Settings extends StatelessWidget {
                     child:
                         Text('You should be able to find these settings in this list:')),
                 GestureDetector(
-                  onTap: () => OpenSettingsPlusAndroid().manageDefaultApps(),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                  onTap: () => const OpenSettingsPlusAndroid().manageDefaultApps(),
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 8.0),
                     child: Icon(Icons.settings),
                   ),
                 )
@@ -166,7 +166,7 @@ class _AppSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => OpenSettingsPlusAndroid().appNotification(),
+      onTap: () => const OpenSettingsPlusAndroid().appNotification(),
       child: const Padding(
         padding: EdgeInsets.only(left: 8.0),
         child: Icon(Icons.settings),
@@ -276,7 +276,7 @@ class _CustomSlider extends StatelessWidget {
       children: [
         Text('$text ${values[currentValue.toInt() - 1].text}'),
         Slider(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           value: currentValue,
           min: 1,
           max: values.length.toDouble(),
@@ -549,9 +549,9 @@ class _IntervalWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12.0),
-          child: const Text('Only get notifications between:'),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 12.0),
+          child: Text('Only get notifications between:'),
         ),
         Row(
           children: [
@@ -596,7 +596,7 @@ class __CustomDropdownMenuState extends State<_CustomDropdownMenu> {
     return DropdownMenu<_Hours>(
         label: Text(_label, style: const TextStyle(color: Colors.red)),
         inputDecorationTheme: _error
-            ? InputDecorationTheme(
+            ? const InputDecorationTheme(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.red,

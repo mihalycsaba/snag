@@ -119,6 +119,6 @@ class _GiveawayState extends State<Giveaway> {
                     type: 'giveaway');
               }
             })
-        : LoggedOut();
+        : const LoggedOut();
   }
 }

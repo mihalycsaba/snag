@@ -107,7 +107,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
                       size: CustomListTileTheme.iconSize + theme.fontSize,
                       color: Colors.blueGrey)
                   : Container(),
-              SizedBox(width: 2),
+              const SizedBox(width: 2),
               widget.giveaway.points != null
                   ? Text(_points!,
                       style: TextStyle(

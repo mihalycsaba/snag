@@ -80,7 +80,7 @@ class _BookmarksState extends State<Bookmarks> {
                                     ),
                                   ],
                                 )),
-                        child: Icon(Icons.delete)),
+                        child: const Icon(Icons.delete)),
                   )
                 : null),
         body: Center(

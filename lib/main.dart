@@ -169,13 +169,13 @@ class SnagState extends State<Snag> {
       _routes.add(_customGoRoute(item.route, DiscussionPages.widgetsMap[item.route]!));
     }
     _routes.add(_customGoRoute(NotificationsRoute.created.route,
-        Notifications(NotificationsDestination.created)));
+        const Notifications(NotificationsDestination.created)));
     _routes.add(_customGoRoute(
-        NotificationsRoute.won.route, Notifications(NotificationsDestination.won)));
+        NotificationsRoute.won.route, const Notifications(NotificationsDestination.won)));
     _routes.add(_customGoRoute(NotificationsRoute.messages.route,
-        Notifications(NotificationsDestination.messages)));
-    _routes.add(_customGoRoute(Entered.entered.route, EnteredList()));
-    _routes.add(_customGoRoute(LoginRoute.login.route, Login()));
+        const Notifications(NotificationsDestination.messages)));
+    _routes.add(_customGoRoute(Entered.entered.route, const EnteredList()));
+    _routes.add(_customGoRoute(LoginRoute.login.route, const Login()));
     _routes.add(_giveawayGoRoute('/:id'));
     _routes.add(_giveawayGoRoute('/:id/:name'));
     _routes.add(_discussionGoRoute('/:id'));

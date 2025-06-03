@@ -192,7 +192,7 @@ class _EnteredListState extends State<EnteredList> {
                                             ],
                                           ),
                                       newPageProgressIndicatorBuilder: (context) =>
-                                          PagedProgressIndicator())),
+                                          const PagedProgressIndicator())),
                     )),
               ),
             ],

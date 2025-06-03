@@ -72,7 +72,7 @@ class CustomDrawerAppBar extends StatelessWidget implements PreferredSizeWidget 
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Badge.count(
                         count: int.parse(user.gifts),
-                        child: FaIcon(FontAwesomeIcons.gift, size: 19),
+                        child: const FaIcon(FontAwesomeIcons.gift, size: 19),
                       ),
                     ))),
         Consumer<WonProvider>(
