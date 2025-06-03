@@ -154,7 +154,7 @@ class _WonBuilderState extends State<WonBuilder> {
                                     : !giveaway.keyIsRedeemable &&
                                             giveaway.notReceived &&
                                             !giveaway.giftLinkAvailable
-                                        ? TextButton(
+                                        ? const TextButton(
                                             onPressed: null,
                                             child: Text('No key'),
                                           )
@@ -163,7 +163,7 @@ class _WonBuilderState extends State<WonBuilder> {
                                             ? TextButton(
                                                 onPressed: () =>
                                                     urlLauncher(giveaway.giftLink!),
-                                                child: Text(
+                                                child: const Text(
                                                   'Link',
                                                 ))
                                             : Container(),
@@ -189,7 +189,8 @@ class _WonBuilderState extends State<WonBuilder> {
                     ),
                   ],
                 ),
-                newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator(),
+                newPageProgressIndicatorBuilder: (context) =>
+                    const PagedProgressIndicator(),
               )),
         ));
   }

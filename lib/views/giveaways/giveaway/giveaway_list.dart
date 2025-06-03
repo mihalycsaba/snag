@@ -157,9 +157,9 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
                                       ],
                                     ),
                                 newPageProgressIndicatorBuilder: (context) =>
-                                    PagedProgressIndicator())),
+                                    const PagedProgressIndicator())),
                   )),
             ))
-        : LoggedOut();
+        : const LoggedOut();
   }
 }

@@ -118,10 +118,10 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                           },
                         ),
                         InkWell(
-                          child: SizedBox(
+                          child: const SizedBox(
                               width: CustomListTileTheme.trailingWidth - 4,
                               height: CustomListTileTheme.trailingHeight,
-                              child: const Icon(Icons.delete,
+                              child: Icon(Icons.delete,
                                   size: CustomListTileTheme.iconSize + 6)),
                           onTap: () => showDialog(
                             context: context,
@@ -134,7 +134,7 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                                         text: user.giveaways[index].name,
                                         style:
                                             const TextStyle(fontWeight: FontWeight.bold)),
-                                    TextSpan(text: ' bookmark?')
+                                    const TextSpan(text: ' bookmark?')
                                   ])),
                               actions: [
                                 TextButton(

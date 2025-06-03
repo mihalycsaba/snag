@@ -40,7 +40,7 @@ class CustomHtml extends StatelessWidget {
     return GestureDetector(
       onLongPress: () => showDialog(
           context: context,
-          builder: (context) => SimpleDialog(title: Text('Copy'), children: [
+          builder: (context) => SimpleDialog(title: const Text('Copy'), children: [
                 SimpleDialogOption(
                     onPressed: () => _clipboard(data.text.trim(), context),
                     child: const Text('Text')),
@@ -75,7 +75,7 @@ class CustomHtml extends StatelessWidget {
     await Clipboard.setData(ClipboardData(text: text));
     if (context.mounted) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Copied to clipboard')));
+          .showSnackBar(const SnackBar(content: Text('Copied to clipboard')));
     }
   }
 

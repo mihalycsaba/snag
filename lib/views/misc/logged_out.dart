@@ -35,14 +35,14 @@ class LoggedOut extends StatelessWidget {
         padding: const EdgeInsets.all(40.0),
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               flex: 5,
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                const Text(
+                Text(
                   'Snag',
                   style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
                 ),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
                   'Client application for SteamGifts',
                   style: TextStyle(fontSize: 20),
@@ -54,9 +54,9 @@ class LoggedOut extends StatelessWidget {
               child: Center(
                 child: GestureDetector(
                   onTap: () => urlLauncher('https://www.steamgifts.com/', true),
-                  child: Text.rich(
+                  child: const Text.rich(
                       textAlign: TextAlign.center,
-                      const TextSpan(
+                      TextSpan(
                           text: 'You need an account on',
                           style: TextStyle(fontSize: 22),
                           children: [
@@ -89,7 +89,7 @@ class LoggedOut extends StatelessWidget {
               flex: 2,
               child: TextButton(
                   onPressed: () => customNav(const About(), context),
-                  child: Text('About', style: TextStyle(fontSize: 20))),
+                  child: const Text('About', style: TextStyle(fontSize: 20))),
             )
           ],
         ),

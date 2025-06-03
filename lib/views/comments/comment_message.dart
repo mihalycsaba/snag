@@ -80,7 +80,7 @@ class CommentMessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        avatar != null ? Padding(padding: const EdgeInsets.only(top: 10)) : Container(),
+        avatar != null ? const Padding(padding: EdgeInsets.only(top: 10)) : Container(),
         GestureDetector(
           onTap: userHref != null ? () => customNav(User(name: name!), context) : null,
           child: Row(
@@ -180,8 +180,8 @@ class CommentMessage extends StatelessWidget {
                         context: context,
                         builder: (context) => AlertDialog(
                               title: const Text('Delete'),
-                              content:
-                                  Text('Are you sure you want to delete this comment?'),
+                              content: const Text(
+                                  'Are you sure you want to delete this comment?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -281,19 +281,19 @@ class _AttachedImageState extends State<_AttachedImage> {
           child: TextButton(
               onPressed: () => setState(() => _open = !_open),
               child: !_open
-                  ? Row(
+                  ? const Row(
                       children: [
-                        const Icon(Icons.image, size: 14),
-                        const Text(
+                        Icon(Icons.image, size: 14),
+                        Text(
                           ' View image',
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
                     )
-                  : Row(
+                  : const Row(
                       children: [
-                        const Icon(Icons.image, size: 14),
-                        const Text(
+                        Icon(Icons.image, size: 14),
+                        Text(
                           ' Hide image',
                           style: TextStyle(fontSize: 14),
                         ),

@@ -102,7 +102,7 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
                                 : _messageEntry(message: message as _MessageModel),
                           ),
                       newPageProgressIndicatorBuilder: (context) =>
-                          PagedProgressIndicator()))),
+                          const PagedProgressIndicator()))),
         ),
       ],
     );
@@ -195,7 +195,7 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.link,
               ),
               onPressed: () {

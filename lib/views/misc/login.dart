@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomBackAppBar(name: 'Login'),
+      appBar: const CustomBackAppBar(name: 'Login'),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri('https://www.steamgifts.com/?login'),

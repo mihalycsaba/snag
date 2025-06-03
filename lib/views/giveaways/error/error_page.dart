@@ -53,17 +53,18 @@ class ErrorPage extends StatelessWidget {
                   Center(
                     child: Text(
                       'An error occurred while loading the $type:',
-                      style: TextStyle(color: Colors.red, fontSize: 20),
+                      style: const TextStyle(color: Colors.red, fontSize: 20),
                     ),
                   ),
                   Center(
                       child: Text(
                     stackTrace == null ? error : 'Most likely the URL is invalid.',
-                    style: TextStyle(color: Colors.blue, fontSize: 18),
+                    style: const TextStyle(color: Colors.blue, fontSize: 18),
                   )),
                   Column(
                     children: [
-                      Text('URL: $url', style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text('URL: $url',
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       stackTrace != null ? Text(error) : Container(),
                       stackTrace != null ? Text(stackTrace!) : Container(),
                     ],

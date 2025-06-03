@@ -344,8 +344,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                       });
                                     }
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
                                     child: Icon(
                                       Icons.visibility,
                                       color: Colors.red,
@@ -364,8 +364,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                       });
                                     }
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
                                     child: Icon(Icons.visibility_off),
                                   ),
                                 ))
@@ -391,8 +391,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                       child: InkWell(
                         onTap: () =>
                             SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Icon(
                             Icons.share,
                           ),
@@ -403,8 +403,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                       padding: _padding,
                       child: InkWell(
                           onTap: () => urlLauncher(_giveaway.steamHref!),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: FaIcon(FontAwesomeIcons.steamSymbol),
                           )),
                     ),
@@ -419,8 +419,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                   controller.open();
                                 }
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: Icon(Icons.more_vert_outlined),
                               ),
                             )),
@@ -522,7 +522,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                         fontSize: _detailsFontSize + theme.fontSize)),
                                 const Spacer(),
                                 Icon(Icons.schedule, size: 12.0 + theme.fontSize),
-                                SizedBox(width: 1),
+                                const SizedBox(width: 1),
                                 Text(_giveaway.remaining.toLowerCase(),
                                     style: TextStyle(
                                         fontSize: _detailsFontSize + theme.fontSize)),
@@ -538,8 +538,8 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                           Align(
                               alignment: Alignment.centerLeft,
                               child: widget.isBlacklisted
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
+                                  ? const Padding(
+                                      padding: EdgeInsets.only(left: 8.0),
                                       child: Text('Blacklisted',
                                           style: TextStyle(color: Colors.red)),
                                     )
@@ -583,7 +583,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               child: const Text('Comment')),
                           const Spacer(),
                           _giveaway.inviteOnly
-                              ? Icon(
+                              ? const Icon(
                                   Icons.lock,
                                   size: _iconSize,
                                 )
@@ -592,7 +592,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                               ? InkWell(
                                   onTap: () =>
                                       customNav(Groups(groupUrl: _groupUrl), context),
-                                  child: Padding(
+                                  child: const Padding(
                                     padding: _iconPadding,
                                     child: Icon(Icons.groups,
                                         size: _iconSize + 4, color: Colors.green),
@@ -600,20 +600,20 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                 )
                               : Container(),
                           _giveaway.whitelist
-                              ? Padding(
+                              ? const Padding(
                                   padding: _iconPadding,
                                   child: Icon(Icons.favorite,
                                       size: _iconSize, color: Colors.pinkAccent),
                                 )
                               : Container(),
                           _giveaway.region
-                              ? Padding(
+                              ? const Padding(
                                   padding: _iconPadding,
                                   child: Icon(Icons.public,
                                       size: _iconSize, color: Colors.blueGrey),
                                 )
                               : Container(),
-                          SizedBox(width: 10)
+                          const SizedBox(width: 10)
                         ],
                       )
                     ],

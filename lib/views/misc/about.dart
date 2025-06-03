@@ -47,7 +47,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomBackAppBar(name: 'About'),
+      appBar: const CustomBackAppBar(name: 'About'),
       body: Center(
         child: Column(
           children: [
@@ -58,7 +58,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                 child: GestureDetector(
                   onTap: () =>
                       _controller.forward().whenCompleteOrCancel(_controller.reset),
-                  child: SizedBox(
+                  child: const SizedBox(
                       width: 290,
                       height: 290,
                       child: SvgPicture(AssetBytesLoader('assets/snag_fg.svg.vec'))),
@@ -74,7 +74,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                       if (snapshot.connectionState == ConnectionState.done) {
                         return Text(
                             '${snapshot.data?.appName} version: ${snapshot.data?.version}',
-                            style: TextStyle(fontSize: 16));
+                            style: const TextStyle(fontSize: 16));
                       } else {
                         return Container();
                       }
@@ -85,10 +85,10 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Created by ', style: TextStyle(fontSize: 16)),
+                        const Text('Created by ', style: TextStyle(fontSize: 16)),
                         GestureDetector(
-                          onTap: () => customNav(User(name: 'GoatPimp'), context),
-                          child: Text('GoatPimp',
+                          onTap: () => customNav(const User(name: 'GoatPimp'), context),
+                          child: const Text('GoatPimp',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -98,10 +98,10 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                     ),
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Powered by ', style: TextStyle(fontSize: 16)),
+                    const Text('Powered by ', style: TextStyle(fontSize: 16)),
                     GestureDetector(
                       onTap: () => urlLauncher('https://flutter.dev/'),
-                      child: Text('Flutter 🩵',
+                      child: const Text('Flutter 🩵',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -114,15 +114,16 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   TextButton(
                       onPressed: () => urlLauncher('https://github.com/mihalycsaba/snag'),
-                      child: Text('Source code', style: TextStyle(fontSize: 18))),
+                      child: const Text('Source code', style: TextStyle(fontSize: 18))),
                   TextButton(
                       onPressed: () =>
                           urlLauncher('https://github.com/mihalycsaba/snag/issues'),
-                      child: Text('Report an issue', style: TextStyle(fontSize: 18))),
-                  TextButton(
-                      onPressed: () => customNav(Licenses(), context),
                       child:
-                          Text('Open source licenses', style: TextStyle(fontSize: 18))),
+                          const Text('Report an issue', style: TextStyle(fontSize: 18))),
+                  TextButton(
+                      onPressed: () => customNav(const Licenses(), context),
+                      child: const Text('Open source licenses',
+                          style: TextStyle(fontSize: 18))),
                 ])),
             Expanded(
                 flex: 4,
@@ -130,7 +131,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text.rich(TextSpan(
+                      const Text.rich(TextSpan(
                           text: 'Huge thanks to ',
                           style: TextStyle(fontSize: 16),
                           children: [
@@ -143,7 +144,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                           ])),
                       GestureDetector(
                         onTap: () => urlLauncher('https://steamgifts.com/', true),
-                        child: Text('steamgifts.com',
+                        child: const Text('steamgifts.com',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 16,
@@ -157,7 +158,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text.rich(
+                        const Text.rich(
                           TextSpan(
                               text: 'Please consider supporting them on ',
                               style: TextStyle(
@@ -166,7 +167,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin {
                         ),
                         GestureDetector(
                           onTap: () => urlLauncher('https://www.patreon.com/steamgifts'),
-                          child: Text('Patreon',
+                          child: const Text('Patreon',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

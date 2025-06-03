@@ -157,7 +157,8 @@ class _CommentsState extends State<Comments> {
         builderDelegate: PagedChildBuilderDelegate<_CommentModel>(
             itemBuilder: (context, comment, index) =>
                 _Comment(comment: comment, indent: 0),
-            newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator()));
+            newPageProgressIndicatorBuilder: (context) =>
+                const PagedProgressIndicator()));
   }
 }
 

@@ -61,7 +61,7 @@ class _OpenCodeState extends State<OpenCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomBackAppBar(name: 'Open Code'),
+        appBar: const CustomBackAppBar(name: 'Open Code'),
         body: Column(
           children: [
             Padding(

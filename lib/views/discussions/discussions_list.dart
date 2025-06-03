@@ -106,7 +106,7 @@ class DiscussionsList extends StatelessWidget {
               ),
             ],
           ),
-          newPageProgressIndicatorBuilder: (context) => PagedProgressIndicator(),
+          newPageProgressIndicatorBuilder: (context) => const PagedProgressIndicator(),
         ),
       ),
     );

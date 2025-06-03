@@ -82,7 +82,7 @@ class _DiscussionState extends State<Discussion> {
               }
               return Container();
             })
-        : LoggedOut();
+        : const LoggedOut();
   }
 }
 
@@ -187,7 +187,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
               ),
               actions: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: InkWell(
                     onTap: () {
                       _changeBookmark();
@@ -201,11 +201,11 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(right: 20.0, top: 10.0, bottom: 10.0),
                   child: GestureDetector(
                     onTap: () =>
                         SharePlus.instance.share(ShareParams(uri: Uri.parse(widget.url))),
-                    child: Icon(
+                    child: const Icon(
                       Icons.share,
                     ),
                   ),
@@ -294,12 +294,12 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                                         SizedBox(
                                                             width: 12,
                                                             child: _answers[index].voted
-                                                                ? Icon(
+                                                                ? const Icon(
                                                                     Icons.circle,
                                                                     size: 16,
                                                                     color: Colors.green,
                                                                   )
-                                                                : Icon(
+                                                                : const Icon(
                                                                     Icons.circle_outlined,
                                                                     size: 16,
                                                                   ))
@@ -368,10 +368,10 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
                                     }
                                   },
                                   child: const Text('Comment'))
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, top: 4.0, bottom: 4.0),
-                                  child: const Text('Closed'),
+                              : const Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 8.0, top: 4.0, bottom: 4.0),
+                                  child: Text('Closed'),
                                 ),
                         ],
                       )),

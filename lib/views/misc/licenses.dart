@@ -28,7 +28,7 @@ class Licenses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomBackAppBar(name: 'Open source licenses'),
+        appBar: const CustomBackAppBar(name: 'Open source licenses'),
         body: ListView.builder(
             itemCount: allDependencies.length,
             itemBuilder: (BuildContext context, int index) => Padding(
@@ -104,7 +104,7 @@ class Licenses extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Card(
                                     elevation: 0.1,
-                                    surfaceTintColor: Color.fromARGB(255, 0, 0, 0),
+                                    surfaceTintColor: const Color.fromARGB(255, 0, 0, 0),
                                     child: Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Text(allDependencies[index].license!),

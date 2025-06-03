@@ -93,27 +93,27 @@ class _CommentEditorState extends State<CommentEditor> {
           Row(
             children: [
               IconButton(
-                  icon: Icon(Icons.format_italic),
+                  icon: const Icon(Icons.format_italic),
                   onPressed: () {
                     _addFormat('*');
                   }),
               IconButton(
-                  icon: Icon(Icons.format_bold),
+                  icon: const Icon(Icons.format_bold),
                   onPressed: () {
                     _addFormat('**');
                   }),
               IconButton(
-                  icon: Icon(Icons.square),
+                  icon: const Icon(Icons.square),
                   onPressed: () {
                     _addFormat('~');
                   }),
               IconButton(
-                  icon: Icon(Icons.strikethrough_s),
+                  icon: const Icon(Icons.strikethrough_s),
                   onPressed: () {
                     _addFormat('~~');
                   }),
               IconButton(
-                  icon: Icon(Icons.link),
+                  icon: const Icon(Icons.link),
                   onPressed: () async {
                     TextSelection selection = _controller.selection;
                     String text = _controller.text;
@@ -128,7 +128,7 @@ class _CommentEditorState extends State<CommentEditor> {
                     });
                   }),
               IconButton(
-                icon: Icon(Icons.image),
+                icon: const Icon(Icons.image),
                 onPressed: () async {
                   TextSelection selection = _controller.selection;
                   String text = _controller.text;
@@ -143,7 +143,7 @@ class _CommentEditorState extends State<CommentEditor> {
                   });
                 },
               ),
-              Spacer(),
+              const Spacer(),
               IconButton(
                   onPressed: _controller.text.isNotEmpty
                       ? () async {

@@ -132,9 +132,9 @@ class _GameState extends State<Game> {
                       ),
                     ),
                     InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Icon(Icons.share),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Icon(Icons.share),
                         ),
                         onTap: () =>
                             SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
@@ -149,7 +149,7 @@ class _GameState extends State<Game> {
                           surfaceTintColor: CustomCardTheme.surfaceTintColor,
                           elevation: CustomCardTheme.elevation,
                           child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
@@ -206,12 +206,12 @@ class _GameState extends State<Game> {
                                     ),
                                   ]),
                               newPageProgressIndicatorBuilder: (context) =>
-                                  PagedProgressIndicator())),
+                                  const PagedProgressIndicator())),
                     ),
                   ]),
                 ),
               )
-            : LoggedOut()
+            : const LoggedOut()
         : ErrorPage(error: _exception, stackTrace: _stackTrace, url: _url, type: 'game');
   }
 

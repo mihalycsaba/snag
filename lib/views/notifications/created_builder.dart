@@ -112,7 +112,7 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
                             onTap: () => customNav(Giveaway(href: created.href), context),
                             trailing: created.sendLink != null
                                 ? TextButton(
-                                    child: Text('Winners'),
+                                    child: const Text('Winners'),
                                     onPressed: () => customNav(
                                       Winners(link: created.sendLink!, self: true),
                                       context,
@@ -121,7 +121,7 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
                                 : null),
                       ]),
                   newPageProgressIndicatorBuilder: (context) =>
-                      PagedProgressIndicator())),
+                      const PagedProgressIndicator())),
         ));
   }
 
