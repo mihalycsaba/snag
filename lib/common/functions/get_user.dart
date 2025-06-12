@@ -29,7 +29,7 @@ Future<void> getUser() async {
       Uri.parse('https://www.steamgifts.com/account/settings/profile?format=json'),
       headers: headers);
   Map<String, dynamic> json = jsonDecode(response.body);
-  if (json['user'] == []) {
+  if (json['user'].isEmpty) {
     isLoggedIn = false;
   } else {
     isLoggedIn = true;

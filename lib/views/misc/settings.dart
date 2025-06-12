@@ -137,23 +137,38 @@ class Settings extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 22.0 + theme.fontSize, fontWeight: FontWeight.bold)),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: paddingHeight),
-                child: Text(
-                    "To enable opening steamgifts.com links in this app, in the app's Open by default menu enable steamgifts.com domains by tapping on + Add links and selecting the two domains."),
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const Flexible(
-                    child:
-                        Text('You should be able to find these settings in this list:')),
-                GestureDetector(
-                  onTap: () => const OpenSettingsPlusAndroid().manageDefaultApps(),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(Icons.settings),
-                  ),
-                )
-              ])
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: paddingHeight),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Flexible(
+                        child: Text.rich(TextSpan(
+                            text:
+                                "To enable opening steamgifts.com links in this app, in the app's ",
+                            children: [
+                              TextSpan(
+                                  text: "Open by default ",
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text:
+                                      "menu enable the steamgifts.com domains by tapping on "),
+                              TextSpan(
+                                text: "+ Add links ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: "and selecting the two domains.")
+                            ])),
+                      ),
+                      GestureDetector(
+                        onTap: () => const OpenSettingsPlusAndroid().applicationDetails(),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Icon(Icons.settings),
+                        ),
+                      )
+                    ],
+                  ))
             ],
           ),
         ));

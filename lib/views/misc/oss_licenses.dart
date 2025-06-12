@@ -1042,7 +1042,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// checked_yaml 2.0.3
+/// checked_yaml 2.0.4
 const _checked_yaml = Package(
     name: 'checked_yaml',
     description:
@@ -1050,7 +1050,7 @@ const _checked_yaml = Package(
     repository:
         'https://github.com/google/json_serializable.dart/tree/master/checked_yaml',
     authors: [],
-    version: '2.0.3',
+    version: '2.0.4',
     license: '''Copyright 2019, the Dart project authors. All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -3009,13 +3009,13 @@ const _flat_buffers = Package(
     isSdk: false,
     dependencies: []);
 
-/// flutter 3.32.1
+/// flutter 3.32.3
 const _flutter = Package(
     name: 'flutter',
     description: 'A framework for writing Flutter applications',
     homepage: 'https://flutter.dev',
     authors: [],
-    version: '3.32.1',
+    version: '3.32.3',
     license: '''Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -5394,14 +5394,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
       PackageRef('string_scanner')
     ]);
 
-/// go_router 15.1.2
+/// go_router 15.1.3
 const _go_router = Package(
     name: 'go_router',
     description:
         'A declarative router for Flutter based on Navigation 2 supporting deep linking, data-driven routes and more',
     repository: 'https://github.com/flutter/packages/tree/main/packages/go_router',
     authors: [],
-    version: '15.1.2',
+    version: '15.1.3',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -10572,14 +10572,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       PackageRef('fixnum')
     ]);
 
-/// vector_graphics 1.1.18
+/// vector_graphics 1.1.19
 const _vector_graphics = Package(
     name: 'vector_graphics',
     description:
         'A vector graphics rendering package for Flutter using a binary encoding.',
     repository: 'https://github.com/flutter/packages/tree/main/packages/vector_graphics',
     authors: [],
-    version: '1.1.18',
+    version: '1.1.19',
     license: '''Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -10792,14 +10792,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
     isSdk: false,
     dependencies: []);
 
-/// watcher 1.1.1
+/// watcher 1.1.2
 const _watcher = Package(
     name: 'watcher',
     description:
         'A file system watcher. It monitors changes to contents of directories and sends notifications when files have been added, removed, or modified.',
     repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/watcher',
     authors: [],
-    version: '1.1.1',
+    version: '1.1.2',
     license: '''Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
