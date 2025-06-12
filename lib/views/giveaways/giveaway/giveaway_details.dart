@@ -566,21 +566,23 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                           padding: const EdgeInsets.only(left: 8.0),
                                           child: Text(_giveaway.error!),
                                         )),
-                          TextButton(
-                              onPressed: () async {
-                                Object? refresh = await customNav(
-                                    CommentEditor(
-                                        data: _descriptionText.isNotEmpty
-                                            ? _descriptionText[0].children[0]
-                                            : dom.Element.html('<p></p>'),
-                                        name: _giveaway.creator!,
-                                        url: _url),
-                                    context);
-                                if (refresh == true) {
-                                  _controller.method();
-                                }
-                              },
-                              child: const Text('Comment')),
+                          widget.isBlacklisted
+                              ? Container()
+                              : TextButton(
+                                  onPressed: () async {
+                                    Object? refresh = await customNav(
+                                        CommentEditor(
+                                            data: _descriptionText.isNotEmpty
+                                                ? _descriptionText[0].children[0]
+                                                : dom.Element.html('<p></p>'),
+                                            name: _giveaway.creator!,
+                                            url: _url),
+                                        context);
+                                    if (refresh == true) {
+                                      _controller.method();
+                                    }
+                                  },
+                                  child: const Text('Comment')),
                           const Spacer(),
                           _giveaway.inviteOnly
                               ? const Icon(
