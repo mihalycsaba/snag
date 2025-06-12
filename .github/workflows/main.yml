@@ -56,7 +56,7 @@ jobs:
         if: steps.check_version.outputs.VERSION_EXISTS == 'false'
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'jetbrains'
           java-version: '17'
 
         #Setup Flutter
