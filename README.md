@@ -37,7 +37,7 @@ You can get prerelease versions with Obtainium by enabling `Include prereleases`
 
 The app should always be built with the latest stable version of Flutter.
 
-Latest release was built with Flutter version: `3.32.7`
+Latest release was built with Flutter version: `3.35.6`
 
 ## Contributing
 
