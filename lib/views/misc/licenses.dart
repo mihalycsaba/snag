@@ -55,7 +55,7 @@ class Licenses extends StatelessWidget {
                                               fontWeight: FontWeight.bold, fontSize: 18)),
                                     ),
                                     const Text('  version: '),
-                                    Text(allDependencies[index].version),
+                                    Text(allDependencies[index].version ?? 'unknown'),
                                   ],
                                 ),
                               ),

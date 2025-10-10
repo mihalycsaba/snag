@@ -16,11 +16,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 0.0.16-pre.2
+version: 0.0.16-pre.3
 
 environment:
   sdk: ^3.5.0
-  flutter: ^3.32.7
+  flutter: ^3.35.6
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -43,15 +43,15 @@ dependencies:
   shared_preferences: ^2.2.0
   provider: ^6.0.5
   flutter_local_notifications: ^19.0.0
-  workmanager: ^0.8.0
+  workmanager: ^0.9.0+3
   url_launcher: ^6.1.14
   flutter_html: ^3.0.0
   permission_handler: ^12.0.0+1
   flutter_inappwebview: ^6.0.0
   dynamic_color: ^1.7.0
-  share_plus: ^11.0.0
+  share_plus: ^12.0.0
   flutter_html_table: ^3.0.0
-  objectbox: ^4.0.2
+  objectbox: ^5.0.0
   objectbox_flutter_libs: any
   path_provider: ^2.1.4
   path: ^1.9.0
@@ -60,7 +60,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   flutter_svg: ^2.0.17
   vector_graphics: ^1.1.18
-  package_info_plus: ^8.3.0
+  package_info_plus: ^9.0.0
   open_settings_plus: ^0.4.0
 
 dev_dependencies:
