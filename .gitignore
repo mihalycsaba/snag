@@ -48,3 +48,4 @@ app.*.map.json
 lib/objectbox/objectbox.g.dart
 android/.kotlin
 android/app/.cxx
+android/build/reports

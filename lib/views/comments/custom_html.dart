@@ -30,10 +30,23 @@ import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 
-class CustomHtml extends StatelessWidget {
+class CustomHtml extends StatefulWidget {
   const CustomHtml({super.key, required this.data, this.active = false});
   final dom.Element data;
   final bool active;
+
+  @override
+  State<CustomHtml> createState() => _CustomHtmlState();
+}
+
+class _CustomHtmlState extends State<CustomHtml> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +55,11 @@ class CustomHtml extends StatelessWidget {
           context: context,
           builder: (context) => SimpleDialog(title: const Text('Copy'), children: [
                 SimpleDialogOption(
-                    onPressed: () => _clipboard(data.text.trim(), context),
+                    onPressed: () => _clipboard(widget.data.text.trim(), context),
                     child: const Text('Text')),
                 SimpleDialogOption(
                     onPressed: () => _clipboard(
-                        parse(data.innerHtml)
+                        parse(widget.data.innerHtml)
                             .getElementsByTagName('a')
                             .where((e) => e.attributes.containsKey('href'))
                             .map((e) => e.attributes['href'])
@@ -57,15 +70,29 @@ class CustomHtml extends StatelessWidget {
               ])),
       child: Consumer<ThemeProvider>(
         builder: (context, theme, child) => Html(
-          doNotRenderTheseTags: const {'img', 'div', 'br'},
-          data: data.innerHtml,
+          doNotRenderTheseTags: const {'img', 'div', 'br', 'hr'},
+          data: widget.data.innerHtml,
           style: {
             "p": Style(
                 fontSize: FontSize(14.0 + theme.fontSize),
-                color: active ? Theme.of(context).colorScheme.primary : null)
+                color: widget.active ? Theme.of(context).colorScheme.primary : null)
           },
           onLinkTap: (url, attributes, element) => _checkUrl(url!, context),
-          extensions: const [TableHtmlExtension()],
+          extensions: [
+            const TableHtmlExtension(),
+            TagWrapExtension(
+                tagsToWrap: {'table'},
+                builder: (child) {
+                  return Scrollbar(
+                      controller: _scrollController,
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        child: child,
+                      ));
+                }),
+          ],
         ),
       ),
     );
