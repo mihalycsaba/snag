@@ -32,7 +32,7 @@ import 'package:snag/views/misc/user.dart';
 
 typedef ReplyAddedCallback = void Function();
 
-class CommentMessage extends StatelessWidget {
+class CommentMessage extends StatefulWidget {
   const CommentMessage(
       {super.key,
       required this.data,
@@ -69,71 +69,88 @@ class CommentMessage extends StatelessWidget {
   final String role;
 
   @override
-  Widget build(BuildContext context) {
-    List<dom.Element> images = data.getElementsByClassName('comment__toggle-attached');
-    List<Widget> attachedImages = [];
+  State<CommentMessage> createState() => _CommentMessageState();
+}
+
+class _CommentMessageState extends State<CommentMessage> {
+  final List<Widget> attachedImages = [];
+  @override
+  void initState() {
+    super.initState();
+    List<dom.Element> images =
+        widget.data.getElementsByClassName('comment__toggle-attached');
     if (images.isNotEmpty) {
-      for (dom.Element image in data.getElementsByTagName('img')) {
+      for (dom.Element image in widget.data.getElementsByTagName('img')) {
         attachedImages.add(_AttachedImage(data: image.attributes['src']!));
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        avatar != null ? const Padding(padding: EdgeInsets.only(top: 10)) : Container(),
+        widget.avatar != null
+            ? const Padding(padding: EdgeInsets.only(top: 10))
+            : Container(),
         GestureDetector(
-          onTap: userHref != null ? () => customNav(User(name: name!), context) : null,
+          onTap: widget.userHref != null
+              ? () => customNav(User(name: widget.name!), context)
+              : null,
           child: Row(
             children: [
-              avatar != null
+              widget.avatar != null
                   ? SizedBox(
                       width: 30,
                       height: 30,
                       child: CachedNetworkImage(
-                        imageUrl: avatar!,
+                        imageUrl: widget.avatar!,
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     )
                   : Container(),
-              name != null
+              widget.name != null
                   ? Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Consumer<ThemeProvider>(
                         builder: (context, theme, child) => Text(
-                          name!,
+                          widget.name!,
                           style: TextStyle(
                               fontSize: 16.0 + theme.fontSize,
                               fontWeight: FontWeight.bold,
-                              color:
-                                  active ? Theme.of(context).colorScheme.primary : null),
+                              color: widget.active
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null),
                         ),
                       ))
                   : Container(),
-              patron ? Icon(Icons.star, color: Colors.green[800]) : Container(),
-              role != ''
+              widget.patron ? Icon(Icons.star, color: Colors.green[800]) : Container(),
+              widget.role != ''
                   ? Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: Text(role),
+                      child: Text(widget.role),
                     )
                   : Container(),
               const Spacer(),
-              ago != null
+              widget.ago != null
                   ? Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: Row(
                         children: [
                           Icon(Icons.access_time,
                               size: 10,
-                              color:
-                                  active ? Theme.of(context).colorScheme.primary : null),
+                              color: widget.active
+                                  ? Theme.of(context).colorScheme.primary
+                                  : null),
                           const SizedBox(
                             width: 1,
                           ),
                           Consumer<ThemeProvider>(
-                            builder: (context, theme, child) => Text('${ago!} ago',
+                            builder: (context, theme, child) => Text('${widget.ago!} ago',
                                 style: TextStyle(
                                     fontSize: 10.0 + theme.fontSize,
-                                    color: active
+                                    color: widget.active
                                         ? Theme.of(context).colorScheme.primary
                                         : null)),
                           ),
@@ -146,24 +163,24 @@ class CommentMessage extends StatelessWidget {
         ),
         DecoratedBox(
             decoration: BoxDecoration(
-                border: indented
+                border: widget.indented
                     ? Border(
                         left: BorderSide(
                             width: 2, color: Theme.of(context).colorScheme.primary))
                     : null),
-            child: CustomHtml(data: data, active: active)),
+            child: CustomHtml(data: widget.data, active: widget.active)),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(child: Column(children: attachedImages)),
-            undelete
+            widget.undelete
                 ? InkWell(
                     onTap: () async {
                       String body =
-                          'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=comment_undelete&allow_replies=1&comment_id=$id';
+                          'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=comment_undelete&allow_replies=1&comment_id=${widget.id}';
                       Map responseMap = await resMapAjax(body);
                       if (responseMap['type'] == 'success') {
-                        onReply!();
+                        widget.onReply!();
                       }
                     },
                     child: Padding(
@@ -174,7 +191,10 @@ class CommentMessage extends StatelessWidget {
                       ),
                     ))
                 : Container(),
-            name == username && id != null && !closed && !isBlacklisted
+            widget.name == username &&
+                    widget.id != null &&
+                    !widget.closed &&
+                    !widget.isBlacklisted
                 ? InkWell(
                     onTap: () => showDialog(
                         context: context,
@@ -189,10 +209,10 @@ class CommentMessage extends StatelessWidget {
                                 TextButton(
                                     onPressed: () async {
                                       String body =
-                                          'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=comment_delete&allow_replies=1&comment_id=$id';
+                                          'xsrf_token=${prefs.getString(PrefsKeys.xsrf.key)}&do=comment_delete&allow_replies=1&comment_id=${widget.id}';
                                       Map responseMap = await resMapAjax(body);
                                       if (responseMap['type'] == 'success') {
-                                        onReply!();
+                                        widget.onReply!();
                                         if (context.mounted) {
                                           Navigator.pop(context);
                                         }
@@ -210,20 +230,23 @@ class CommentMessage extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            name == username && id != null && !closed && !isBlacklisted
+            widget.name == username &&
+                    widget.id != null &&
+                    !widget.closed &&
+                    !widget.isBlacklisted
                 ? InkWell(
                     onTap: () async {
                       await customNav(
                           CommentEditor(
-                            data: data,
-                            id: id!,
-                            name: name!,
-                            url: url!,
-                            editText: editText,
+                            data: widget.data,
+                            id: widget.id!,
+                            name: widget.name!,
+                            url: widget.url!,
+                            editText: widget.editText,
                             edit: true,
                           ),
                           context);
-                      onReply!();
+                      widget.onReply!();
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0, bottom: 5.0),
@@ -234,13 +257,17 @@ class CommentMessage extends StatelessWidget {
                     ),
                   )
                 : Container(),
-            id != null && !closed && !isBlacklisted
+            widget.id != null && !widget.closed && !widget.isBlacklisted
                 ? InkWell(
                     onTap: () async {
                       await customNav(
-                          CommentEditor(data: data, id: id!, name: name!, url: url!),
+                          CommentEditor(
+                              data: widget.data,
+                              id: widget.id!,
+                              name: widget.name!,
+                              url: widget.url!),
                           context);
-                      onReply!();
+                      widget.onReply!();
                     },
                     child: Padding(
                       padding:

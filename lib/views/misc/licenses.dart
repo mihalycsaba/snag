@@ -100,6 +100,13 @@ class Licenses extends StatelessWidget {
                                       ],
                                     )
                                   : Container(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('License: '),
+                                  Text(allDependencies[index].spdxIdentifiers.join(', ')),
+                                ],
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Card(
