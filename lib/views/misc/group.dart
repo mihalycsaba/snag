@@ -17,7 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
@@ -26,6 +25,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/card_theme.dart';
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
@@ -238,18 +238,11 @@ class _GroupState extends State<Group> {
                 .getElementsByClassName('featured__heading__medium')[0]
                 .text
                 .trim(),
-            image: CachedNetworkImage(
-                imageUrl: getAvatar(featured, 'global__image-inner-wrap'),
-                width: 70,
-                height: 70,
-                errorWidget: (context, url, error) => const SizedBox(
-                      width: 70,
-                      height: 70,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.grey),
-                        child: Icon(Icons.error),
-                      ),
-                    )),
+            image: CustomNetworkImage(
+              resize: false,
+              url: getAvatar(featured, 'global__image-inner-wrap'),
+              width: 70,
+            ),
             first: details[0]
                 .getElementsByClassName('featured__table__row')[0]
                 .getElementsByClassName('featured__table__row__right')[0]

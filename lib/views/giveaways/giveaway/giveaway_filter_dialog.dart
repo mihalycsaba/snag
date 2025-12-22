@@ -87,7 +87,7 @@ class _GiveawayFilterDialogState extends State<GiveawayFilterDialog> {
                   child: Row(
                     children: [
                       SizedBox(width: _width, child: const Text('Search')),
-                      CustomTextField(
+                      CustomTextFormField(
                           hintText: 'Search',
                           controller: _search,
                           validator: textValidator,
@@ -336,7 +336,7 @@ class _FilterRow extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: width, child: Text(name)),
-          CustomTextField(
+          CustomTextFormField(
               hintText: 'min',
               controller: minController,
               validator: minValidator,
@@ -345,7 +345,7 @@ class _FilterRow extends StatelessWidget {
               minNumber: minNumber,
               maxNumber: maxNumber),
           const SizedBox(width: 8),
-          CustomTextField(
+          CustomTextFormField(
               hintText: 'max',
               controller: maxController,
               validator: maxValidator,

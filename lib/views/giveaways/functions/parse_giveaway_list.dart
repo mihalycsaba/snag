@@ -15,9 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
-import 'package:flutter/material.dart';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
@@ -39,8 +36,7 @@ GiveawayListModel parseGiveawayListElement(dom.Element element, [String? usernam
   List<dom.Element> lvl =
       item.getElementsByClassName('giveaway__column--contributor-level');
   List<dom.Element> img = item.getElementsByClassName('giveaway_image_thumbnail');
-  String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
-  image = image == '' ? '' : image?.substring(21, image.length - 2);
+  String image = img.isNotEmpty ? img[0].attributes['style']! : '';
   String entr = item.getElementsByClassName('giveaway__links')[0].children[0].text;
   dom.Node time = item.getElementsByClassName('fa fa-clock-o')[0].parentNode!;
   bool notEnded = time.nodes.length > 3;
@@ -50,14 +46,7 @@ GiveawayListModel parseGiveawayListElement(dom.Element element, [String? usernam
       creator: usernameElement.isNotEmpty ? usernameElement[0].text : username,
       name: name.text.trim(),
       entries: entr.substring(0, entr.length - 7).trim(),
-      image: image == ''
-          ? const Icon(Icons.error)
-          : CachedNetworkImage(
-              fadeInDuration: const Duration(milliseconds: 100),
-              filterQuality: FilterQuality.high,
-              imageUrl: image!,
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
+      image: image == '' ? '' : image.substring(21, image.length - 2),
       href: name.attributes['href'],
       entered:
           element.innerHtml.contains('giveaway__row-inner-wrap is-faded') ? true : false,

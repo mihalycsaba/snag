@@ -17,7 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -25,6 +24,7 @@ import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/leading_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/theme_provider.dart';
@@ -32,15 +32,15 @@ import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 import 'package:snag/views/giveaways/giveaway/winners.dart';
 
-class CreatedListModel {
+class _CreatedListModel {
   String name;
-  Widget image;
+  String image;
   String time;
   String href;
   bool sent;
   bool received;
   String? sendLink;
-  CreatedListModel(
+  _CreatedListModel(
       {required this.name,
       required this.image,
       required this.time,
@@ -58,7 +58,7 @@ class CreatedBuilder extends StatefulWidget {
 }
 
 class _CreatedBuilderState extends State<CreatedBuilder> {
-  final PagingController<int, CreatedListModel> _pagingController =
+  final PagingController<int, _CreatedListModel> _pagingController =
       PagingController(firstPageKey: 1);
 
   @override
@@ -80,20 +80,17 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
     return RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: Consumer<ThemeProvider>(
-          builder: (context, theme, child) => PagedListView<int, CreatedListModel>(
+          builder: (context, theme, child) => PagedListView<int, _CreatedListModel>(
               itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
               pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<CreatedListModel>(
+              builderDelegate: PagedChildBuilderDelegate<_CreatedListModel>(
                   itemBuilder: (context, created, index) => Column(children: [
                         ListTile(
                             contentPadding: CustomListTileTheme.contentPadding,
                             minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                             dense: CustomListTileTheme.dense,
                             selected: !created.received,
-                            leading: SizedBox(
-                              width: CustomListTileTheme.leadingWidth,
-                              child: created.image,
-                            ),
+                            leading: LeadingImage(image: created.image),
                             title: Consumer<ThemeProvider>(
                               builder: (context, theme, child) => Text(created.name,
                                   style: TextStyle(
@@ -129,24 +126,23 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
     String data = await fetchBody(
         url:
             'https://www.steamgifts.com/giveaways/created/search?page=${pageKey.toString()}');
-    List<CreatedListModel> createdList = parseCreatedList(data);
+    List<_CreatedListModel> createdList = parseCreatedList(data);
     addPage(createdList, _pagingController, pageKey,
         parse(data).getElementsByClassName('widget-container').first);
   }
 
-  List<CreatedListModel> parseCreatedList(String data) {
-    List<CreatedListModel> createdList = [];
+  List<_CreatedListModel> parseCreatedList(String data) {
+    List<_CreatedListModel> createdList = [];
     parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
       createdList.add(parseCreatedListElement(element));
     });
     return createdList;
   }
 
-  CreatedListModel parseCreatedListElement(dom.Element element) {
+  _CreatedListModel parseCreatedListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
     List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
-    String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
-    image = image == '' ? '' : image?.substring(21, image.length - 2);
+    String image = img.isNotEmpty ? img[0].attributes['style']! : '';
     List<dom.Element> status =
         item.getElementsByClassName('table__column--width-small text-center');
     List<dom.Element> links =
@@ -157,14 +153,9 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
             ? links[0]
             : links[1];
     dom.Element heading = item.getElementsByClassName('table__column__heading')[0];
-    return CreatedListModel(
+    return _CreatedListModel(
         name: heading.text,
-        image: image == ''
-            ? const Icon(Icons.error)
-            : CachedNetworkImage(
-                imageUrl: image!,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+        image: image == '' ? '' : image.substring(21, image.length - 2),
         time: item
             .getElementsByClassName('table__column--width-fill')[0]
             .children[1]

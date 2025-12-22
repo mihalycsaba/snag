@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/leading_image.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/points_provider.dart';
@@ -63,8 +64,7 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
           minVerticalPadding: CustomListTileTheme.minVerticalPadding,
           dense: CustomListTileTheme.dense,
           selected: widget.giveaway.entered,
-          leading: SizedBox(
-              width: CustomListTileTheme.leadingWidth, child: widget.giveaway.image),
+          leading: LeadingImage(image: widget.giveaway.image),
           title: Row(
             children: [
               Flexible(

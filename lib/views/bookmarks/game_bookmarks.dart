@@ -17,13 +17,12 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/objectbox/game_bookmark_model.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 import 'package:snag/views/giveaways/game.dart';
+import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
 class GameBookmarks extends StatefulWidget {
   const GameBookmarks({super.key});
@@ -47,13 +46,11 @@ class _GameBookmarksState extends State<GameBookmarks> {
         itemCount: _bookmarks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              leading: SizedBox(
+              leading: CustomNetworkImage(
+                resize: true,
+                url:
+                    'https://shared.akamai.steamstatic.com/store_item_assets/steam/${_bookmarks[index].type}s/${_bookmarks[index].appid}/capsule_184x69.jpg',
                 width: CustomListTileTheme.leadingWidth,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      'https://shared.akamai.steamstatic.com/store_item_assets/steam/${_bookmarks[index].type}s/${_bookmarks[index].appid}/capsule_184x69.jpg',
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
               ),
               title: Text(_bookmarks[index].name),
               onTap: () async {

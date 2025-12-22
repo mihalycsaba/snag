@@ -267,7 +267,7 @@ class _TextRow extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(width: width, child: Text(title)),
-            CustomTextField(
+            CustomTextFormField(
                 hintText: title,
                 controller: controller,
                 validator: textValidator,
