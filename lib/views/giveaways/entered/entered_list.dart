@@ -17,12 +17,12 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
@@ -77,8 +77,7 @@ class _EnteredListState extends State<EnteredList> {
     dom.Element name = item.getElementsByClassName('table__column__heading')[0];
     List<dom.Element> heading = item.getElementsByClassName('is-faded');
     List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
-    String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
-    image = image == '' ? '' : image?.substring(21, image.length - 2);
+    String image = img.isNotEmpty ? img[0].attributes['style']! : '';
     String remaining =
         item.getElementsByClassName('table__column--width-fill')[0].children[1].text;
     String? points = heading.last.text;
@@ -91,12 +90,7 @@ class _EnteredListState extends State<EnteredList> {
         points: int.parse(points.substring(1, points.length - 2)),
         entries:
             item.getElementsByClassName('table__column--width-small text-center')[0].text,
-        image: image == ''
-            ? const Icon(Icons.error)
-            : CachedNetworkImage(
-                imageUrl: image!,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+        image: image == '' ? '' : image.substring(21, image.length - 2),
         href: name.attributes['href']!,
         entered: true,
         remaining: remaining,
@@ -221,8 +215,13 @@ class _EnteredListTileState extends State<_EnteredListTile> {
           minVerticalPadding: CustomListTileTheme.minVerticalPadding,
           dense: CustomListTileTheme.dense,
           selected: widget.giveaway.notEnded,
-          leading: SizedBox(
-              width: CustomListTileTheme.leadingWidth, child: widget.giveaway.image),
+          leading: widget.giveaway.image == ''
+              ? const Icon(Icons.error)
+              : CustomNetworkImage(
+                  resize: true,
+                  width: CustomListTileTheme.leadingWidth,
+                  url: widget.giveaway.image,
+                ),
           title: Row(
             children: [
               Flexible(
@@ -336,7 +335,7 @@ class _EnteredFilterDialogState extends State<_EnteredFilterDialog> {
             child: Row(
               children: [
                 const SizedBox(width: 55, child: Text('Search')),
-                CustomTextField(
+                CustomTextFormField(
                     hintText: 'Search',
                     controller: _search,
                     validator: textValidator,

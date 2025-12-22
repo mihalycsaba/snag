@@ -17,10 +17,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
@@ -101,13 +101,10 @@ class _CommentMessageState extends State<CommentMessage> {
           child: Row(
             children: [
               widget.avatar != null
-                  ? SizedBox(
+                  ? CustomNetworkImage(
+                      resize: false,
+                      url: widget.avatar!,
                       width: 30,
-                      height: 30,
-                      child: CachedNetworkImage(
-                        imageUrl: widget.avatar!,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
                     )
                   : Container(),
               widget.name != null
@@ -328,14 +325,10 @@ class _AttachedImageState extends State<_AttachedImage> {
                     )),
         ),
         _open
-            ? CachedNetworkImage(
-                progressIndicatorBuilder: (context, url, progress) =>
-                    CircularProgressIndicator(
-                  value: progress.progress,
-                ),
+            ? CustomNetworkImage(
+                resize: false,
                 alignment: Alignment.topLeft,
-                imageUrl: data,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                url: data,
               )
             : Container()
       ],

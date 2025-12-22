@@ -26,8 +26,8 @@ InputDecoration _customDecoration(String hintText) {
   );
 }
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField(
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField(
       {required this.hintText,
       required this.controller,
       required this.validator,

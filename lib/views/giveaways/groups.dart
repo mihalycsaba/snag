@@ -17,10 +17,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -68,10 +68,8 @@ class _GroupsState extends State<Groups> {
             leading: SizedBox(
               width: 40,
               height: 40,
-              child: CachedNetworkImage(
-                imageUrl: _groups[index].avatar,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              child:
+                  CustomNetworkImage(url: _groups[index].avatar, resize: true, width: 40),
             ),
             title: Text(_groups[index].name),
             onTap: () => customNav(Group(href: _groups[index].url), context),

@@ -17,7 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -27,6 +26,7 @@ import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/functions/url_launcher.dart';
+import 'package:snag/common/leading_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -36,7 +36,7 @@ import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
 class _WonListModel {
   String name;
-  Widget image;
+  String image;
   bool opened;
   String href;
   String time;
@@ -109,7 +109,7 @@ class _WonBuilderState extends State<WonBuilder> {
                         dense: CustomListTileTheme.dense,
                         leading: SizedBox(
                           width: CustomListTileTheme.leadingWidth,
-                          child: giveaway.image,
+                          child: LeadingImage(image: giveaway.image),
                         ),
                         title: Consumer<ThemeProvider>(
                           builder: (context, theme, child) => Text(giveaway.name,
@@ -216,8 +216,7 @@ class _WonBuilderState extends State<WonBuilder> {
     dom.Document item = parse(element.innerHtml);
     dom.Element name = item.getElementsByClassName('table__column__heading')[0];
     List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
-    String? image = img.isNotEmpty ? img[0].attributes['style'] : '';
-    image = image == '' ? '' : image?.substring(21, image.length - 2);
+    String image = img.isNotEmpty ? img[0].attributes['style']! : '';
     List<dom.Element> redeemKey =
         item.getElementsByClassName('table__column__key__redeem');
     List<dom.Element> keyButton = item.getElementsByClassName('view_key_btn');
@@ -234,12 +233,7 @@ class _WonBuilderState extends State<WonBuilder> {
                 .isEmpty;
     return _WonListModel(
         name: name.text,
-        image: image == ''
-            ? const Icon(Icons.error)
-            : CachedNetworkImage(
-                imageUrl: image!,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+        image: image == '' ? '' : image.substring(21, image.length - 2),
         opened: item.getElementsByClassName('view_key_btn').isEmpty,
         href: name.attributes['href']!,
         time:

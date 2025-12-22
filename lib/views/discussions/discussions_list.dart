@@ -17,12 +17,12 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
@@ -53,14 +53,8 @@ class DiscussionsList extends StatelessWidget {
                 contentPadding: CustomListTileTheme.contentPadding,
                 minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                 dense: CustomListTileTheme.dense,
-                leading: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CachedNetworkImage(
-                    imageUrl: discussion.avatar,
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                  ),
-                ),
+                leading:
+                    CustomNetworkImage(url: discussion.avatar, resize: true, width: 40),
                 title: Consumer<ThemeProvider>(
                     builder: (context, theme, child) => Row(
                           children: [

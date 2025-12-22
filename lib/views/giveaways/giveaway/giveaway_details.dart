@@ -17,7 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
@@ -26,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/card_theme.dart';
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/res_status_code.dart';
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/image_sliver_appbar.dart';
@@ -163,22 +163,18 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
           : '';
       List<dom.Element> entries = _document
           .getElementsByClassName('sidebar__navigation__item__count live__entry-count');
+      String image = _document
+              .getElementsByClassName('featured__inner-wrap')[0]
+              .children[0]
+              .children[0]
+              .attributes['src'] ??
+          '';
       List<dom.Element> lvl =
           _document.getElementsByClassName('featured__column--contributor-level');
       _giveaway = _GiveawayDetailsModel(
         name: _name,
         entries: entries.isNotEmpty ? entries[0].text : '0',
-        image: CachedNetworkImage(
-          fit: BoxFit.cover,
-          errorWidget: (context, url, error) => const SizedBox(
-            width: 200,
-            height: 180,
-            child: DecoratedBox(
-                decoration: BoxDecoration(color: Colors.grey), child: Icon(Icons.error)),
-          ),
-          imageUrl: 'https://steamcdn-a.akamaihd.net/steam/$_type'
-              's/$_appid/header.jpg',
-        ),
+        image: image.replaceAll('_292x136', ''),
         href: widget.href,
         entered: _document.getElementsByClassName('sidebar__entry-insert').isNotEmpty &&
             _document.getElementsByClassName('sidebar__entry-delete is-hidden').isEmpty &&
@@ -297,7 +293,16 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
               physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               slivers: <Widget>[
-                ImageSliverAppBar(appbarHeight: _appbarHeight, image: _giveaway.image),
+                ImageSliverAppBar(
+                  appbarHeight: _appbarHeight,
+                  image: CustomNetworkImage(
+                    resize: false,
+                    fit: BoxFit.cover,
+                    width: 200,
+                    height: 180,
+                    url: _giveaway.image,
+                  ),
+                ),
                 SliverAppBar(
                   primary: false,
                   toolbarHeight: kToolbarHeight + _padding,

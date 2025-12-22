@@ -17,10 +17,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:humanizer/humanizer.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
@@ -71,13 +71,11 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                         style: TextStyle(
                             fontSize:
                                 CustomListTileTheme.subtitleTextSize + theme.fontSize)),
-                    leading: SizedBox(
+                    leading: CustomNetworkImage(
+                      resize: true,
+                      url:
+                          'https://shared.akamai.steamstatic.com/store_item_assets/steam/${user.giveaways[index].type}s/${user.giveaways[index].appid}/capsule_184x69.jpg',
                       width: CustomListTileTheme.leadingWidth,
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            'https://shared.akamai.steamstatic.com/store_item_assets/steam/${user.giveaways[index].type}s/${user.giveaways[index].appid}/capsule_184x69.jpg',
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
                     ),
                     onTap: () async {
                       await customNav(

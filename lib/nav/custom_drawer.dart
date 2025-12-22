@@ -17,18 +17,18 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/nav/go_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/bookmarks/bookmarks.dart';
-import 'package:snag/views/misc/open_code.dart';
 import 'package:snag/views/misc/about.dart';
+import 'package:snag/views/misc/open_code.dart';
 import 'package:snag/views/misc/settings.dart';
 import 'package:snag/views/misc/user.dart';
 
@@ -48,10 +48,7 @@ class CustomDrawer extends StatelessWidget {
             builder: (context, theme, child) => ListTile(
               minVerticalPadding: 3,
               dense: true,
-              leading: CachedNetworkImage(
-                  width: 36,
-                  imageUrl: avatar,
-                  errorWidget: (context, url, error) => const Icon(Icons.error)),
+              leading: CustomNetworkImage(url: avatar, resize: false, width: 36),
               title: Text(username,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 14.0 + theme.fontSize)),

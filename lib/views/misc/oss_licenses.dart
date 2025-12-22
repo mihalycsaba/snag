@@ -23,9 +23,6 @@ const allDependencies = <Package>[
   _build_runner,
   _built_collection,
   _built_value,
-  _cached_network_image,
-  _cached_network_image_platform_interface,
-  _cached_network_image_web,
   _characters,
   _checked_yaml,
   _cli_config,
@@ -50,7 +47,6 @@ const allDependencies = <Package>[
   _fixnum,
   _flat_buffers,
   _flutter,
-  _flutter_cache_manager,
   _flutter_html,
   _flutter_html_table,
   _flutter_inappwebview,
@@ -102,7 +98,6 @@ const allDependencies = <Package>[
   _objectbox,
   _objectbox_flutter_libs,
   _objectbox_generator,
-  _octo_image,
   _open_settings_plus,
   _package_config,
   _package_info_plus,
@@ -133,7 +128,6 @@ const allDependencies = <Package>[
   _quiver,
   _rational,
   _retry,
-  _rxdart,
   _safe_url_check,
   _share_plus,
   _share_plus_platform_interface,
@@ -153,16 +147,10 @@ const allDependencies = <Package>[
   _source_map_stack_trace,
   _source_maps,
   _source_span,
-  _sqflite,
-  _sqflite_android,
-  _sqflite_common,
-  _sqflite_darwin,
-  _sqflite_platform_interface,
   _stack_trace,
   _stream_channel,
   _stream_transform,
   _string_scanner,
-  _synchronized,
   _tar,
   _term_glyph,
   _test,
@@ -205,7 +193,6 @@ const dependencies = <Package>[
   _cupertino_icons,
   _http,
   _html,
-  _cached_network_image,
   _infinite_scroll_pagination,
   _shared_preferences,
   _provider,
@@ -850,123 +837,6 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// cached_network_image 3.4.1
-const _cached_network_image = Package(
-  name: 'cached_network_image',
-  description:
-      'Flutter library to load and cache network images. Can also be used with placeholder and error widgets.',
-  homepage: 'https://github.com/Baseflow/flutter_cached_network_image',
-  authors: [],
-  version: '3.4.1',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('cached_network_image_platform_interface'),
-    PackageRef('cached_network_image_web'),
-    PackageRef('flutter'),
-    PackageRef('flutter_cache_manager'),
-    PackageRef('octo_image')
-  ],
-  devDependencies: [PackageRef('file'), PackageRef('flutter_lints')],
-  license: '''The MIT License (MIT)
-
-Copyright (c) 2018 Rene Floor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
-);
-
-/// cached_network_image_platform_interface 4.1.1
-const _cached_network_image_platform_interface = Package(
-  name: 'cached_network_image_platform_interface',
-  description: 'Platform interface for CachedNetworkImage',
-  homepage: 'https://github.com/Baseflow/flutter_cached_network_image',
-  authors: [],
-  version: '4.1.1',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [PackageRef('flutter'), PackageRef('flutter_cache_manager')],
-  devDependencies: [PackageRef('file'), PackageRef('flutter_lints')],
-  license: '''The MIT License (MIT)
-
-Copyright (c) 2018 Rene Floor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
-);
-
-/// cached_network_image_web 1.3.1
-const _cached_network_image_web = Package(
-  name: 'cached_network_image_web',
-  description: 'Web implementation of CachedNetworkImage',
-  homepage: 'https://github.com/Baseflow/flutter_cached_network_image',
-  authors: [],
-  version: '1.3.1',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('cached_network_image_platform_interface'),
-    PackageRef('flutter'),
-    PackageRef('flutter_cache_manager'),
-    PackageRef('web')
-  ],
-  devDependencies: [PackageRef('file'), PackageRef('flutter_lints')],
-  license: '''The MIT License (MIT)
-
-Copyright (c) 2018 Rene Floor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
 );
 
 /// characters 1.4.0
@@ -2961,14 +2831,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flat_buffers 23.5.26
+/// flat_buffers 25.9.23
 const _flat_buffers = Package(
   name: 'flat_buffers',
   description:
       'FlatBuffers reading and writing library for Dart. Based on original work by Konstantin Scheglov and Paul Berry of the Dart SDK team.',
   homepage: 'https://github.com/google/flatbuffers',
   authors: [],
-  version: '23.5.26',
+  version: '25.9.23',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -3230,54 +3100,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// flutter_cache_manager 3.4.1
-const _flutter_cache_manager = Package(
-  name: 'flutter_cache_manager',
-  description:
-      'Generic cache manager for flutter. Saves web files on the storages of the device and saves the cache info using sqflite.',
-  homepage:
-      'https://github.com/Baseflow/flutter_cache_manager/tree/develop/flutter_cache_manager',
-  authors: [],
-  version: '3.4.1',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('clock'),
-    PackageRef('collection'),
-    PackageRef('file'),
-    PackageRef('flutter'),
-    PackageRef('http'),
-    PackageRef('path'),
-    PackageRef('path_provider'),
-    PackageRef('rxdart'),
-    PackageRef('sqflite'),
-    PackageRef('uuid')
-  ],
-  devDependencies: [PackageRef('build_runner'), PackageRef('flutter_lints')],
-  license: '''The MIT License (MIT)
-
-Copyright (c) 2017 Rene Floor
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
 );
 
 /// flutter_html 3.0.0
@@ -6927,14 +6749,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// objectbox 5.0.4
+/// objectbox 5.1.0
 const _objectbox = Package(
   name: 'objectbox',
   description: 'Flutter database for super-fast NoSQL ACID compliant object persistence.',
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/objectbox',
   authors: [],
-  version: '5.0.4',
+  version: '5.1.0',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7149,7 +6971,7 @@ const _objectbox = Package(
    limitations under the License.''',
 );
 
-/// objectbox_flutter_libs 5.0.4
+/// objectbox_flutter_libs 5.1.0
 const _objectbox_flutter_libs = Package(
   name: 'objectbox_flutter_libs',
   description:
@@ -7157,7 +6979,7 @@ const _objectbox_flutter_libs = Package(
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/flutter_libs',
   authors: [],
-  version: '5.0.4',
+  version: '5.1.0',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7370,7 +7192,7 @@ const _objectbox_flutter_libs = Package(
    limitations under the License.''',
 );
 
-/// objectbox_generator 5.0.4
+/// objectbox_generator 5.1.0
 const _objectbox_generator = Package(
   name: 'objectbox_generator',
   description:
@@ -7378,7 +7200,7 @@ const _objectbox_generator = Package(
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/generator',
   authors: [],
-  version: '5.0.4',
+  version: '5.1.0',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7604,42 +7426,6 @@ const _objectbox_generator = Package(
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.''',
-);
-
-/// octo_image 2.1.0
-const _octo_image = Package(
-  name: 'octo_image',
-  description:
-      'A multifunctional Flutter image widget. Supports placeholders, error widgets and image transformers with fading.',
-  homepage: 'https://github.com/Baseflow/octo_image',
-  authors: [],
-  version: '2.1.0',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [PackageRef('flutter')],
-  devDependencies: [PackageRef('flutter_lints')],
-  license: '''MIT License
-
-Copyright (c) 2020 Baseflow
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
 );
 
 /// open_settings_plus 0.4.0
@@ -9455,223 +9241,6 @@ const _retry = Package(
    limitations under the License.''',
 );
 
-/// rxdart 0.28.0
-const _rxdart = Package(
-  name: 'rxdart',
-  description:
-      '''RxDart is an implementation of the popular ReactiveX api for asynchronous programming, leveraging the native Dart Streams api.
-''',
-  repository: 'https://github.com/ReactiveX/rxdart',
-  authors: [],
-  version: '0.28.0',
-  spdxIdentifiers: ['Apache-2.0'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [],
-  devDependencies: [PackageRef('lints'), PackageRef('stack_trace'), PackageRef('test')],
-  license: '''Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
-
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.''',
-);
-
 /// safe_url_check 1.1.2
 const _safe_url_check = Package(
   name: 'safe_url_check',
@@ -10710,256 +10279,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// sqflite 2.4.2
-const _sqflite = Package(
-  name: 'sqflite',
-  description:
-      'Flutter plugin for SQLite, a self-contained, high-reliability, embedded, SQL database engine.',
-  repository: 'https://github.com/tekartik/sqflite/tree/master/sqflite',
-  authors: [],
-  version: '2.4.2',
-  spdxIdentifiers: ['BSD-2-Clause'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('flutter'),
-    PackageRef('sqflite_android'),
-    PackageRef('sqflite_darwin'),
-    PackageRef('sqflite_platform_interface'),
-    PackageRef('sqflite_common'),
-    PackageRef('path')
-  ],
-  devDependencies: [
-    PackageRef('flutter_lints'),
-    PackageRef('http'),
-    PackageRef('test_api'),
-    PackageRef('pub_semver')
-  ],
-  license: '''BSD 2-Clause License
-
-Copyright (c) 2019, Alexandre Roux Tekartik
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// sqflite_android 2.4.2+2
-const _sqflite_android = Package(
-  name: 'sqflite_android',
-  description:
-      'Android flutter plugin for SQLite, a self-contained, high-reliability, embedded, SQL database engine.',
-  repository: 'https://github.com/tekartik/sqflite/tree/master/sqflite_android',
-  authors: [],
-  version: '2.4.2+2',
-  spdxIdentifiers: ['BSD-2-Clause'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('flutter'),
-    PackageRef('sqflite_common'),
-    PackageRef('path'),
-    PackageRef('sqflite_platform_interface')
-  ],
-  devDependencies: [
-    PackageRef('flutter_lints'),
-    PackageRef('http'),
-    PackageRef('test_api'),
-    PackageRef('pub_semver')
-  ],
-  license: '''BSD 2-Clause License
-
-Copyright (c) 2019, Alexandre Roux Tekartik
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// sqflite_common 2.5.6
-const _sqflite_common = Package(
-  name: 'sqflite_common',
-  description:
-      'Dart wrapper on SQLite, a self-contained, high-reliability, embedded, SQL database engine.',
-  homepage: 'https://github.com/tekartik/sqflite/tree/master/sqflite_common',
-  authors: [],
-  version: '2.5.6',
-  spdxIdentifiers: ['BSD-2-Clause'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [PackageRef('synchronized'), PackageRef('path'), PackageRef('meta')],
-  devDependencies: [
-    PackageRef('lints'),
-    PackageRef('http'),
-    PackageRef('test'),
-    PackageRef('test_api'),
-    PackageRef('pub_semver')
-  ],
-  license: '''BSD 2-Clause License
-
-Copyright (c) 2019, Alexandre Roux Tekartik
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// sqflite_darwin 2.4.2
-const _sqflite_darwin = Package(
-  name: 'sqflite_darwin',
-  description:
-      'iOS/MacOS flutter plugin for SQLite, a self-contained, high-reliability, embedded, SQL database engine.',
-  repository: 'https://github.com/tekartik/sqflite/tree/master/sqflite_darwin',
-  authors: [],
-  version: '2.4.2',
-  spdxIdentifiers: ['BSD-2-Clause'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('flutter'),
-    PackageRef('sqflite_platform_interface'),
-    PackageRef('meta'),
-    PackageRef('sqflite_common'),
-    PackageRef('path')
-  ],
-  devDependencies: [
-    PackageRef('flutter_lints'),
-    PackageRef('http'),
-    PackageRef('test_api'),
-    PackageRef('pub_semver')
-  ],
-  license: '''BSD 2-Clause License
-
-Copyright (c) 2019, Alexandre Roux Tekartik
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// sqflite_platform_interface 2.4.0
-const _sqflite_platform_interface = Package(
-  name: 'sqflite_platform_interface',
-  description:
-      'Flutter plugin interface for SQLite, a self-contained, high-reliability, embedded, SQL database engine.',
-  repository:
-      'https://github.com/tekartik/sqflite/tree/master/sqflite_platform_interface',
-  authors: [],
-  version: '2.4.0',
-  spdxIdentifiers: ['BSD-2-Clause'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [
-    PackageRef('flutter'),
-    PackageRef('platform'),
-    PackageRef('sqflite_common'),
-    PackageRef('plugin_platform_interface'),
-    PackageRef('meta')
-  ],
-  devDependencies: [
-    PackageRef('flutter_lints'),
-    PackageRef('test_api'),
-    PackageRef('pub_semver')
-  ],
-  license: '''BSD 2-Clause License
-
-Copyright (c) 2019, Alexandre Roux Tekartik
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
 /// stack_trace 1.12.1
 const _stack_trace = Package(
   name: 'stack_trace',
@@ -11123,48 +10442,6 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
-);
-
-/// synchronized 3.4.0
-const _synchronized = Package(
-  name: 'synchronized',
-  description: 'Lock mechanism to prevent concurrent access to asynchronous code.',
-  homepage: 'https://github.com/tekartik/synchronized.dart/tree/master/synchronized',
-  authors: [],
-  version: '3.4.0',
-  spdxIdentifiers: ['MIT'],
-  isMarkdown: false,
-  isSdk: false,
-  dependencies: [],
-  devDependencies: [
-    PackageRef('web'),
-    PackageRef('lints'),
-    PackageRef('pub_semver'),
-    PackageRef('test'),
-    PackageRef('build_runner'),
-    PackageRef('yaml')
-  ],
-  license: '''MIT License
-
-Copyright (c) 2016, Alexandre Roux Tekartik.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.''',
 );
 
 /// tar 2.0.2
@@ -12885,12 +12162,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.16-pre.3
+/// snag 0.0.16-pre.4
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.16-pre.3',
+  version: '0.0.16-pre.4',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,
@@ -12899,7 +12176,6 @@ const _snag = Package(
     PackageRef('cupertino_icons'),
     PackageRef('http'),
     PackageRef('html'),
-    PackageRef('cached_network_image'),
     PackageRef('infinite_scroll_pagination'),
     PackageRef('shared_preferences'),
     PackageRef('provider'),

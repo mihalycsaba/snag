@@ -19,7 +19,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
@@ -29,6 +28,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/card_theme.dart';
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/functions/fetch_body.dart';
@@ -405,17 +405,10 @@ class _UserState extends State<User> {
         dom.Element buttons =
             container.getElementsByClassName('sidebar__shortcut-inner-wrap')[0];
         _user = _UserModel(
-            image: CachedNetworkImage(
-                errorWidget: (context, url, error) => const SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: DecoratedBox(
-                          decoration: BoxDecoration(color: Colors.grey),
-                          child: Icon(Icons.error)),
-                    ),
-                width: 80,
+            image: CustomNetworkImage(
+                resize: false,
                 height: 80,
-                imageUrl: getAvatar(header, 'global__image-inner-wrap')),
+                url: getAvatar(header, 'global__image-inner-wrap')),
             role: details[0]
                 .getElementsByClassName('featured__table__row')[0]
                 .getElementsByClassName('featured__table__row__right')[0]
@@ -467,11 +460,8 @@ class _UserState extends State<User> {
                 : buttons
                     .getElementsByClassName('sidebar__shortcut__whitelist is-selected')
                     .isNotEmpty,
-            blacklisted: _isUser
-                ? null
-                : buttons
-                    .getElementsByClassName('sidebar__shortcut__blacklist is-selected')
-                    .isNotEmpty);
+            blacklisted:
+                _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
         setState(() {});
       }
       List<GiveawayListModel> giveaways = parseList(container, widget.name);
