@@ -98,7 +98,7 @@ jobs:
         #Rename APK
       - name: Rename APK
         if: steps.check_version.outputs.VERSION_EXISTS == 'false'
-        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
+        run: mv build/app/outputs/flutter-apk/app-production-release.apk build/app/outputs/flutter-apk/${{ steps.extract_name.outputs.NAME }}-${{ steps.extract_version.outputs.VERSION }}.apk
 
         #Upload Artifacts
       - name: Upload Artifacts
