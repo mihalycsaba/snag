@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/button_background_color.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/simple_filter_model.dart';
 import 'package:snag/nav/custom_drawer.dart';
@@ -90,7 +91,8 @@ class _EnteredListState extends State<EnteredList> {
         points: int.parse(points.substring(1, points.length - 2)),
         entries:
             item.getElementsByClassName('table__column--width-small text-center')[0].text,
-        image: image == '' ? '' : image.substring(21, image.length - 2),
+        image: resizeImage(image == '' ? '' : image.substring(21, image.length - 2),
+            CustomListTileTheme.leadingWidth.toInt()),
         href: name.attributes['href']!,
         entered: true,
         remaining: remaining,
@@ -215,13 +217,8 @@ class _EnteredListTileState extends State<_EnteredListTile> {
           minVerticalPadding: CustomListTileTheme.minVerticalPadding,
           dense: CustomListTileTheme.dense,
           selected: widget.giveaway.notEnded,
-          leading: widget.giveaway.image == ''
-              ? const Icon(Icons.error)
-              : CustomNetworkImage(
-                  resize: true,
-                  width: CustomListTileTheme.leadingWidth,
-                  url: widget.giveaway.image,
-                ),
+          leading: CustomNetworkImage(
+              image: widget.giveaway.image, width: CustomListTileTheme.leadingWidth),
           title: Row(
             children: [
               Flexible(

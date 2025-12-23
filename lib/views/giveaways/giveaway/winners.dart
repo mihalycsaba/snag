@@ -27,6 +27,7 @@ import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/functions/res_status_code.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/theme_provider.dart';
@@ -96,8 +97,7 @@ class _WinnersState extends State<Winners> {
                               minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                               dense: CustomListTileTheme.dense,
                               leading: CustomNetworkImage(
-                                resize: true,
-                                url: item.image,
+                                image: resizeImage(item.image, 40),
                                 width: 40,
                               ),
                               title: Text(

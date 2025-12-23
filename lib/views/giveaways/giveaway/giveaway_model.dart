@@ -15,10 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
+import 'package:flutter/widgets.dart';
+
 abstract class GiveawayModel {
   String name;
   String entries;
-  String image;
+  ImageProvider image;
   String remaining;
   String? href;
   bool entered;

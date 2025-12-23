@@ -406,9 +406,8 @@ class _UserState extends State<User> {
             container.getElementsByClassName('sidebar__shortcut-inner-wrap')[0];
         _user = _UserModel(
             image: CustomNetworkImage(
-                resize: false,
                 height: 80,
-                url: getAvatar(header, 'global__image-inner-wrap')),
+                image: NetworkImage(getAvatar(header, 'global__image-inner-wrap'))),
             role: details[0]
                 .getElementsByClassName('featured__table__row')[0]
                 .getElementsByClassName('featured__table__row__right')[0]
@@ -460,8 +459,7 @@ class _UserState extends State<User> {
                 : buttons
                     .getElementsByClassName('sidebar__shortcut__whitelist is-selected')
                     .isNotEmpty,
-            blacklisted:
-                _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
+            blacklisted: _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
         setState(() {});
       }
       List<GiveawayListModel> giveaways = parseList(container, widget.name);

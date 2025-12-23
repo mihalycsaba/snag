@@ -26,6 +26,7 @@ import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/theme_provider.dart';
@@ -53,8 +54,8 @@ class DiscussionsList extends StatelessWidget {
                 contentPadding: CustomListTileTheme.contentPadding,
                 minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                 dense: CustomListTileTheme.dense,
-                leading:
-                    CustomNetworkImage(url: discussion.avatar, resize: true, width: 40),
+                leading: CustomNetworkImage(
+                    image: resizeImage(discussion.avatar, 40), width: 40),
                 title: Consumer<ThemeProvider>(
                     builder: (context, theme, child) => Row(
                           children: [

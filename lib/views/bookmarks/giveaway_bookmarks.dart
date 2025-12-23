@@ -21,6 +21,7 @@ import 'package:humanizer/humanizer.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/giveaway_bookmarks_provider.dart';
@@ -72,9 +73,9 @@ class _GiveawayBookmarksState extends State<GiveawayBookmarks> {
                             fontSize:
                                 CustomListTileTheme.subtitleTextSize + theme.fontSize)),
                     leading: CustomNetworkImage(
-                      resize: true,
-                      url:
+                      image: resizeImage(
                           'https://shared.akamai.steamstatic.com/store_item_assets/steam/${user.giveaways[index].type}s/${user.giveaways[index].appid}/capsule_184x69.jpg',
+                          CustomListTileTheme.leadingWidth.toInt()),
                       width: CustomListTileTheme.leadingWidth,
                     ),
                     onTap: () async {

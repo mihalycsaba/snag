@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -102,8 +103,7 @@ class _CommentMessageState extends State<CommentMessage> {
             children: [
               widget.avatar != null
                   ? CustomNetworkImage(
-                      resize: false,
-                      url: widget.avatar!,
+                      image: resizeImage(widget.avatar!, 30),
                       width: 30,
                     )
                   : Container(),
@@ -326,9 +326,8 @@ class _AttachedImageState extends State<_AttachedImage> {
         ),
         _open
             ? CustomNetworkImage(
-                resize: false,
                 alignment: Alignment.topLeft,
-                url: data,
+                image: NetworkImage(data),
               )
             : Container()
       ],

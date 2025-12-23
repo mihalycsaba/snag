@@ -23,6 +23,7 @@ import 'package:html/parser.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/views/misc/group.dart';
 
@@ -68,8 +69,8 @@ class _GroupsState extends State<Groups> {
             leading: SizedBox(
               width: 40,
               height: 40,
-              child:
-                  CustomNetworkImage(url: _groups[index].avatar, resize: true, width: 40),
+              child: CustomNetworkImage(
+                  image: resizeImage(_groups[index].avatar, 40), width: 40),
             ),
             title: Text(_groups[index].name),
             onTap: () => customNav(Group(href: _groups[index].url), context),
