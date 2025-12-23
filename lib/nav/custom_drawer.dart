@@ -48,7 +48,7 @@ class CustomDrawer extends StatelessWidget {
             builder: (context, theme, child) => ListTile(
               minVerticalPadding: 3,
               dense: true,
-              leading: CustomNetworkImage(url: avatar, resize: false, width: 36),
+              leading: CustomNetworkImage(image: NetworkImage(avatar), width: 36),
               title: Text(username,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 14.0 + theme.fontSize)),

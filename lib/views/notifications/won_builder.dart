@@ -22,11 +22,12 @@ import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/functions/url_launcher.dart';
-import 'package:snag/common/leading_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -107,10 +108,10 @@ class _WonBuilderState extends State<WonBuilder> {
                         contentPadding: CustomListTileTheme.contentPadding,
                         minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                         dense: CustomListTileTheme.dense,
-                        leading: SizedBox(
-                          width: CustomListTileTheme.leadingWidth,
-                          child: LeadingImage(image: giveaway.image),
-                        ),
+                        leading: CustomNetworkImage(
+                            image: resizeImage(
+                                giveaway.image, CustomListTileTheme.leadingWidth.toInt()),
+                            width: CustomListTileTheme.leadingWidth),
                         title: Consumer<ThemeProvider>(
                           builder: (context, theme, child) => Text(giveaway.name,
                               style: TextStyle(

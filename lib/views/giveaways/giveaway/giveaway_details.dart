@@ -174,7 +174,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
       _giveaway = _GiveawayDetailsModel(
         name: _name,
         entries: entries.isNotEmpty ? entries[0].text : '0',
-        image: image.replaceAll('_292x136', ''),
+        image: NetworkImage(image.replaceAll('_292x136', '')),
         href: widget.href,
         entered: _document.getElementsByClassName('sidebar__entry-insert').isNotEmpty &&
             _document.getElementsByClassName('sidebar__entry-delete is-hidden').isEmpty &&
@@ -296,12 +296,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                 ImageSliverAppBar(
                   appbarHeight: _appbarHeight,
                   image: CustomNetworkImage(
-                    resize: false,
-                    fit: BoxFit.cover,
-                    width: 200,
-                    height: 180,
-                    url: _giveaway.image,
-                  ),
+                      fit: BoxFit.cover, width: 200, height: 180, image: _giveaway.image),
                 ),
                 SliverAppBar(
                   primary: false,

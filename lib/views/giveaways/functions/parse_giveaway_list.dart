@@ -18,7 +18,9 @@
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
+import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
 List<GiveawayListModel> parseList(dom.Element container, [String? username]) {
   List<GiveawayListModel> giveaways = [];
@@ -46,7 +48,8 @@ GiveawayListModel parseGiveawayListElement(dom.Element element, [String? usernam
       creator: usernameElement.isNotEmpty ? usernameElement[0].text : username,
       name: name.text.trim(),
       entries: entr.substring(0, entr.length - 7).trim(),
-      image: image == '' ? '' : image.substring(21, image.length - 2),
+      image: resizeImage(image == '' ? '' : image.substring(21, image.length - 2),
+          CustomListTileTheme.leadingWidth.toInt()),
       href: name.attributes['href'],
       entered:
           element.innerHtml.contains('giveaway__row-inner-wrap is-faded') ? true : false,

@@ -22,9 +22,10 @@ import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
-import 'package:snag/common/leading_image.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/theme_provider.dart';
@@ -90,7 +91,10 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
                             minVerticalPadding: CustomListTileTheme.minVerticalPadding,
                             dense: CustomListTileTheme.dense,
                             selected: !created.received,
-                            leading: LeadingImage(image: created.image),
+                            leading: CustomNetworkImage(
+                                image: resizeImage(created.image,
+                                    CustomListTileTheme.leadingWidth.toInt()),
+                                width: CustomListTileTheme.leadingWidth),
                             title: Consumer<ThemeProvider>(
                               builder: (context, theme, child) => Text(created.name,
                                   style: TextStyle(

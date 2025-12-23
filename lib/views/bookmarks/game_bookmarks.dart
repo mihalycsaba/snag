@@ -18,6 +18,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:snag/common/custom_network_image.dart';
+import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/objectbox/game_bookmark_model.dart';
@@ -47,9 +48,9 @@ class _GameBookmarksState extends State<GameBookmarks> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
               leading: CustomNetworkImage(
-                resize: true,
-                url:
+                image: resizeImage(
                     'https://shared.akamai.steamstatic.com/store_item_assets/steam/${_bookmarks[index].type}s/${_bookmarks[index].appid}/capsule_184x69.jpg',
+                    CustomListTileTheme.leadingWidth.toInt()),
                 width: CustomListTileTheme.leadingWidth,
               ),
               title: Text(_bookmarks[index].name),

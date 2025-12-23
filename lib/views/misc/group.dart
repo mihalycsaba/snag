@@ -239,8 +239,7 @@ class _GroupState extends State<Group> {
                 .text
                 .trim(),
             image: CustomNetworkImage(
-              resize: false,
-              url: getAvatar(featured, 'global__image-inner-wrap'),
+              image: NetworkImage(getAvatar(featured, 'global__image-inner-wrap')),
               width: 70,
             ),
             first: details[0]

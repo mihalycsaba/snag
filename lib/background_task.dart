@@ -40,6 +40,8 @@ void backgroundTask() async {
           requiresStorageNotLow: true,
         ));
     prefs.setBool(PrefsKeys.notificationsDenied.key, false);
+  } else {
+    prefs.setBool(PrefsKeys.notificationsDenied.key, true);
   }
 }
 
