@@ -22,7 +22,7 @@ InputDecoration _customDecoration(String hintText) {
     isDense: true,
     border: const UnderlineInputBorder(),
     hintText: hintText,
-    hintStyle: TextStyle(fontSize: 12, color: Colors.grey[500]),
+    hintStyle: TextStyle(color: Colors.grey[500]),
   );
 }
 

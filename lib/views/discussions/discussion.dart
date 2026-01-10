@@ -23,7 +23,6 @@ import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
@@ -121,6 +120,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
   List<dom.Element> _role = [];
   String _exception = '';
   String _stackTrace = '';
+  String _topic = '';
 
   @override
   void initState() {
@@ -137,11 +137,10 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
       _userHref = userChildren.isNotEmpty ? userChildren[0].attributes['href']! : null;
       _ago =
           _comment.getElementsByClassName('comment__actions')[0].nodes[1].nodes[0].text!;
-      _name = document
-          .getElementsByClassName('page__heading__breadcrumbs')[0]
-          .children[4]
-          .firstChild!
-          .text!;
+      List<dom.Element> pageHeading =
+          document.getElementsByClassName('page__heading__breadcrumbs')[0].children;
+      _topic = pageHeading[2].text;
+      _name = pageHeading[4].text;
       _closed = document
           .getElementsByClassName('page__heading__button page__heading__button--red')
           .isNotEmpty;
@@ -215,7 +214,7 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
               title: Consumer<ThemeProvider>(
                 builder: (context, theme, child) => Text(
                   style: TextStyle(fontSize: 18.0 + theme.fontSize),
-                  _name,
+                  _topic,
                   maxLines: 2,
                 ),
               ),
@@ -223,158 +222,161 @@ class _DiscussionDetailsState extends State<_DiscussionDetails> {
             body: CustomScrollView(slivers: <Widget>[
               SliverToBoxAdapter(
                 child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<ThemeProvider>(
+                        builder: (context, theme, child) => Text(_name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0 + theme.fontSize,
+                            )))),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
                   padding: const EdgeInsets.only(top: 4.0),
-                  child: Card(
-                      elevation: CustomCardTheme.elevation,
-                      surfaceTintColor: CustomCardTheme.surfaceTintColor,
+                  child: Card.filled(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommentMessage(
-                            data: _desctiption,
-                            name: _username,
-                            userHref: _userHref,
-                            ago: _ago,
-                            avatar: getAvatar(_comment, 'global__image-inner-wrap'),
-                            patron: _patron,
-                            role: _role.isNotEmpty ? _role[0].text.trim() : '',
-                          ),
-                          _poll
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Consumer<ThemeProvider>(
-                                          builder: (context, theme, child) => Text(
-                                            _question,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0 + theme.fontSize),
-                                          ),
-                                        ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CommentMessage(
+                        data: _desctiption,
+                        name: _username,
+                        userHref: _userHref,
+                        ago: _ago,
+                        avatar: getAvatar(_comment, 'global__image-inner-wrap'),
+                        patron: _patron,
+                        role: _role.isNotEmpty ? _role[0].text.trim() : '',
+                      ),
+                      _poll
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Consumer<ThemeProvider>(
+                                      builder: (context, theme, child) => Text(
+                                        _question,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0 + theme.fontSize),
                                       ),
-                                      TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _results = !_results;
-                                            });
-                                          },
-                                          child: const Text('Results'))
-                                    ],
+                                    ),
                                   ),
-                                )
-                              : Container(),
-                          _poll
-                              ? ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: _answers.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: GestureDetector(
-                                          onTap: () => _vote(_answers[index]),
-                                          child: Card.filled(
-                                            elevation: 0.1,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.only(right: 6.0),
-                                                child: Column(
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _results = !_results;
+                                        });
+                                      },
+                                      child: const Text('Results'))
+                                ],
+                              ),
+                            )
+                          : Container(),
+                      _poll
+                          ? ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: _answers.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) => Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: GestureDetector(
+                                      onTap: () => _vote(_answers[index]),
+                                      child: Card.filled(
+                                        elevation: 0.1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 6.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Flexible(
-                                                            child: Text(
-                                                                _answers[index].answer)),
-                                                        SizedBox(
-                                                            width: 12,
-                                                            child: _answers[index].voted
-                                                                ? const Icon(
-                                                                    Icons.circle,
-                                                                    size: 16,
-                                                                    color: Colors.green,
-                                                                  )
-                                                                : const Icon(
-                                                                    Icons.circle_outlined,
-                                                                    size: 16,
-                                                                  ))
-                                                      ],
-                                                    ),
-                                                    _results
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(
-                                                                    top: 8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: 75,
-                                                                  child: Text(
-                                                                      '${_answers[index].votes} votes'),
-                                                                ),
-                                                                Flexible(
-                                                                  child: SizedBox(
-                                                                    height: 8,
-                                                                    child:
-                                                                        FractionallySizedBox(
-                                                                            widthFactor:
-                                                                                _answers[index]
-                                                                                        .votes /
-                                                                                    _total,
-                                                                            child:
-                                                                                Divider(
-                                                                              color: _answers[
-                                                                                          index]
-                                                                                      .voted
-                                                                                  ? Colors
-                                                                                      .green
-                                                                                  : Colors
-                                                                                      .grey[500],
-                                                                              height: 0,
-                                                                              thickness:
-                                                                                  8,
-                                                                            )),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
-                                                        : Container(),
+                                                    Flexible(
+                                                        child:
+                                                            Text(_answers[index].answer)),
+                                                    SizedBox(
+                                                        width: 12,
+                                                        child: _answers[index].voted
+                                                            ? const Icon(
+                                                                Icons.circle,
+                                                                size: 16,
+                                                                color: Colors.green,
+                                                              )
+                                                            : const Icon(
+                                                                Icons.circle_outlined,
+                                                                size: 16,
+                                                              ))
                                                   ],
                                                 ),
-                                              ),
+                                                _results
+                                                    ? Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            top: 8.0),
+                                                        child: Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 75,
+                                                              child: Text(
+                                                                  '${_answers[index].votes} votes'),
+                                                            ),
+                                                            Flexible(
+                                                              child: SizedBox(
+                                                                height: 8,
+                                                                child:
+                                                                    FractionallySizedBox(
+                                                                        widthFactor:
+                                                                            _answers[index]
+                                                                                    .votes /
+                                                                                _total,
+                                                                        child: Divider(
+                                                                          color: _answers[
+                                                                                      index]
+                                                                                  .voted
+                                                                              ? Colors
+                                                                                  .green
+                                                                              : Colors.grey[
+                                                                                  500],
+                                                                          height: 0,
+                                                                          thickness: 8,
+                                                                        )),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ))
-                              : Container(),
-                          const Divider(height: 0),
-                          !_closed
-                              ? TextButton(
-                                  onPressed: () async {
-                                    Object? refresh = await customNav(
-                                        CommentEditor(
-                                            data: _desctiption,
-                                            name: _username,
-                                            url: widget.url),
-                                        context);
-                                    if (refresh == true) {
-                                      widget.controller.method();
-                                    }
-                                  },
-                                  child: const Text('Comment'))
-                              : const Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 8.0, top: 4.0, bottom: 4.0),
-                                  child: Text('Closed'),
-                                ),
-                        ],
-                      )),
+                                      ),
+                                    ),
+                                  ))
+                          : Container(),
+                      const Divider(height: 0),
+                      !_closed
+                          ? TextButton(
+                              onPressed: () async {
+                                Object? refresh = await customNav(
+                                    CommentEditor(
+                                        data: _desctiption,
+                                        name: _username,
+                                        url: widget.url),
+                                    context);
+                                if (refresh == true) {
+                                  widget.controller.method();
+                                }
+                              },
+                              child: const Text('Comment'))
+                          : const Padding(
+                              padding: EdgeInsets.only(left: 8.0, top: 4.0, bottom: 4.0),
+                              child: Text('Closed'),
+                            ),
+                    ],
+                  )),
                 ),
               ),
               Comments(

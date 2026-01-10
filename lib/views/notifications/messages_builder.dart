@@ -45,8 +45,10 @@ abstract class _MessagesListModel {
 class _MessageModel extends _MessagesListModel {
   String url;
   String title;
+  List<_ReplyModel> replies = [];
 
-  _MessageModel({required this.url, required this.title, super.message});
+  _MessageModel(
+      {required this.url, required this.title, required this.replies, super.message});
 }
 
 class _ReplyModel extends _MessagesListModel {
@@ -63,9 +65,8 @@ class MessagesBuilder extends StatefulWidget {
 }
 
 class _MessagesBuilderState extends State<MessagesBuilder> {
-  final PagingController<int, _MessagesListModel> _pagingController =
+  final PagingController<int, _MessageModel> _pagingController =
       PagingController(firstPageKey: 1);
-  bool _customTileExpanded = false;
 
   @override
   void didChangeDependencies() {
@@ -91,16 +92,11 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
         Flexible(
           child: RefreshIndicator(
               onRefresh: () => Future.sync(() => _pagingController.refresh()),
-              child: PagedListView<int, _MessagesListModel>(
+              child: PagedListView<int, _MessageModel>(
                   pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<_MessagesListModel>(
-                      itemBuilder: (context, message, index) => GestureDetector(
-                            //onTap: () => customNav(
-                            //Giveaway('go/comment/${message.id}'), context),
-                            child: message is _ReplyModel
-                                ? _userReplyEntry(reply: message.message!)
-                                : _messageEntry(message: message as _MessageModel),
-                          ),
+                  builderDelegate: PagedChildBuilderDelegate<_MessageModel>(
+                      itemBuilder: (context, message, index) =>
+                          _MessageEntry(message: message),
                       newPageProgressIndicatorBuilder: (context) =>
                           const PagedProgressIndicator()))),
         ),
@@ -119,25 +115,28 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
     if (!context.mounted) return;
     context.read<MessagesProvider>().updateMessages(messages);
     prefs.setInt(PrefsKeys.messages.key, int.parse(messages));
-    List<_MessagesListModel> messagesList = _parseMessagesList(document);
+    List<_MessageModel> messagesList = _parseMessagesList(document);
     addPage(messagesList, _pagingController, pageKey,
         document.getElementsByClassName('widget-container').first);
   }
 
-  List<_MessagesListModel> _parseMessagesList(dom.Document document) {
-    List<_MessagesListModel> messagesList = [];
+  List<_MessageModel> _parseMessagesList(dom.Document document) {
+    List<_MessageModel> messagesList = [];
     List<dom.Element> elements = document
         .getElementsByClassName('widget-container')[0]
         .children[1]
         .children[1]
         .children;
+    int messageIndex = -1;
     for (int index = 0; index < elements.length; index++) {
       dom.Element element = elements[index];
       if (element.className == 'comments__entity') {
         messagesList.add(_parseMessageElement(element));
-      } else if (element.className == 'comments') {
+        messageIndex++;
+      }
+      if (element.className == 'comments') {
         element.getElementsByClassName('comment__parent').forEach((element) {
-          messagesList.add(_parseReplyElement(element));
+          messagesList[messageIndex].replies.add(_parseReplyElement(element));
         });
       }
     }
@@ -173,57 +172,8 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
       message: comment.isNotEmpty ? CommentMessage(data: comment[0]) : null,
       title: title.text,
       url: title.children[0].attributes['href']!,
+      replies: [],
     );
-  }
-
-  Widget _userReplyEntry({required Widget reply}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 32.0),
-      child: reply,
-    );
-  }
-
-  Widget _messageEntry({required _MessageModel message}) {
-    return ExpansionTile(
-        title: Consumer<ThemeProvider>(
-          builder: (context, theme, child) => Text(message.title,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0 + theme.fontSize),
-              textAlign: TextAlign.left),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.link,
-              ),
-              onPressed: () {
-                if (message.url.startsWith('/giveaway/')) {
-                  customNav(Giveaway(href: message.url), context);
-                } else {
-                  customNav(Discussion(href: message.url), context);
-                }
-              },
-            ),
-            message.message != null
-                ? _customTileExpanded
-                    ? const Icon(Icons.keyboard_arrow_up)
-                    : const Icon(Icons.keyboard_arrow_down)
-                : Container(),
-          ],
-        ),
-        onExpansionChanged: (bool expanded) {
-          setState(() {
-            _customTileExpanded = expanded;
-          });
-        },
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: message.message != null ? message.message! : Container(),
-          )
-        ]);
   }
 }
 
@@ -249,8 +199,10 @@ class _MarkWidgetState extends State<_MarkWidget> {
     return Column(
       children: [
         ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: _bgColor,
+            ),
             onPressed: _active ? _mark : null,
-            style: ButtonStyle(backgroundColor: _bgColor),
             child: const Text('Mark as read')),
         const Divider(height: 0)
       ],
@@ -267,5 +219,88 @@ class _MarkWidgetState extends State<_MarkWidget> {
         _active = !_active;
       });
     }
+  }
+}
+
+class _MessageEntry extends StatefulWidget {
+  const _MessageEntry({required this.message});
+
+  final _MessageModel message;
+
+  @override
+  State<_MessageEntry> createState() => _MessageEntryState();
+}
+
+class _MessageEntryState extends State<_MessageEntry> {
+  bool _customTileExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card.filled(
+      child: Column(
+        children: [
+          ExpansionTile(
+              shape: LinearBorder.none,
+              collapsedShape: LinearBorder.none,
+              tilePadding: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 4.0),
+              title: Consumer<ThemeProvider>(
+                builder: (context, theme, child) => Text(widget.message.title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20.0 + theme.fontSize),
+                    textAlign: TextAlign.left),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.link,
+                    ),
+                    onPressed: () {
+                      if (widget.message.url.startsWith('/giveaway/')) {
+                        customNav(Giveaway(href: widget.message.url), context);
+                      } else {
+                        customNav(Discussion(href: widget.message.url), context);
+                      }
+                    },
+                  ),
+                  widget.message.message != null
+                      ? _customTileExpanded
+                          ? const Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Icon(Icons.keyboard_arrow_up),
+                            )
+                          : const Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Icon(Icons.keyboard_arrow_down),
+                            )
+                      : Container(),
+                ],
+              ),
+              onExpansionChanged: (bool expanded) {
+                setState(() {
+                  _customTileExpanded = expanded;
+                });
+              },
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: widget.message.message != null
+                      ? widget.message.message!
+                      : Container(),
+                )
+              ]),
+          for (var reply in widget.message.replies)
+            _userReplyEntry(reply: reply.message!),
+        ],
+      ),
+    );
+  }
+
+  Widget _userReplyEntry({required Widget reply}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 22.0, right: 4.0),
+      child: reply,
+    );
   }
 }

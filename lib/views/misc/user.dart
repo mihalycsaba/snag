@@ -27,7 +27,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/button_background_color.dart';
@@ -42,7 +41,6 @@ import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/user_bookmark_model.dart';
 import 'package:snag/provider_models/theme_provider.dart';
-import 'package:snag/views/discussions/discussion_model.dart';
 import 'package:snag/views/discussions/discussions_list.dart';
 import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
@@ -68,7 +66,8 @@ class User extends StatefulWidget {
 }
 
 class _UserState extends State<User> {
-  static const TextStyle _detailsTextStyle = TextStyle(fontSize: 12);
+  static const double _detailsFontSize = 14;
+  static const TextStyle _detailsTextStyle = TextStyle(fontSize: _detailsFontSize);
   List<UserBookmarkModel> _bookmark = [];
   bool _bookmarked = false;
   bool _notLoading = true;
@@ -145,7 +144,9 @@ class _UserState extends State<User> {
                       }
                     },
                   ),
-                  title: Text(widget.name, style: const TextStyle(fontSize: 18)),
+                  title: Consumer<ThemeProvider>(
+                      builder: (context, theme, child) => Text(widget.name,
+                          style: TextStyle(fontSize: 18.0 + theme.fontSize))),
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   actions: <Widget>[
                     _isUser
@@ -241,50 +242,50 @@ class _UserState extends State<User> {
                   child: Center(
                     child: Column(
                       children: [
-                        Card(
-                          surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                          elevation: CustomCardTheme.elevation,
+                        Card.filled(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                SizedBox(width: 80, height: 80, child: _user.image),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: SizedBox(
-                                    width: 170,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Role: ${_user.role}',
-                                          style: _detailsTextStyle,
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Text(
-                                              'Online: ',
-                                              style: _detailsTextStyle,
-                                            ),
-                                            Text(
-                                              _user.online,
-                                              style: _user.online.contains('Online')
-                                                  ? const TextStyle(
-                                                      color: Colors.green, fontSize: 12)
-                                                  : _detailsTextStyle,
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          'Registered: ${_user.registered}',
-                                          style: _detailsTextStyle,
-                                        ),
-                                        Text(
-                                          'Comments: ${_user.comments}',
-                                          style: _detailsTextStyle,
-                                        )
-                                      ],
-                                    ),
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child:
+                                      SizedBox(width: 80, height: 80, child: _user.image),
+                                ),
+                                SizedBox(
+                                  width: 165,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Role: ${_user.role}',
+                                        style: _detailsTextStyle,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Online: ',
+                                            style: _detailsTextStyle,
+                                          ),
+                                          Text(
+                                            _user.online,
+                                            style: _user.online.contains('Online')
+                                                ? const TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: _detailsFontSize)
+                                                : _detailsTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'Registered: ${_user.registered}',
+                                        style: _detailsTextStyle,
+                                      ),
+                                      Text(
+                                        'Comments: ${_user.comments}',
+                                        style: _detailsTextStyle,
+                                      )
+                                    ],
                                   ),
                                 ),
                                 Column(

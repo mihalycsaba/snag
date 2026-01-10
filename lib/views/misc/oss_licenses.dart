@@ -1224,13 +1224,13 @@ const _clock = Package(
    limitations under the License.''',
 );
 
-/// code_builder 4.11.0
+/// code_builder 4.11.1
 const _code_builder = Package(
   name: 'code_builder',
   description: 'A fluent, builder-based library for generating valid Dart code.',
   repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/code_builder',
   authors: [],
-  version: '4.11.0',
+  version: '4.11.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -2707,13 +2707,13 @@ const _fake_async = Package(
    limitations under the License.''',
 );
 
-/// ffi 2.1.4
+/// ffi 2.1.5
 const _ffi = Package(
   name: 'ffi',
   description: 'Utilities for working with Foreign Function Interface (FFI) code.',
   repository: 'https://github.com/dart-lang/native/tree/main/pkgs/ffi',
   authors: [],
-  version: '2.1.4',
+  version: '2.1.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -3047,13 +3047,13 @@ const _flat_buffers = Package(
    limitations under the License.''',
 );
 
-/// flutter 3.38.5
+/// flutter 3.38.6
 const _flutter = Package(
   name: 'flutter',
   description: 'A framework for writing Flutter applications',
   homepage: 'https://flutter.dev',
   authors: [],
-  version: '3.38.5',
+  version: '3.38.6',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: true,
@@ -11617,14 +11617,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// watcher 1.2.0
+/// watcher 1.2.1
 const _watcher = Package(
   name: 'watcher',
   description:
       'A file system watcher. It monitors changes to contents of directories and sends notifications when files have been added, removed, or modified.',
   repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/watcher',
   authors: [],
-  version: '1.2.0',
+  version: '1.2.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -12162,12 +12162,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.16-pre.6
+/// snag 0.0.16-pre.7
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.16-pre.6',
+  version: '0.0.16-pre.7',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,

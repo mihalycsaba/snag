@@ -31,7 +31,6 @@ import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/provider_models/theme_provider.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 import 'package:snag/views/misc/user.dart';
 
 class WinnerModel {
@@ -91,51 +90,39 @@ class _WinnersState extends State<Winners> {
                         CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
                     pagingController: _pagingController,
                     builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
-                      itemBuilder: (context, item, index) => Consumer<ThemeProvider>(
-                          builder: (context, theme, child) => ListTile(
-                              contentPadding: CustomListTileTheme.contentPadding,
-                              minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-                              dense: CustomListTileTheme.dense,
-                              leading: CustomNetworkImage(
-                                image: resizeImage(item.image, 40),
-                                width: 40,
-                              ),
-                              title: Text(
-                                item.name,
-                                style: TextStyle(
-                                    fontSize: CustomListTileTheme.titleTextSize +
-                                        theme.fontSize),
-                              ),
-                              subtitle: widget.self
-                                  ? Text(
-                                      item.email!,
-                                      style: TextStyle(
-                                          fontSize: CustomListTileTheme.subtitleTextSize +
-                                              theme.fontSize),
-                                    )
-                                  : null,
-                              onTap: item.anonymous
-                                  ? null
-                                  : () => customNav(User(name: item.name), context),
-                              trailing: widget.self
-                                  ? TextButton(
-                                      onPressed: item.sent
-                                          ? null
-                                          : () async {
-                                              int statusCode = await resStatusCode(
-                                                  '&action=1&do=sent_feedback&winner_id=${item.id}');
-                                              if (statusCode == 200) {
-                                                setState(() {
-                                                  item.sent = true;
-                                                });
-                                              }
-                                            },
-                                      child: Text('Send',
-                                          style: TextStyle(
-                                              fontSize:
-                                                  CustomListTileTheme.titleTextSize +
-                                                      theme.fontSize)))
-                                  : null)),
+                      itemBuilder: (context, item, index) => ListTile(
+                          leading: CustomNetworkImage(
+                            image: resizeImage(item.image, 40),
+                            width: 40,
+                          ),
+                          title: Text(
+                            item.name,
+                          ),
+                          subtitle: widget.self
+                              ? Text(
+                                  item.email!,
+                                )
+                              : null,
+                          onTap: item.anonymous
+                              ? null
+                              : () => customNav(User(name: item.name), context),
+                          trailing: widget.self
+                              ? TextButton(
+                                  onPressed: item.sent
+                                      ? null
+                                      : () async {
+                                          int statusCode = await resStatusCode(
+                                              '&action=1&do=sent_feedback&winner_id=${item.id}');
+                                          if (statusCode == 200) {
+                                            setState(() {
+                                              item.sent = true;
+                                            });
+                                          }
+                                        },
+                                  child: const Text(
+                                    'Send',
+                                  ))
+                              : null),
                       newPageProgressIndicatorBuilder: (context) =>
                           const PagedProgressIndicator(),
                     )))));

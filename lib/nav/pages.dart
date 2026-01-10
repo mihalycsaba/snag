@@ -47,6 +47,7 @@ class PagesList {
   ]);
 
   static const discussionpages = PagesList([
+    DiscussionPages.subscribed,
     DiscussionPages.all,
     DiscussionPages.tools,
     DiscussionPages.announcements,
@@ -110,6 +111,10 @@ class Entered extends Pages {
 }
 
 class DiscussionPages extends Pages {
+  static const subscribed = DiscussionPages(
+      "https://www.steamgifts.com/discussions/subscribed/search?",
+      "Subscribed",
+      "/subscribed");
   static const all = DiscussionPages(
       "https://www.steamgifts.com/discussions/search?", "All", "/discussions");
   static const tools = DiscussionPages(
@@ -175,6 +180,7 @@ class DiscussionPages extends Pages {
   );
 
   static Map<String, Widget> get widgetsMap => {
+        subscribed.route: const Discussions(page: DiscussionPages.subscribed),
         all.route: const Discussions(page: DiscussionPages.all),
         tools.route: const Discussions(page: DiscussionPages.tools),
         announcements.route: const Discussions(page: DiscussionPages.announcements),

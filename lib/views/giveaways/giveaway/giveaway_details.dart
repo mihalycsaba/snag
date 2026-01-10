@@ -24,7 +24,6 @@ import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/res_status_code.dart';
 import 'package:snag/common/functions/url_launcher.dart';
@@ -114,11 +113,13 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
   final RefreshController _controller = RefreshController();
   final ScrollController _scrollController = ScrollController();
   double _padding = 0;
-  double _appbarHeight = 0;
+  double _topPadding = 0;
   dom.Document _document = dom.Document();
   static const double _iconSize = 18.0;
   static const EdgeInsets _iconPadding = EdgeInsets.only(left: 4.0);
   String _groupUrl = '';
+  static const double _coverHeight = 180.0;
+  late final double _totalHeight;
 
   @override
   void initState() {
@@ -246,21 +247,29 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _appbarHeight = MediaQuery.of(context).viewPadding.top;
+    _topPadding = MediaQuery.of(context).viewPadding.top;
+    _totalHeight = _coverHeight + 20 + _topPadding + kToolbarHeight;
   }
 
   void _scrollListener() {
-    if (_scrollController.offset >= 200 + _appbarHeight + kToolbarHeight) {
-      if (_padding < _appbarHeight) {
+    if (_scrollController.offset >= _totalHeight) {
+      if (_padding <= _topPadding) {
         setState(() {
-          _padding = _padding + 0.5;
+          _padding = _padding + 0.2;
         });
       }
     } else {
       if (_padding > 0) {
         setState(() {
-          _padding = _padding - 0.5;
+          _padding = _padding - 0.2;
         });
+      }
+      if (_scrollController.offset < (_totalHeight) / 12) {
+        if (_padding != 0) {
+          setState(() {
+            _padding = 0;
+          });
+        }
       }
     }
   }
@@ -294,9 +303,12 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
               controller: _scrollController,
               slivers: <Widget>[
                 ImageSliverAppBar(
-                  appbarHeight: _appbarHeight,
+                  appbarHeight: _topPadding,
                   image: CustomNetworkImage(
-                      fit: BoxFit.cover, width: 200, height: 180, image: _giveaway.image),
+                      fit: BoxFit.cover,
+                      width: 200,
+                      height: _coverHeight,
+                      image: _giveaway.image),
                 ),
                 SliverAppBar(
                   primary: false,
@@ -456,9 +468,7 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                   ],
                 ),
                 SliverToBoxAdapter(
-                    child: Card(
-                  surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                  elevation: CustomCardTheme.elevation,
+                    child: Card.filled(
                   child: Column(
                     children: [
                       Padding(

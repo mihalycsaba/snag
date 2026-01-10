@@ -92,17 +92,19 @@ class _EnteredListState extends State<EnteredList> {
         entries:
             item.getElementsByClassName('table__column--width-small text-center')[0].text,
         image: resizeImage(image == '' ? '' : image.substring(21, image.length - 2),
-            CustomListTileTheme.leadingWidth.toInt()),
+            GiveawayListTileTheme.leadingWidth.toInt()),
         href: name.attributes['href']!,
         entered: true,
-        remaining: remaining,
+        remaining: remaining.replaceAll(' ago', ''),
         notEnded: !remaining.contains('Ended') && !remaining.contains('Deleted'),
         inviteOnly: false,
         group: false,
         whitelist: false,
         region: false,
-        ago:
-            '${item.getElementsByClassName('table__column--width-small text-center')[1].children[0].text} ago');
+        ago: item
+            .getElementsByClassName('table__column--width-small text-center')[1]
+            .children[0]
+            .text);
   }
 
   @override
@@ -213,26 +215,19 @@ class _EnteredListTileState extends State<_EnteredListTile> {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, theme, child) => ListTile(
-          contentPadding: CustomListTileTheme.contentPadding,
-          minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-          dense: CustomListTileTheme.dense,
           selected: widget.giveaway.notEnded,
           leading: CustomNetworkImage(
-              image: widget.giveaway.image, width: CustomListTileTheme.leadingWidth),
+              image: widget.giveaway.image, width: GiveawayListTileTheme.leadingWidth),
           title: Row(
             children: [
               Flexible(
                 //flexible wraps the text if it is too long
-                child: Text(widget.giveaway.name,
-                    style: TextStyle(
-                        fontSize: CustomListTileTheme.titleTextSize + theme.fontSize),
-                    overflow: CustomListTileTheme.overflow),
+                child:
+                    Text(widget.giveaway.name, overflow: GiveawayListTileTheme.overflow),
               ),
               widget.giveaway.copies != null
                   ? Text(
                       ' ${widget.giveaway.copies}',
-                      style: TextStyle(
-                          fontSize: CustomListTileTheme.titleTextSize + theme.fontSize),
                     )
                   : Container()
             ],
@@ -241,23 +236,19 @@ class _EnteredListTileState extends State<_EnteredListTile> {
             children: [
               Text(
                 '${widget.giveaway.points.toString()}P · ${widget.giveaway.entries} ',
-                style: TextStyle(
-                    fontSize:
-                        CustomListTileTheme.subtitleTextSize + theme.fontSize / 1.9),
               ),
               Icon(Icons.groups, size: 14.0 + theme.fontSize / 1.9),
-              Text(' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
-                  style: TextStyle(
-                      fontSize:
-                          CustomListTileTheme.subtitleTextSize + theme.fontSize / 1.9))
+              Text(
+                ' · ${widget.giveaway.remaining} · Entered ${widget.giveaway.ago}',
+              )
             ],
           ),
           trailing: widget.giveaway.notEnded
               ? InkWell(
                   onTap: () => widget.onTileChange(widget.giveaway),
                   child: SizedBox(
-                      width: CustomListTileTheme.trailingWidth,
-                      height: CustomListTileTheme.trailingHeight,
+                      width: GiveawayListTileTheme.trailingWidth,
+                      height: GiveawayListTileTheme.trailingHeight,
                       child: widget.giveaway.entered
                           ? const Icon(Icons.remove)
                           : const Icon(Icons.add)))

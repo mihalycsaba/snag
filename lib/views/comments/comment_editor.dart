@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 
 import 'package:html/dom.dart' as dom;
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/res_map.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
@@ -72,9 +71,7 @@ class _CommentEditorState extends State<CommentEditor> {
       body: ListView(
         children: [
           widget.data.text.trim() != ''
-              ? Card(
-                  elevation: CustomCardTheme.elevation,
-                  surfaceTintColor: CustomCardTheme.surfaceTintColor,
+              ? Card.filled(
                   child: CustomHtml(
                     data: widget.data,
                   ),

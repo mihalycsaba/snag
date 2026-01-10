@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/pages.dart';
 
 class ErrorPage extends StatelessWidget {
@@ -36,6 +37,7 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double fontSize = prefs.getInt(PrefsKeys.fontSize.key)!.toDouble();
     return PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
@@ -53,13 +55,13 @@ class ErrorPage extends StatelessWidget {
                   Center(
                     child: Text(
                       'An error occurred while loading the $type:',
-                      style: const TextStyle(color: Colors.red, fontSize: 20),
+                      style: TextStyle(color: Colors.red, fontSize: 20 + fontSize),
                     ),
                   ),
                   Center(
                       child: Text(
                     stackTrace == null ? error : 'Most likely the URL is invalid.',
-                    style: const TextStyle(color: Colors.blue, fontSize: 18),
+                    style: TextStyle(color: Colors.blue, fontSize: 18 + fontSize),
                   )),
                   Column(
                     children: [

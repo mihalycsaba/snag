@@ -140,24 +140,19 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
               child: RefreshIndicator(
                   onRefresh: () => Future.sync(() => _pagingController.refresh()),
                   child: Consumer<ThemeProvider>(
-                    builder: (context, theme, child) =>
-                        PagedListView<int, GiveawayListModel>(
-                            itemExtent: CustomPagedListTheme.itemExtent +
-                                addItemExtent(theme.fontSize),
-                            pagingController: _pagingController,
-                            builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
-                                itemBuilder: (context, giveaway, index) => Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        GiveawayListTile(
-                                          giveaway: giveaway,
-                                          onTileChange: () => changeGiveawayState(
-                                              giveaway, context, setState),
-                                        ),
-                                      ],
-                                    ),
-                                newPageProgressIndicatorBuilder: (context) =>
-                                    const PagedProgressIndicator())),
+                    builder: (context, theme, child) => PagedListView<int,
+                            GiveawayListModel>(
+                        itemExtent: CustomPagedListTheme.itemExtent +
+                            addItemExtent(theme.fontSize),
+                        pagingController: _pagingController,
+                        builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                            itemBuilder: (context, giveaway, index) => GiveawayListTile(
+                                  giveaway: giveaway,
+                                  onTileChange: () =>
+                                      changeGiveawayState(giveaway, context, setState),
+                                ),
+                            newPageProgressIndicatorBuilder: (context) =>
+                                const PagedProgressIndicator())),
                   )),
             ))
         : const LoggedOut();

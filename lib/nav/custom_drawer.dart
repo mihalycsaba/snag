@@ -38,74 +38,80 @@ class CustomDrawer extends StatelessWidget {
     required this.giveawaysOpen,
   });
   final bool giveawaysOpen;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
-          const SizedBox(height: 12),
           Consumer<ThemeProvider>(
-            builder: (context, theme, child) => ListTile(
-              minVerticalPadding: 3,
-              dense: true,
-              leading: CustomNetworkImage(image: NetworkImage(avatar), width: 36),
-              title: Text(username,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 14.0 + theme.fontSize)),
-              subtitle: Text('Level $userLevel',
-                  style: TextStyle(fontSize: 12.0 + theme.fontSize)),
-              onTap: () => customNav(User(name: username), context),
+            builder: (context, theme, child) =>
+                SizedBox(height: 10.0 - (theme.fontSize * 2)),
+          ),
+          Consumer<ThemeProvider>(
+            builder: (context, theme, child) => Padding(
+              padding: const EdgeInsets.only(left: 26.0, bottom: 2.0),
+              child: ListTile(
+                horizontalTitleGap: 20,
+                leading: CustomNetworkImage(
+                    image: NetworkImage(avatar), width: 38.0 + theme.fontSize),
+                minVerticalPadding: 4,
+                title: Text(username,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16.0 + theme.fontSize)),
+                subtitle: Text('Level $userLevel',
+                    style: TextStyle(fontSize: 14.0 + theme.fontSize)),
+                onTap: () => customNav(User(name: username), context),
+              ),
             ),
           ),
           const Divider(height: 0),
           ExpansionTile(
               initiallyExpanded: giveawaysOpen,
               title: const Text('Giveaways'),
+              tilePadding:
+                  const EdgeInsets.only(left: 26.0, right: 20.0, top: 20.0, bottom: 20.0),
+              childrenPadding: const EdgeInsets.only(left: 18.0),
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: _ExpansionListView(
-                      pages: PagesList.giveawaypages, map: GiveawayPages.widgetsMap),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: ListTile(
-                      title: Text(Entered.entered.name),
-                      onTap: () => goNav(context, Entered.entered.route)),
-                )
+                _ExpansionListView(
+                    pages: PagesList.giveawaypages, map: GiveawayPages.widgetsMap),
+                _DrawerTile(
+                    title: Entered.entered.name,
+                    onTap: () => goNav(context, Entered.entered.route))
               ]),
           const Divider(height: 0),
           ExpansionTile(
               initiallyExpanded: !giveawaysOpen,
               title: const Text('Discussions'),
+              tilePadding:
+                  const EdgeInsets.only(left: 26.0, right: 20.0, top: 20.0, bottom: 20.0),
+              childrenPadding: const EdgeInsets.only(left: 18.0),
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: _ExpansionListView(
-                      pages: PagesList.discussionpages, map: DiscussionPages.widgetsMap),
-                ),
+                _ExpansionListView(
+                    pages: PagesList.discussionpages, map: DiscussionPages.widgetsMap),
               ]),
           const Divider(height: 0),
-          ListTile(
-            title: const Text('Notifications'),
+          const SizedBox(height: 5),
+          _DrawerTile(
+            title: 'Notifications',
             onTap: () => context.push(NotificationsRoute.messages.route),
           ),
-          ListTile(
-            title: const Text('Bookmarks'),
+          _DrawerTile(
+            title: 'Bookmarks',
             onTap: () => customNav(const Bookmarks(), context),
           ),
-          ListTile(
-            title: const Text('Open Code'),
+          _DrawerTile(
+            title: 'Open Code',
             onTap: () => customNav(const OpenCode(), context),
           ),
           const SizedBox(height: 20),
-          ListTile(
-            title: const Text('Settings'),
+          _DrawerTile(
+            title: 'Settings',
             onTap: () => customNav(const Settings(), context),
           ),
           const SizedBox(height: 10),
-          ListTile(
-            title: const Text('About'),
+          _DrawerTile(
+            title: 'About',
             onTap: () => customNav(const About(), context),
           )
         ],
@@ -127,11 +133,27 @@ class _ExpansionListView extends StatelessWidget {
         shrinkWrap: true,
         itemCount: pages.pages.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-              title: Text(pages.pages[index].name),
+          return _DrawerTile(
+              title: pages.pages[index].name,
               onTap: () {
                 goNav(context, pages.pages[index].route);
               });
         });
+  }
+}
+
+class _DrawerTile extends StatelessWidget {
+  const _DrawerTile({required this.title, required this.onTap});
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.only(left: 26.0, right: 12.0, top: 10.0, bottom: 14.0),
+      title: Text(title),
+      onTap: onTap,
+    );
   }
 }
