@@ -58,117 +58,113 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, theme, child) => ListTile(
-          contentPadding: CustomListTileTheme.contentPadding,
-          minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-          dense: CustomListTileTheme.dense,
-          selected: widget.giveaway.entered,
-          leading: CustomNetworkImage(
-              image: widget.giveaway.image, width: CustomListTileTheme.leadingWidth),
-          title: Row(
-            children: [
-              Flexible(
-                //flexible wraps the text if it is too long
-                child: Text(
-                  widget.giveaway.name,
-                  style: TextStyle(
-                    fontSize: CustomListTileTheme.titleTextSize + theme.fontSize,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Consumer<ThemeProvider>(
+          builder: (context, theme, child) => ListTile(
+              selected: widget.giveaway.entered,
+              leading: CustomNetworkImage(
+                  image: widget.giveaway.image,
+                  width: GiveawayListTileTheme.leadingWidth),
+              title: Row(
+                children: [
+                  Flexible(
+                    //flexible wraps the text if it is too long
+                    child: Text(
+                      widget.giveaway.name,
+                      overflow: GiveawayListTileTheme.overflow,
+                    ),
                   ),
-                  overflow: CustomListTileTheme.overflow,
-                ),
+                  widget.giveaway.copies != null
+                      ? Text(
+                          _copies!,
+                        )
+                      : Container()
+                ],
               ),
-              widget.giveaway.copies != null
-                  ? Text(
-                      _copies!,
+              subtitle: Row(
+                children: [
+                  widget.giveaway.inviteOnly
+                      ? Icon(Icons.lock,
+                          size: GiveawayListTileTheme.iconSize + theme.fontSize)
+                      : Container(),
+                  widget.giveaway.group
+                      ? Icon(Icons.groups,
+                          size: GiveawayListTileTheme.iconSize + 3 + theme.fontSize,
+                          color: Colors.green)
+                      : Container(),
+                  widget.giveaway.whitelist
+                      ? Icon(Icons.favorite,
+                          size: GiveawayListTileTheme.iconSize - 1 + theme.fontSize,
+                          color: Colors.pinkAccent)
+                      : Container(),
+                  widget.giveaway.region
+                      ? Icon(Icons.public,
+                          size: GiveawayListTileTheme.iconSize + theme.fontSize,
+                          color: Colors.blueGrey)
+                      : Container(),
+                  const SizedBox(width: 2),
+                  widget.giveaway.points != null
+                      ? Text(
+                          _points!,
+                        )
+                      : Container(),
+                  Text(_gaLevel,
                       style: TextStyle(
-                        fontSize: CustomListTileTheme.titleTextSize + theme.fontSize,
-                      ),
-                    )
-                  : Container()
-            ],
-          ),
-          subtitle: Row(
-            children: [
-              widget.giveaway.inviteOnly
-                  ? Icon(Icons.lock, size: CustomListTileTheme.iconSize + theme.fontSize)
-                  : Container(),
-              widget.giveaway.group
-                  ? Icon(Icons.groups,
-                      size: CustomListTileTheme.iconSize + 2 + theme.fontSize,
-                      color: Colors.green)
-                  : Container(),
-              widget.giveaway.whitelist
-                  ? Icon(Icons.favorite,
-                      size: CustomListTileTheme.iconSize + 2 + theme.fontSize,
-                      color: Colors.pinkAccent)
-                  : Container(),
-              widget.giveaway.region
-                  ? Icon(Icons.public,
-                      size: CustomListTileTheme.iconSize + theme.fontSize,
-                      color: Colors.blueGrey)
-                  : Container(),
-              const SizedBox(width: 2),
-              widget.giveaway.points != null
-                  ? Text(_points!,
-                      style: TextStyle(
-                          fontSize:
-                              CustomListTileTheme.subtitleTextSize + theme.fontSize))
-                  : Container(),
-              Text(_gaLevel,
-                  style: TextStyle(
-                      fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize,
-                      color: widget.giveaway.level <= userLevel ? null : Colors.red)),
-              Text('${widget.giveaway.entries} ',
-                  style: TextStyle(
-                    fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize,
-                  )),
-              Icon(Icons.people, size: CustomListTileTheme.iconSize + theme.fontSize),
-              Text(_remaining,
-                  style: TextStyle(
-                      fontSize: CustomListTileTheme.subtitleTextSize + theme.fontSize))
-            ],
-          ),
-          trailing: widget.onTileChange != null &&
-                  widget.giveaway.creator != username &&
-                  widget.giveaway.href != null &&
-                  widget.giveaway.notEnded &&
-                  widget.giveaway.level <= userLevel
-              ? InkWell(
-                  onTap: () => widget.onTileChange!(),
-                  child: SizedBox(
-                    width: CustomListTileTheme.trailingWidth,
-                    height: CustomListTileTheme.trailingHeight,
-                    child: widget.giveaway.entered
-                        ? const Icon(Icons.remove)
-                        : Consumer<PointsProvider>(
-                            builder: (context, user, child) =>
-                                (user.points >= (widget.giveaway.points as int))
-                                    ? const Icon(Icons.add)
-                                    : Container()),
-                  ))
-              : const SizedBox(height: 0, width: 0),
-          onTap: widget.giveaway.href != null
-              ? () async {
-                  widget.giveaway.entered =
-                      await customNav(Giveaway(href: widget.giveaway.href!), context)
-                          as bool;
-                  setState(() {});
-                }
-              : null),
+                          color: widget.giveaway.level <= userLevel ? null : Colors.red)),
+                  Text(
+                    '${widget.giveaway.entries} ',
+                  ),
+                  Icon(Icons.people,
+                      size: GiveawayListTileTheme.iconSize + 2 + theme.fontSize),
+                  Text(
+                    _remaining,
+                  )
+                ],
+              ),
+              trailing: widget.onTileChange != null &&
+                      widget.giveaway.creator != username &&
+                      widget.giveaway.href != null &&
+                      widget.giveaway.notEnded &&
+                      widget.giveaway.level <= userLevel
+                  ? InkWell(
+                      onTap: () => widget.onTileChange!(),
+                      child: SizedBox(
+                        width: GiveawayListTileTheme.trailingWidth,
+                        height: GiveawayListTileTheme.trailingHeight,
+                        child: widget.giveaway.entered
+                            ? const Icon(Icons.remove)
+                            : Consumer<PointsProvider>(
+                                builder: (context, user, child) =>
+                                    (user.points >= (widget.giveaway.points as int))
+                                        ? const Icon(Icons.add)
+                                        : Container()),
+                      ))
+                  : const SizedBox(height: 0, width: 0),
+              onTap: widget.giveaway.href != null
+                  ? () async {
+                      widget.giveaway.entered =
+                          await customNav(Giveaway(href: widget.giveaway.href!), context)
+                              as bool;
+                      setState(() {});
+                    }
+                  : null),
+        ),
+      ],
     );
   }
 
   String _remainingTime() {
     if (widget.giveaway.notEnded && !widget.giveaway.notStarted!) {
       if (widget.giveaway.remaining.split(' ').first == '1') {
-        return ' · ${widget.giveaway.remaining} remains';
+        return ' · ${widget.giveaway.remaining}';
       }
-      return ' · ${widget.giveaway.remaining} remain';
+      return ' · ${widget.giveaway.remaining}';
     } else if (widget.giveaway.notStarted!) {
       return ' · Begins in ${widget.giveaway.remaining}';
     } else {
-      return ' · Ended ${widget.giveaway.remaining} ago';
+      return ' · ${widget.giveaway.remaining} ago';
     }
   }
 }

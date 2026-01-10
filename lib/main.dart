@@ -191,18 +191,74 @@ class SnagState extends State<Snag> {
     super.initState();
   }
 
+  (ColorScheme light, ColorScheme dark) _generateDynamicColourSchemes(
+      ColorScheme lightDynamic, ColorScheme darkDynamic) {
+    var lightBase = ColorScheme.fromSeed(seedColor: lightDynamic.primary);
+    var darkBase =
+        ColorScheme.fromSeed(seedColor: darkDynamic.primary, brightness: Brightness.dark);
+
+    var lightAdditionalColours = _extractAdditionalColours(lightBase);
+    var darkAdditionalColours = _extractAdditionalColours(darkBase);
+
+    var lightScheme = _insertAdditionalColours(lightBase, lightAdditionalColours);
+    var darkScheme = _insertAdditionalColours(darkBase, darkAdditionalColours);
+
+    return (lightScheme.harmonized(), darkScheme.harmonized());
+  }
+
+  List<Color> _extractAdditionalColours(ColorScheme scheme) => [
+        scheme.surface,
+        scheme.surfaceDim,
+        scheme.surfaceBright,
+        scheme.surfaceContainerLowest,
+        scheme.surfaceContainerLow,
+        scheme.surfaceContainer,
+        scheme.surfaceContainerHigh,
+        scheme.surfaceContainerHighest,
+      ];
+
+  ColorScheme _insertAdditionalColours(
+          ColorScheme scheme, List<Color> additionalColours) =>
+      scheme.copyWith(
+        surface: additionalColours[0],
+        surfaceDim: additionalColours[1],
+        surfaceBright: additionalColours[2],
+        surfaceContainerLowest: additionalColours[3],
+        surfaceContainerLow: additionalColours[4],
+        surfaceContainer: additionalColours[5],
+        surfaceContainerHigh: additionalColours[6],
+        surfaceContainerHighest: additionalColours[7],
+      );
+
   ThemeData _customTheme({bool dark = false, required ColorScheme? colorScheme}) {
     ColorScheme scheme = colorScheme ??
         ColorScheme.fromSeed(
             brightness: dark ? Brightness.dark : Brightness.light,
             seedColor: const Color.fromARGB(255, 0, 83, 125));
+    double fontSizeDelta = prefs.getInt(PrefsKeys.fontSize.key)!.toDouble();
     return ThemeData(
       textTheme: Theme.of(context).textTheme.apply(
-            fontSizeDelta: prefs.getInt(PrefsKeys.fontSize.key)!.toDouble(),
+            fontSizeDelta: fontSizeDelta,
             displayColor: scheme.onSurface,
             bodyColor: scheme.onSurface,
             decorationColor: scheme.onSurface,
           ),
+      primaryTextTheme: Theme.of(context).primaryTextTheme.apply(
+            fontSizeDelta: fontSizeDelta,
+            displayColor: scheme.onPrimary,
+            bodyColor: scheme.onPrimary,
+            decorationColor: scheme.onPrimary,
+          ),
+      listTileTheme: Theme.of(context).listTileTheme.copyWith(
+          contentPadding: EdgeInsets.zero,
+          minLeadingWidth: 0,
+          minVerticalPadding: 1 - fontSizeDelta,
+          horizontalTitleGap: 10,
+          minTileHeight: 0,
+          titleTextStyle:
+              TextStyle(fontSize: 16 + fontSizeDelta, color: scheme.onSurface),
+          subtitleTextStyle:
+              TextStyle(fontSize: 12 + fontSizeDelta, color: scheme.onSurface)),
       visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
       colorScheme: scheme,
       useMaterial3: true,
@@ -211,14 +267,24 @@ class SnagState extends State<Snag> {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
+    return DynamicColorBuilder(builder: (lightDynamic, darkDynamic) {
+      ColorScheme lightScheme, darkScheme;
+      if (lightDynamic != null && darkDynamic != null) {
+        (lightScheme, darkScheme) =
+            _generateDynamicColourSchemes(lightDynamic, darkDynamic);
+      } else {
+        lightScheme =
+            ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 83, 125));
+        darkScheme = ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 0, 83, 125),
+            brightness: Brightness.dark);
+      }
       return Consumer<ThemeProvider>(
           builder: (context, theme, child) => MaterialApp.router(
               title: 'Snag',
-              theme:
-                  _customTheme(colorScheme: theme.dynamicColor ? lightColorScheme : null),
+              theme: _customTheme(colorScheme: theme.dynamicColor ? lightScheme : null),
               darkTheme: _customTheme(
-                  colorScheme: theme.dynamicColor ? darkColorScheme : null, dark: true),
+                  colorScheme: theme.dynamicColor ? darkScheme : null, dark: true),
               themeMode: ThemeMode.system,
               themeAnimationDuration: Durations.short2,
               themeAnimationCurve: Curves.linear,

@@ -97,7 +97,7 @@ void _callbackDispatcher() {
           prefs.setInt(PrefsKeys.won.key, won);
           await Future.wait([fetchBody(url: 'https://www.steamgifts.com/giveaways/won')])
               .then((items) {
-            _processValues(200, items[0], won, 'Won gift', true);
+            _processValues(200, items[0], won, 'Gift won', true);
           });
         }
       }

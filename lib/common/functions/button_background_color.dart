@@ -18,6 +18,5 @@
 import 'package:flutter/material.dart';
 
 WidgetStateProperty<Color?> buttonBackgroundColor(BuildContext context) {
-  return WidgetStateProperty.all(
-      Colors.blueGrey[Theme.of(context).brightness == Brightness.dark ? 900 : 100]);
+  return WidgetStateProperty.all(Theme.of(context).colorScheme.primaryContainer);
 }

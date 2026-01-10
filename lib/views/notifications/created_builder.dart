@@ -87,28 +87,15 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
               builderDelegate: PagedChildBuilderDelegate<_CreatedListModel>(
                   itemBuilder: (context, created, index) => Column(children: [
                         ListTile(
-                            contentPadding: CustomListTileTheme.contentPadding,
-                            minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-                            dense: CustomListTileTheme.dense,
                             selected: !created.received,
                             leading: CustomNetworkImage(
                                 image: resizeImage(created.image,
-                                    CustomListTileTheme.leadingWidth.toInt()),
-                                width: CustomListTileTheme.leadingWidth),
-                            title: Consumer<ThemeProvider>(
-                              builder: (context, theme, child) => Text(created.name,
-                                  style: TextStyle(
-                                      fontSize: CustomListTileTheme.titleTextSize +
-                                          theme.fontSize),
-                                  overflow: CustomListTileTheme.overflow),
-                            ),
-                            subtitle: Consumer<ThemeProvider>(
-                              builder: (context, theme, child) => Text(
-                                created.time,
-                                style: TextStyle(
-                                    fontSize: CustomListTileTheme.subtitleTextSize +
-                                        theme.fontSize),
-                              ),
+                                    GiveawayListTileTheme.leadingWidth.toInt()),
+                                width: GiveawayListTileTheme.leadingWidth),
+                            title: Text(created.name,
+                                overflow: GiveawayListTileTheme.overflow),
+                            subtitle: Text(
+                              created.time,
                             ),
                             onTap: () => customNav(Giveaway(href: created.href), context),
                             trailing: created.sendLink != null

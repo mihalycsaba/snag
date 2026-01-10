@@ -19,14 +19,12 @@ import 'package:flutter/material.dart';
 
 class CustomPagedListTheme {
   CustomPagedListTheme._();
-  //has to be 35 because there is weird jiggle issue during slow scroll
-  //41 doesn't have overflow
-  //Todo: fix this maybe with custom lisstile widget
+
   static const double itemExtent = 41.0;
 }
 
 double addItemExtent(int size) {
-  return 3.4 * size;
+  return 2.0 * size;
 }
 
 class PagedProgressIndicator extends StatelessWidget {

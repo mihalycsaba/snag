@@ -49,7 +49,7 @@ GiveawayListModel parseGiveawayListElement(dom.Element element, [String? usernam
       name: name.text.trim(),
       entries: entr.substring(0, entr.length - 7).trim(),
       image: resizeImage(image == '' ? '' : image.substring(21, image.length - 2),
-          CustomListTileTheme.leadingWidth.toInt()),
+          GiveawayListTileTheme.leadingWidth.toInt()),
       href: name.attributes['href'],
       entered:
           element.innerHtml.contains('giveaway__row-inner-wrap is-faded') ? true : false,

@@ -21,8 +21,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:snag/common/functions/button_background_color.dart';
-import 'package:snag/nav/pages.dart';
 import 'package:snag/common/functions/initialize_notifications.dart';
+import 'package:snag/nav/pages.dart';
 import 'package:snag/views/notifications/notifications_destination.dart';
 
 class Notifications extends StatefulWidget {

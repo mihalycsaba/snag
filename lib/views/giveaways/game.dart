@@ -24,7 +24,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
@@ -145,9 +144,7 @@ class _GameState extends State<Game> {
                   child: CustomScrollView(slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: Center(
-                        child: Card(
-                          surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                          elevation: CustomCardTheme.elevation,
+                        child: Card.filled(
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(

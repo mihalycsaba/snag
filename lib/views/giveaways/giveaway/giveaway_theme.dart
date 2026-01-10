@@ -17,17 +17,12 @@
 
 import 'package:flutter/widgets.dart';
 
-class CustomListTileTheme {
-  CustomListTileTheme._();
+class GiveawayListTileTheme {
+  GiveawayListTileTheme._();
 
-  static const EdgeInsets contentPadding = EdgeInsets.zero;
-  static const double minVerticalPadding = 3;
-  static const bool dense = true;
-  static const double subtitleTextSize = 10;
-  static const double titleTextSize = 14;
-  static const double leadingWidth = 86;
+  static const double leadingWidth = 108;
   static const TextOverflow overflow = TextOverflow.ellipsis;
   static const double trailingWidth = 60;
-  static const double trailingHeight = 60;
+  static const double trailingHeight = 50;
   static const double iconSize = 12;
 }

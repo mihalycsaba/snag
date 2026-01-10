@@ -22,6 +22,7 @@ import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/objectbox/game_bookmark_model.dart';
+import 'package:snag/views/common/custom_tile_theme.dart';
 import 'package:snag/views/giveaways/game.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 
@@ -47,11 +48,13 @@ class _GameBookmarksState extends State<GameBookmarks> {
         itemCount: _bookmarks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
+              contentPadding: CustomTileTheme.contentPadding,
+              minVerticalPadding: CustomTileTheme.minVerticalPadding,
               leading: CustomNetworkImage(
                 image: resizeImage(
                     'https://shared.akamai.steamstatic.com/store_item_assets/steam/${_bookmarks[index].type}s/${_bookmarks[index].appid}/capsule_184x69.jpg',
-                    CustomListTileTheme.leadingWidth.toInt()),
-                width: CustomListTileTheme.leadingWidth,
+                    GiveawayListTileTheme.leadingWidth.toInt()),
+                width: GiveawayListTileTheme.leadingWidth,
               ),
               title: Text(_bookmarks[index].name),
               onTap: () async {

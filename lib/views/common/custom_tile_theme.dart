@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Mihaly Csaba
+// Copyright (C) 2026 Mihaly Csaba
 //
 // This file is part of Snag.
 //
@@ -15,25 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
+class CustomTileTheme {
+  CustomTileTheme._();
 
-class LeadingImage extends StatelessWidget {
-  const LeadingImage({required this.image, super.key});
-
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return image == ''
-        ? const SizedBox(
-            width: CustomListTileTheme.leadingWidth, child: Icon(Icons.error))
-        : CustomNetworkImage(
-            resize: true,
-            width: CustomListTileTheme.leadingWidth,
-            url: image,
-          );
-  }
+  static const double minVerticalPadding = 0.0;
+  static const EdgeInsets contentPadding = EdgeInsets.symmetric(vertical: 12.0);
 }

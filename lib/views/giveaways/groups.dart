@@ -25,6 +25,7 @@ import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/nav/custom_nav.dart';
+import 'package:snag/views/common/custom_tile_theme.dart';
 import 'package:snag/views/misc/group.dart';
 
 class Groups extends StatefulWidget {
@@ -66,6 +67,8 @@ class _GroupsState extends State<Groups> {
         body: ListView.builder(
           itemCount: _groups.length,
           itemBuilder: (context, index) => ListTile(
+            contentPadding: CustomTileTheme.contentPadding,
+            minVerticalPadding: CustomTileTheme.minVerticalPadding,
             leading: SizedBox(
               width: 40,
               height: 40,

@@ -224,7 +224,7 @@ class _PointsWidgetState extends State<_PointsWidget> {
                   isDense: true,
                   border: const UnderlineInputBorder(),
                   hintText: 'points',
-                  hintStyle: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                  hintStyle: TextStyle(color: Colors.grey[500]),
                 ),
                 validator: (value) => _limitValidator(value),
                 autovalidateMode: AutovalidateMode.always,

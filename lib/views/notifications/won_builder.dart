@@ -105,53 +105,35 @@ class _WonBuilderState extends State<WonBuilder> {
                       padding: const EdgeInsets.only(right: 4.0),
                       child: ListTile(
                         selected: giveaway.notReceived,
-                        contentPadding: CustomListTileTheme.contentPadding,
-                        minVerticalPadding: CustomListTileTheme.minVerticalPadding,
-                        dense: CustomListTileTheme.dense,
                         leading: CustomNetworkImage(
-                            image: resizeImage(
-                                giveaway.image, CustomListTileTheme.leadingWidth.toInt()),
-                            width: CustomListTileTheme.leadingWidth),
-                        title: Consumer<ThemeProvider>(
-                          builder: (context, theme, child) => Text(giveaway.name,
-                              style: TextStyle(
-                                  fontSize:
-                                      CustomListTileTheme.titleTextSize + theme.fontSize),
-                              overflow: CustomListTileTheme.overflow),
-                        ),
-                        subtitle: Consumer<ThemeProvider>(
-                          builder: (context, theme, child) => Text(
-                            giveaway.time,
-                            style: TextStyle(
-                                fontSize: CustomListTileTheme.subtitleTextSize +
-                                    theme.fontSize),
-                          ),
+                            image: resizeImage(giveaway.image,
+                                GiveawayListTileTheme.leadingWidth.toInt()),
+                            width: GiveawayListTileTheme.leadingWidth),
+                        title:
+                            Text(giveaway.name, overflow: GiveawayListTileTheme.overflow),
+                        subtitle: Text(
+                          giveaway.time,
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             giveaway.keyButton != null
-                                ? Consumer<ThemeProvider>(
-                                    builder: (context, theme, child) => TextButton(
-                                        child: Text('Open gift',
-                                            style: TextStyle(
-                                                fontSize: 12.0 + theme.fontSize)),
-                                        onPressed: () async {
-                                          await resMapAjax(giveaway.keyButton!)
-                                              .then((value) {
-                                            _pagingController.refresh();
-                                          });
-                                        }),
-                                  )
+                                ? TextButton(
+                                    child: Text('Open gift',
+                                        style:
+                                            TextStyle(fontSize: 12.0 + theme.fontSize)),
+                                    onPressed: () async {
+                                      await resMapAjax(giveaway.keyButton!).then((value) {
+                                        _pagingController.refresh();
+                                      });
+                                    })
                                 : giveaway.keyIsRedeemable && giveaway.notReceived
-                                    ? Consumer<ThemeProvider>(
-                                        builder: (context, theme, child) => TextButton(
-                                            onPressed: () =>
-                                                urlLauncher(giveaway.redeemKeyLink!),
-                                            child: Text('Redeem',
-                                                style: TextStyle(
-                                                    fontSize: 12.0 + theme.fontSize))),
-                                      )
+                                    ? TextButton(
+                                        onPressed: () =>
+                                            urlLauncher(giveaway.redeemKeyLink!),
+                                        child: Text('Redeem',
+                                            style: TextStyle(
+                                                fontSize: 12.0 + theme.fontSize)))
                                     : !giveaway.keyIsRedeemable &&
                                             giveaway.notReceived &&
                                             !giveaway.giftLinkAvailable

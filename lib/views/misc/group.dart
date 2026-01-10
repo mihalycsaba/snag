@@ -22,9 +22,9 @@ import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/card_theme.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
@@ -35,6 +35,7 @@ import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/objectbox/group_bookmark_model.dart';
+import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/functions/change_giveaway_state.dart';
 import 'package:snag/views/giveaways/functions/parse_giveaway_list.dart';
@@ -144,75 +145,71 @@ class _GroupState extends State<Group> {
                     child: CustomScrollView(slivers: <Widget>[
                       SliverToBoxAdapter(
                           child: Center(
-                              child: Card(
-                                  surfaceTintColor: CustomCardTheme.surfaceTintColor,
-                                  elevation: CustomCardTheme.elevation,
+                              child: Card.filled(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(children: [
-                                      SizedBox(
-                                        width: 70,
-                                        height: 70,
-                                        child: _group.image,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SizedBox(
-                                          width: 160,
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('First Giveaway: ${_group.first}',
-                                                    style: _detailsTextStyle),
-                                                Row(
-                                                  children: [
-                                                    const Text('Last Giveaway: ',
-                                                        style: _detailsTextStyle),
-                                                    Text(_group.last,
-                                                        style:
-                                                            _group.last.contains('Open')
-                                                                ? const TextStyle(
-                                                                    color: Colors.green,
-                                                                    fontSize: _fontSize)
-                                                                : _detailsTextStyle)
-                                                  ],
-                                                ),
-                                                Text('Average Entries: ${_group.average}',
-                                                    style: _detailsTextStyle),
-                                                Text('Giveaways: ${_group.giveaways}',
-                                                    style: _detailsTextStyle),
-                                              ]),
-                                        ),
-                                      ),
-                                      Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text('Contributors: ${_group.contributors}',
-                                                style: _detailsTextStyle),
-                                            Text('Winners: ${_group.winners}',
-                                                style: _detailsTextStyle),
-                                            Text('Gifts Sent: ${_group.sent}',
-                                                style: _detailsTextStyle),
-                                            Text('Users: ${_group.users}',
-                                                style: _detailsTextStyle),
-                                          ])
-                                    ]),
-                                  )))),
-                      PagedSliverList(
-                          pagingController: _pagingController,
-                          builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
-                            itemBuilder: (context, giveaway, index) =>
-                                Column(mainAxisSize: MainAxisSize.min, children: [
-                              GiveawayListTile(
-                                giveaway: giveaway,
-                                onTileChange: () =>
-                                    changeGiveawayState(giveaway, context, setState),
-                              ),
-                            ]),
-                            newPageProgressIndicatorBuilder: (context) =>
-                                const PagedProgressIndicator(),
-                          ))
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 8.0, left: 4.0, right: 8.0),
+                        child: Row(children: [
+                          SizedBox(
+                            width: 70,
+                            height: 70,
+                            child: _group.image,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              width: 175,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('First Giveaway: ${_group.first}',
+                                        style: _detailsTextStyle),
+                                    Row(
+                                      children: [
+                                        const Text('Last Giveaway: ',
+                                            style: _detailsTextStyle),
+                                        Text(_group.last,
+                                            style: _group.last.contains('Open')
+                                                ? const TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: _fontSize)
+                                                : _detailsTextStyle)
+                                      ],
+                                    ),
+                                    Text('Average Entries: ${_group.average}',
+                                        style: _detailsTextStyle),
+                                    Text('Giveaways: ${_group.giveaways}',
+                                        style: _detailsTextStyle),
+                                  ]),
+                            ),
+                          ),
+                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Text('Contributors: ${_group.contributors}',
+                                style: _detailsTextStyle),
+                            Text('Winners: ${_group.winners}', style: _detailsTextStyle),
+                            Text('Gifts Sent: ${_group.sent}', style: _detailsTextStyle),
+                            Text('Users: ${_group.users}', style: _detailsTextStyle),
+                          ])
+                        ]),
+                      )))),
+                      Consumer<ThemeProvider>(
+                          builder: (context, theme, child) => PagedSliverList(
+                              itemExtent: CustomPagedListTheme.itemExtent +
+                                  addItemExtent(theme.fontSize),
+                              pagingController: _pagingController,
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<GiveawayListModel>(
+                                itemBuilder: (context, giveaway, index) =>
+                                    Column(mainAxisSize: MainAxisSize.min, children: [
+                                  GiveawayListTile(
+                                    giveaway: giveaway,
+                                    onTileChange: () =>
+                                        changeGiveawayState(giveaway, context, setState),
+                                  ),
+                                ]),
+                                newPageProgressIndicatorBuilder: (context) =>
+                                    const PagedProgressIndicator(),
+                              )))
                     ])))
             : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'group');

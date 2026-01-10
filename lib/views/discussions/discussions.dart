@@ -21,14 +21,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import 'package:snag/common/custom_text_field.dart';
+import 'package:snag/common/functions/initialize_notifications.dart';
+import 'package:snag/common/simple_filter_model.dart';
 import 'package:snag/nav/custom_drawer.dart';
 import 'package:snag/nav/custom_drawer_appbar.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/provider_models/discussion_filter_provider.dart';
-import 'package:snag/views/discussions/discussion_filter.dart';
-import 'package:snag/views/discussions/discussion_model.dart';
 import 'package:snag/views/discussions/discussions_list.dart';
-import 'package:snag/common/functions/initialize_notifications.dart';
 
 class Discussions extends StatefulWidget {
   const Discussions({super.key, required this.page});
@@ -66,7 +66,7 @@ class _DiscussionsState extends State<Discussions> {
         appBar: CustomDrawerAppBar(
           name: widget.page.name,
           showPoints: false,
-          filter: DiscussionFilter(pagingController: _pagingController),
+          filter: _DiscussionFilter(pagingController: _pagingController),
         ),
         drawer: const CustomDrawer(
           giveawaysOpen: false,
@@ -76,5 +76,105 @@ class _DiscussionsState extends State<Discussions> {
           onRefresh: () => Future.sync(() => _pagingController.refresh()),
           child: DiscussionsList(pagingController: _pagingController),
         )));
+  }
+}
+
+class _DiscussionFilter extends StatelessWidget {
+  const _DiscussionFilter({required this.pagingController});
+  final PagingController<int, DiscussionModel> pagingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 18, right: 19),
+      child: InkWell(
+        onTap: () async {
+          String filter = context.read<DiscussionFilterProvider>().filter;
+          await showDialog(
+              context: context,
+              builder: (context) {
+                return const _DiscussionFilterDialog();
+              });
+          if (context.mounted) {
+            if (filter != context.read<DiscussionFilterProvider>().filter) {
+              pagingController.refresh();
+            }
+          }
+        },
+        child: Consumer<DiscussionFilterProvider>(
+            builder: (context, user, child) => user.model == SimpleFilterModel()
+                ? const Icon(Icons.filter_alt_off)
+                : Icon(
+                    Icons.filter_alt,
+                    color: Colors.green[400],
+                  )),
+      ),
+    );
+  }
+}
+
+class _DiscussionFilterDialog extends StatefulWidget {
+  const _DiscussionFilterDialog();
+
+  @override
+  State<_DiscussionFilterDialog> createState() => _DiscussionFilterDialogState();
+}
+
+class _DiscussionFilterDialogState extends State<_DiscussionFilterDialog> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final double _height = 48;
+  late TextEditingController _search;
+
+  @override
+  void initState() {
+    _search = TextEditingController(
+        text: context.read<DiscussionFilterProvider>().model.search);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        content: Form(
+          key: _formKey,
+          child: SizedBox(
+            height: _height,
+            child: Row(
+              children: [
+                const SizedBox(width: 55, child: Text('Search')),
+                CustomTextFormField(
+                    hintText: 'Search',
+                    controller: _search,
+                    validator: textValidator,
+                    type: TextInputType.text),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+              child: const Text('Clear'),
+              onPressed: () {
+                context.read<DiscussionFilterProvider>().updateModel(SimpleFilterModel());
+                context.read<DiscussionFilterProvider>().updateFilter('');
+                Navigator.of(context).pop();
+              }),
+          TextButton(
+              child: const Text('Apply'),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  String filter = '';
+                  if (_search.text != '') {
+                    filter = '$filter&q=${_search.text.trim()}';
+                  }
+                  context
+                      .read<DiscussionFilterProvider>()
+                      .updateModel(SimpleFilterModel(search: _search.text.trim()));
+                  context.read<DiscussionFilterProvider>().updateFilter(filter);
+
+                  Navigator.of(context).pop();
+                }
+              })
+        ]);
   }
 }

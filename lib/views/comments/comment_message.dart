@@ -102,9 +102,12 @@ class _CommentMessageState extends State<CommentMessage> {
           child: Row(
             children: [
               widget.avatar != null
-                  ? CustomNetworkImage(
-                      image: resizeImage(widget.avatar!, 30),
-                      width: 30,
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: CustomNetworkImage(
+                        image: resizeImage(widget.avatar!, 30),
+                        width: 30,
+                      ),
                     )
                   : Container(),
               widget.name != null
@@ -136,7 +139,7 @@ class _CommentMessageState extends State<CommentMessage> {
                       child: Row(
                         children: [
                           Icon(Icons.access_time,
-                              size: 10,
+                              size: 12,
                               color: widget.active
                                   ? Theme.of(context).colorScheme.primary
                                   : null),
@@ -146,7 +149,7 @@ class _CommentMessageState extends State<CommentMessage> {
                           Consumer<ThemeProvider>(
                             builder: (context, theme, child) => Text('${widget.ago!} ago',
                                 style: TextStyle(
-                                    fontSize: 10.0 + theme.fontSize,
+                                    fontSize: 12.0 + theme.fontSize,
                                     color: widget.active
                                         ? Theme.of(context).colorScheme.primary
                                         : null)),
@@ -293,6 +296,13 @@ class _AttachedImage extends StatefulWidget {
 
 class _AttachedImageState extends State<_AttachedImage> {
   bool _open = false;
+  late final double fontSize;
+
+  @override
+  void initState() {
+    super.initState();
+    fontSize = prefs.getInt(PrefsKeys.fontSize.key)!.toDouble();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -305,21 +315,21 @@ class _AttachedImageState extends State<_AttachedImage> {
           child: TextButton(
               onPressed: () => setState(() => _open = !_open),
               child: !_open
-                  ? const Row(
+                  ? Row(
                       children: [
-                        Icon(Icons.image, size: 14),
+                        Icon(Icons.image, size: 14 + fontSize),
                         Text(
                           ' View image',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: 14 + fontSize),
                         ),
                       ],
                     )
-                  : const Row(
+                  : Row(
                       children: [
-                        Icon(Icons.image, size: 14),
+                        Icon(Icons.image, size: 14 + fontSize),
                         Text(
                           ' Hide image',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: 14 + fontSize),
                         ),
                       ],
                     )),

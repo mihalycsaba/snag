@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:snag/common/vars/obx.dart';
 import 'package:snag/nav/custom_nav.dart';
 import 'package:snag/objectbox/user_bookmark_model.dart';
+import 'package:snag/views/common/custom_tile_theme.dart';
 import 'package:snag/views/misc/user.dart';
 
 class UserBookmarks extends StatefulWidget {
@@ -44,6 +45,8 @@ class _UserBookmarksState extends State<UserBookmarks> {
         itemCount: _bookmarks.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
+              contentPadding: CustomTileTheme.contentPadding,
+              minVerticalPadding: CustomTileTheme.minVerticalPadding,
               title: Text(_bookmarks[index].name),
               onTap: () async {
                 await customNav(User(name: _bookmarks[index].name), context);
