@@ -114,69 +114,73 @@ class DiscussionPages extends Pages {
   static const subscribed = DiscussionPages(
       "https://www.steamgifts.com/discussions/subscribed/search?",
       "Subscribed",
-      "/subscribed");
+      "/discussions/subscribed");
   static const all = DiscussionPages(
       "https://www.steamgifts.com/discussions/search?", "All", "/discussions");
   static const tools = DiscussionPages(
       "https://www.steamgifts.com/discussions/addons-tools/search?",
       "Addons & Tools",
-      "/addons-tools");
+      "/discussions/addons-tools");
   static const announcements = DiscussionPages(
       "https://www.steamgifts.com/discussions/announcements/search?",
       "Announcements",
-      "/announcements");
+      "/discussions/announcements");
   static const suggestions = DiscussionPages(
       "https://www.steamgifts.com/discussions/bugs-suggestions/search?",
       "Bugs & Suggestions",
-      "/bugs-suggestions");
+      "/discussions/bugs-suggestions");
   static const deals = DiscussionPages(
-      "https://steamgifts.com/discussions/deals/search?", "Deals", "/deals");
+      "https://steamgifts.com/discussions/deals/search?", "Deals", "/discussions/deals");
   static const showcase = DiscussionPages(
       "https://www.steamgifts.com/discussions/game-showcase/search?",
       "Game Showcase",
-      "/game-showcase");
+      "/discussions/game-showcase");
   static const general = DiscussionPages(
-      "https://www.steamgifts.com/discussions/general/search?", "General", "/general");
+      "https://www.steamgifts.com/discussions/general/search?",
+      "General",
+      "/discussions/general");
   static const recruitment = DiscussionPages(
       "https://www.steamgifts.com/discussions/group-recruitment/search?",
       "Group Recruitment",
-      "/group-recruitment");
+      "/discussions/group-recruitment");
   static const hardware = DiscussionPages(
-      "https://www.steamgifts.com/discussions/hardware/search?", "Hardware", "/hardware");
+      "https://www.steamgifts.com/discussions/hardware/search?",
+      "Hardware",
+      "/discussions/hardware");
   static const help = DiscussionPages(
     "https://www.steamgifts.com/discussions/help/search?",
     "Help",
-    "/help",
+    "/discussions/help",
   );
   static const letsplay = DiscussionPages(
     "https://www.steamgifts.com/discussions/lets-play-together/search?",
     "Let's Play Together",
-    "/lets-play-together",
+    "/discussions/lets-play-together",
   );
   static const movies = DiscussionPages(
     "https://www.steamgifts.com/discussions/movies-tv/search?",
     "Movies & TV",
-    "/movies-tv",
+    "/discussions/movies-tv",
   );
   static const offtopic = DiscussionPages(
     "https://www.steamgifts.com/discussions/off-topic/search?",
     "Off Topic",
-    "/off-topic",
+    "/discussions/off-topic",
   );
   static const puzzles = DiscussionPages(
     "https://www.steamgifts.com/discussions/puzzles-events/search?",
     "Puzzles & Events",
-    "/puzzles-events",
+    "/discussions/puzzles-events",
   );
   static const projects = DiscussionPages(
     "https://www.steamgifts.com/discussions/user-projects/search?",
     "User Projects",
-    "/user-projects",
+    "/discussions/user-projects",
   );
   static const whitelist = DiscussionPages(
     "https://www.steamgifts.com/discussions/whitelist-recruitment/search?",
     "Whitelist Recruitment",
-    "/whitelist-recruitment",
+    "/discussions/whitelist-recruitment",
   );
 
   static Map<String, Widget> get widgetsMap => {

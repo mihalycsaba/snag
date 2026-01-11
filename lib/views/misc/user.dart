@@ -20,7 +20,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -32,6 +31,7 @@ import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
@@ -132,241 +132,242 @@ class _UserState extends State<User> {
   Widget build(context) {
     return _exception.isEmpty
         ? isLoggedIn
-            ? Scaffold(
-                appBar: AppBar(
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      if (context.canPop()) {
-                        context.pop();
-                      } else {
-                        context.go(GiveawayPages.all.route);
-                      }
-                    },
-                  ),
-                  title: Consumer<ThemeProvider>(
-                      builder: (context, theme, child) => Text(widget.name,
-                          style: TextStyle(fontSize: 18.0 + theme.fontSize))),
-                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                  actions: <Widget>[
-                    _isUser
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: InkWell(
-                                onTap: _notLoading
-                                    ? () {
-                                        setState(() {
-                                          _notLoading = false;
-                                        });
-                                        _changeListState(
-                                            _ListType.whitelist, _user.whitelisted!);
-                                      }
-                                    : null,
-                                child: _user.whitelisted!
-                                    ? const Icon(Icons.favorite,
-                                        color: Colors.lightBlueAccent)
-                                    : const Icon(Icons.favorite_outline)),
-                          ),
-                    _isUser
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: InkWell(
-                                onTap: _notLoading
-                                    ? !_user.blacklisted!
-                                        ? () => showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: const Text('Blacklist'),
-                                                content: Text(
-                                                    'Are you sure you want to blacklist ${widget.name}?'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: const Text('Cancel'),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
+            ? PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, result) => popNav(
+                    context: context, didPop: didPop, route: GiveawayPages.all.route),
+                child: Scaffold(
+                    appBar: AppBar(
+                      leading: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () =>
+                            popRoute(context: context, route: GiveawayPages.all.route),
+                      ),
+                      title: Consumer<ThemeProvider>(
+                          builder: (context, theme, child) => Text(widget.name,
+                              style: TextStyle(fontSize: 18.0 + theme.fontSize))),
+                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                      actions: <Widget>[
+                        _isUser
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: InkWell(
+                                    onTap: _notLoading
+                                        ? () {
+                                            setState(() {
+                                              _notLoading = false;
+                                            });
+                                            _changeListState(
+                                                _ListType.whitelist, _user.whitelisted!);
+                                          }
+                                        : null,
+                                    child: _user.whitelisted!
+                                        ? const Icon(Icons.favorite,
+                                            color: Colors.lightBlueAccent)
+                                        : const Icon(Icons.favorite_outline)),
+                              ),
+                        _isUser
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: InkWell(
+                                    onTap: _notLoading
+                                        ? !_user.blacklisted!
+                                            ? () => showDialog(
+                                                  context: context,
+                                                  builder: (context) => AlertDialog(
+                                                    title: const Text('Blacklist'),
+                                                    content: Text(
+                                                        'Are you sure you want to blacklist ${widget.name}?'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('Cancel'),
+                                                        onPressed: () =>
+                                                            Navigator.pop(context),
+                                                      ),
+                                                      TextButton(
+                                                        child: const Text('Yes'),
+                                                        onPressed: () {
+                                                          _changeListState(
+                                                            _ListType.blacklist,
+                                                            _user.blacklisted!,
+                                                          );
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
                                                   ),
-                                                  TextButton(
-                                                    child: const Text('Yes'),
-                                                    onPressed: () {
-                                                      _changeListState(
-                                                        _ListType.blacklist,
-                                                        _user.blacklisted!,
-                                                      );
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                        : () => _changeListState(
-                                              _ListType.blacklist,
-                                              _user.blacklisted!,
-                                            )
-                                    : null,
-                                child: _user.blacklisted!
-                                    ? const Icon(Icons.block, color: Colors.red)
-                                    : const Icon(Icons.block)),
-                          ),
-                    _isUser
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 7.0),
-                            child: InkWell(
-                              onTap: () {
-                                _changeBookmark();
-                                setState(() {
-                                  _bookmarked = !_bookmarked;
-                                });
-                              },
-                              child: Icon(
-                                  _bookmarked ? Icons.bookmark : Icons.bookmark_border),
-                            ),
-                          ),
-                    InkWell(
-                      onTap: () =>
-                          SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
-                      child: const Icon(Icons.share),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: IconButton(
-                          onPressed: () => urlLauncher(_user.steam),
-                          icon: const FaIcon(FontAwesomeIcons.steamSymbol)),
-                    )
-                  ],
-                ),
-                body: RefreshIndicator(
-                  onRefresh: () => Future.sync(() => _giveawayPagingController.refresh()),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Card.filled(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child:
-                                      SizedBox(width: 80, height: 80, child: _user.image),
+                                                )
+                                            : () => _changeListState(
+                                                  _ListType.blacklist,
+                                                  _user.blacklisted!,
+                                                )
+                                        : null,
+                                    child: _user.blacklisted!
+                                        ? const Icon(Icons.block, color: Colors.red)
+                                        : const Icon(Icons.block)),
+                              ),
+                        _isUser
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(right: 7.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    _changeBookmark();
+                                    setState(() {
+                                      _bookmarked = !_bookmarked;
+                                    });
+                                  },
+                                  child: Icon(_bookmarked
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border),
                                 ),
-                                SizedBox(
-                                  width: 165,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Role: ${_user.role}',
-                                        style: _detailsTextStyle,
-                                      ),
-                                      Row(
+                              ),
+                        InkWell(
+                          onTap: () =>
+                              SharePlus.instance.share(ShareParams(uri: Uri.parse(_url))),
+                          child: const Icon(Icons.share),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: IconButton(
+                              onPressed: () => urlLauncher(_user.steam),
+                              icon: const FaIcon(FontAwesomeIcons.steamSymbol)),
+                        )
+                      ],
+                    ),
+                    body: RefreshIndicator(
+                      onRefresh: () =>
+                          Future.sync(() => _giveawayPagingController.refresh()),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Card.filled(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: SizedBox(
+                                          width: 80, height: 80, child: _user.image),
+                                    ),
+                                    SizedBox(
+                                      width: 165,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          const Text(
-                                            'Online: ',
+                                          Text(
+                                            'Role: ${_user.role}',
+                                            style: _detailsTextStyle,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                'Online: ',
+                                                style: _detailsTextStyle,
+                                              ),
+                                              Text(
+                                                _user.online,
+                                                style: _user.online.contains('Online')
+                                                    ? const TextStyle(
+                                                        color: Colors.green,
+                                                        fontSize: _detailsFontSize)
+                                                    : _detailsTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Registered: ${_user.registered}',
                                             style: _detailsTextStyle,
                                           ),
                                           Text(
-                                            _user.online,
-                                            style: _user.online.contains('Online')
-                                                ? const TextStyle(
-                                                    color: Colors.green,
-                                                    fontSize: _detailsFontSize)
-                                                : _detailsTextStyle,
-                                          ),
+                                            'Comments: ${_user.comments}',
+                                            style: _detailsTextStyle,
+                                          )
                                         ],
                                       ),
-                                      Text(
-                                        'Registered: ${_user.registered}',
-                                        style: _detailsTextStyle,
-                                      ),
-                                      Text(
-                                        'Comments: ${_user.comments}',
-                                        style: _detailsTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Entered: ${_user.entered}',
-                                      style: _detailsTextStyle,
                                     ),
-                                    Text(
-                                      'Won: ${_user.won}',
-                                      style: _detailsTextStyle,
-                                    ),
-                                    Text(
-                                      'Sent: ${_user.sent}',
-                                      style: _detailsTextStyle,
-                                    ),
-                                    Text(
-                                      'Level: ${_user.level}',
-                                      style: _detailsTextStyle,
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Entered: ${_user.entered}',
+                                          style: _detailsTextStyle,
+                                        ),
+                                        Text(
+                                          'Won: ${_user.won}',
+                                          style: _detailsTextStyle,
+                                        ),
+                                        Text(
+                                          'Sent: ${_user.sent}',
+                                          style: _detailsTextStyle,
+                                        ),
+                                        Text(
+                                          'Level: ${_user.level}',
+                                          style: _detailsTextStyle,
+                                        )
+                                      ],
                                     )
                                   ],
-                                )
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: _list == '' ? _bgColor : null,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _list = '';
+                                      });
+                                      _giveawayPagingController.refresh();
+                                    },
+                                    child: const Text('Sent')),
+                                TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        _list == '/giveaways/won' ? _bgColor : null,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _list = '/giveaways/won';
+                                    });
+                                    _giveawayPagingController.refresh();
+                                  },
+                                  child: const Text('Won'),
+                                ),
+                                TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        _list == '/discussions' ? _bgColor : null,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _list = '/discussions';
+                                      _discussionsPagingController.refresh();
+                                    });
+                                  },
+                                  child: const Text('Discussions'),
+                                ),
                               ],
                             ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            TextButton(
-                                style: ButtonStyle(
-                                  backgroundColor: _list == '' ? _bgColor : null,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _list = '';
-                                  });
-                                  _giveawayPagingController.refresh();
-                                },
-                                child: const Text('Sent')),
-                            TextButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    _list == '/giveaways/won' ? _bgColor : null,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _list = '/giveaways/won';
-                                });
-                                _giveawayPagingController.refresh();
-                              },
-                              child: const Text('Won'),
-                            ),
-                            TextButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    _list == '/discussions' ? _bgColor : null,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _list = '/discussions';
-                                  _discussionsPagingController.refresh();
-                                });
-                              },
-                              child: const Text('Discussions'),
-                            ),
-                          ],
-                        ),
-                        Flexible(
-                          child: _list == '/discussions'
-                              ? DiscussionsList(
-                                  pagingController: _discussionsPagingController)
-                              : Consumer<ThemeProvider>(
-                                  builder: (context, theme, child) => PagedListView<int,
-                                          GiveawayListModel>(
-                                      itemExtent: CustomPagedListTheme.itemExtent +
-                                          addItemExtent(theme.fontSize),
-                                      pagingController: _giveawayPagingController,
-                                      builderDelegate:
-                                          PagedChildBuilderDelegate<GiveawayListModel>(
+                            Flexible(
+                              child: _list == '/discussions'
+                                  ? DiscussionsList(
+                                      pagingController: _discussionsPagingController)
+                                  : Consumer<ThemeProvider>(
+                                      builder: (context, theme, child) => PagedListView<
+                                              int, GiveawayListModel>(
+                                          itemExtent: CustomPagedListTheme.itemExtent +
+                                              addItemExtent(theme.fontSize),
+                                          pagingController: _giveawayPagingController,
+                                          builderDelegate: PagedChildBuilderDelegate<
+                                                  GiveawayListModel>(
                                               itemBuilder: (context, giveaway, index) =>
                                                   Column(
                                                     mainAxisSize: MainAxisSize.min,
@@ -382,12 +383,13 @@ class _UserState extends State<User> {
                                               newPageProgressIndicatorBuilder:
                                                   (context) =>
                                                       const PagedProgressIndicator())),
-                                ),
+                                    ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ))
+                      ),
+                    )),
+              )
             : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'user');
   }

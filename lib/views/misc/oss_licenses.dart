@@ -12162,12 +12162,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.16-pre.7
+/// snag 0.0.16-pre.8
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.16-pre.7',
+  version: '0.0.16-pre.8',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,
