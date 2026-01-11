@@ -18,10 +18,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/functions/initialize_notifications.dart';
+import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/nav/pages.dart';
 import 'package:snag/views/notifications/notifications_destination.dart';
 
@@ -53,71 +53,71 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     initializeNotifications(_status, context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(GiveawayPages.all.route);
-            }
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) =>
+          popNav(context: context, didPop: didPop, route: GiveawayPages.all.route),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => popRoute(context: context, route: GiveawayPages.all.route),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('Notifications'),
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Notifications'),
-      ),
-      body: Center(
-          child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      _destination == NotificationsDestination.messages ? _bgColor : null,
-                ),
-                child: const Text('Messages'),
-                onPressed: () {
-                  setState(() {
-                    _destination = NotificationsDestination.messages;
-                  });
-                },
-              ),
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      _destination == NotificationsDestination.won ? _bgColor : null,
-                ),
-                child: const Text('Won'),
-                onPressed: () {
-                  setState(() {
-                    _destination = NotificationsDestination.won;
-                  });
-                },
-              ),
-              TextButton(
+        body: Center(
+            child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
                   style: ButtonStyle(
-                    backgroundColor: _destination == NotificationsDestination.created
+                    backgroundColor: _destination == NotificationsDestination.messages
                         ? _bgColor
                         : null,
                   ),
-                  child: const Text('Created'),
+                  child: const Text('Messages'),
                   onPressed: () {
                     setState(() {
-                      _destination = NotificationsDestination.created;
+                      _destination = NotificationsDestination.messages;
                     });
-                  }),
-            ],
-          ),
-          const Divider(height: 0),
-          Flexible(
-            child: _destination.destination,
-          )
-        ],
-      )),
+                  },
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        _destination == NotificationsDestination.won ? _bgColor : null,
+                  ),
+                  child: const Text('Won'),
+                  onPressed: () {
+                    setState(() {
+                      _destination = NotificationsDestination.won;
+                    });
+                  },
+                ),
+                TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: _destination == NotificationsDestination.created
+                          ? _bgColor
+                          : null,
+                    ),
+                    child: const Text('Created'),
+                    onPressed: () {
+                      setState(() {
+                        _destination = NotificationsDestination.created;
+                      });
+                    }),
+              ],
+            ),
+            const Divider(height: 0),
+            Flexible(
+              child: _destination.destination,
+            )
+          ],
+        )),
+      ),
     );
   }
 }

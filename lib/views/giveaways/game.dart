@@ -17,7 +17,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -26,6 +25,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/obx.dart';
@@ -94,118 +94,119 @@ class _GameState extends State<Game> {
   Widget build(BuildContext context) {
     return _exception.isEmpty
         ? isLoggedIn
-            ? Scaffold(
-                appBar: AppBar(
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      if (context.canPop()) {
-                        context.pop();
-                      } else {
-                        context.go(GiveawayPages.all.route);
-                      }
-                    },
-                  ),
-                  title: Text(_game.name),
-                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                  actions: [
-                    InkWell(
-                      onTap: () {
-                        if (_bookmarked) {
-                          _bookmark = objectbox.getGameBookmarked(widget.href);
-                          objectbox.removeGameBookmark(_bookmark.first.id);
-                        } else {
-                          objectbox.addGameBookmark(
-                              name: _game.name,
-                              href: widget.href,
-                              type: _type,
-                              appid: _appid);
-                        }
-                        setState(() {
-                          _bookmarked = !_bookmarked;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(_bookmarked ? Icons.bookmark : Icons.bookmark_border),
-                      ),
+            ? PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, result) => popNav(
+                    context: context, didPop: didPop, route: GiveawayPages.all.route),
+                child: Scaffold(
+                  appBar: AppBar(
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () =>
+                          popRoute(context: context, route: GiveawayPages.all.route),
                     ),
-                    InkWell(
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(Icons.share),
+                    title: Text(_game.name),
+                    backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                    actions: [
+                      InkWell(
+                        onTap: () {
+                          if (_bookmarked) {
+                            _bookmark = objectbox.getGameBookmarked(widget.href);
+                            objectbox.removeGameBookmark(_bookmark.first.id);
+                          } else {
+                            objectbox.addGameBookmark(
+                                name: _game.name,
+                                href: widget.href,
+                                type: _type,
+                                appid: _appid);
+                          }
+                          setState(() {
+                            _bookmarked = !_bookmarked;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child:
+                              Icon(_bookmarked ? Icons.bookmark : Icons.bookmark_border),
                         ),
-                        onTap: () =>
-                            SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
-                  ],
-                ),
-                body: RefreshIndicator(
-                  onRefresh: () => Future.sync(() => _pagingController.refresh()),
-                  child: CustomScrollView(slivers: <Widget>[
-                    SliverToBoxAdapter(
-                      child: Center(
-                        child: Card.filled(
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
+                      ),
+                      InkWell(
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(Icons.share),
+                          ),
+                          onTap: () => SharePlus.instance
+                              .share(ShareParams(uri: Uri.parse(_url)))),
+                    ],
+                  ),
+                  body: RefreshIndicator(
+                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                    child: CustomScrollView(slivers: <Widget>[
+                      SliverToBoxAdapter(
+                        child: Center(
+                          child: Card.filled(
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Total giveaways: ${_game.totalGiveaways}',
+                                              style: _detailsTextStyle,
+                                            ),
+                                            Text(
+                                              'Total copies: ${_game.totalCopies}',
+                                              style: _detailsTextStyle,
+                                            ),
+                                            Text(
+                                              'You entered: ${_game.youEntered}',
+                                              style: _detailsTextStyle,
+                                            )
+                                          ]),
+                                      Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Total giveaways: ${_game.totalGiveaways}',
+                                            'Received: ${_game.received}',
                                             style: _detailsTextStyle,
                                           ),
                                           Text(
-                                            'Total copies: ${_game.totalCopies}',
+                                            'Reduced: ${_game.reduced}',
                                             style: _detailsTextStyle,
                                           ),
                                           Text(
-                                            'You entered: ${_game.youEntered}',
+                                            'No value: ${_game.noValue}',
                                             style: _detailsTextStyle,
                                           )
-                                        ]),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Received: ${_game.received}',
-                                          style: _detailsTextStyle,
-                                        ),
-                                        Text(
-                                          'Reduced: ${_game.reduced}',
-                                          style: _detailsTextStyle,
-                                        ),
-                                        Text(
-                                          'No value: ${_game.noValue}',
-                                          style: _detailsTextStyle,
-                                        )
-                                      ],
-                                    )
-                                  ])),
+                                        ],
+                                      )
+                                    ])),
+                          ),
                         ),
                       ),
-                    ),
-                    Consumer<ThemeProvider>(
-                      builder: (context, theme, child) => PagedSliverList<int,
-                              GiveawayListModel>(
-                          itemExtent: CustomPagedListTheme.itemExtent +
-                              addItemExtent(theme.fontSize),
-                          pagingController: _pagingController,
-                          builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
-                              itemBuilder: (context, giveaway, index) =>
-                                  Column(mainAxisSize: MainAxisSize.min, children: [
-                                    GiveawayListTile(
-                                      giveaway: giveaway,
-                                      onTileChange: () => changeGiveawayState(
-                                          giveaway, context, setState),
-                                    ),
-                                  ]),
-                              newPageProgressIndicatorBuilder: (context) =>
-                                  const PagedProgressIndicator())),
-                    ),
-                  ]),
+                      Consumer<ThemeProvider>(
+                        builder: (context, theme, child) => PagedSliverList<int,
+                                GiveawayListModel>(
+                            itemExtent: CustomPagedListTheme.itemExtent +
+                                addItemExtent(theme.fontSize),
+                            pagingController: _pagingController,
+                            builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                                itemBuilder: (context, giveaway, index) =>
+                                    Column(mainAxisSize: MainAxisSize.min, children: [
+                                      GiveawayListTile(
+                                        giveaway: giveaway,
+                                        onTileChange: () => changeGiveawayState(
+                                            giveaway, context, setState),
+                                      ),
+                                    ]),
+                                newPageProgressIndicatorBuilder: (context) =>
+                                    const PagedProgressIndicator())),
+                      ),
+                    ]),
+                  ),
                 ),
               )
             : const LoggedOut()

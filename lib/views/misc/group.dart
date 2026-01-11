@@ -18,7 +18,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -29,6 +28,7 @@ import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
@@ -102,115 +102,121 @@ class _GroupState extends State<Group> {
   Widget build(BuildContext context) {
     return _exception.isEmpty
         ? isLoggedIn
-            ? Scaffold(
-                appBar: AppBar(
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      if (context.canPop()) {
-                        context.pop();
-                      } else {
-                        context.go(GiveawayPages.all.route);
-                      }
-                    },
-                  ),
-                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                  title: Text(_group.name),
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          if (_bookmarked) {
-                            _bookmark = objectbox.getGroupBookmarked(widget.href);
-                            objectbox.removeGroupBookmark(_bookmark[0].id);
-                          } else {
-                            objectbox.addGroupBookmark(
-                                name: _group.name, href: widget.href);
-                          }
-                          setState(() {
-                            _bookmarked = !_bookmarked;
-                          });
-                        },
-                        icon: Icon(_bookmarked ? Icons.bookmark : Icons.bookmark_border)),
-                    IconButton(
-                        icon: const Icon(Icons.share),
+            ? PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, result) => popNav(
+                    context: context, didPop: didPop, route: GiveawayPages.all.route),
+                child: Scaffold(
+                    appBar: AppBar(
+                      leading: IconButton(
+                        icon: const Icon(Icons.arrow_back),
                         onPressed: () =>
-                            SharePlus.instance.share(ShareParams(uri: Uri.parse(_url)))),
-                    IconButton(
-                        onPressed: () => urlLauncher(_group.steam),
-                        icon: const FaIcon(FontAwesomeIcons.steamSymbol))
-                  ],
-                ),
-                body: RefreshIndicator(
-                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
-                    child: CustomScrollView(slivers: <Widget>[
-                      SliverToBoxAdapter(
-                          child: Center(
-                              child: Card.filled(
-                                  child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, bottom: 8.0, left: 4.0, right: 8.0),
-                        child: Row(children: [
-                          SizedBox(
-                            width: 70,
-                            height: 70,
-                            child: _group.image,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: 175,
-                              child: Column(
+                            popRoute(context: context, route: GiveawayPages.all.route),
+                      ),
+                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                      title: Text(_group.name),
+                      actions: [
+                        IconButton(
+                            onPressed: () {
+                              if (_bookmarked) {
+                                _bookmark = objectbox.getGroupBookmarked(widget.href);
+                                objectbox.removeGroupBookmark(_bookmark[0].id);
+                              } else {
+                                objectbox.addGroupBookmark(
+                                    name: _group.name, href: widget.href);
+                              }
+                              setState(() {
+                                _bookmarked = !_bookmarked;
+                              });
+                            },
+                            icon: Icon(
+                                _bookmarked ? Icons.bookmark : Icons.bookmark_border)),
+                        IconButton(
+                            icon: const Icon(Icons.share),
+                            onPressed: () => SharePlus.instance
+                                .share(ShareParams(uri: Uri.parse(_url)))),
+                        IconButton(
+                            onPressed: () => urlLauncher(_group.steam),
+                            icon: const FaIcon(FontAwesomeIcons.steamSymbol))
+                      ],
+                    ),
+                    body: RefreshIndicator(
+                        onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                        child: CustomScrollView(slivers: <Widget>[
+                          SliverToBoxAdapter(
+                              child: Center(
+                                  child: Card.filled(
+                                      child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 8.0, bottom: 8.0, left: 4.0, right: 8.0),
+                            child: Row(children: [
+                              SizedBox(
+                                width: 70,
+                                height: 70,
+                                child: _group.image,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width: 175,
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('First Giveaway: ${_group.first}',
+                                            style: _detailsTextStyle),
+                                        Row(
+                                          children: [
+                                            const Text('Last Giveaway: ',
+                                                style: _detailsTextStyle),
+                                            Text(_group.last,
+                                                style: _group.last.contains('Open')
+                                                    ? const TextStyle(
+                                                        color: Colors.green,
+                                                        fontSize: _fontSize)
+                                                    : _detailsTextStyle)
+                                          ],
+                                        ),
+                                        Text('Average Entries: ${_group.average}',
+                                            style: _detailsTextStyle),
+                                        Text('Giveaways: ${_group.giveaways}',
+                                            style: _detailsTextStyle),
+                                      ]),
+                                ),
+                              ),
+                              Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('First Giveaway: ${_group.first}',
+                                    Text('Contributors: ${_group.contributors}',
                                         style: _detailsTextStyle),
-                                    Row(
-                                      children: [
-                                        const Text('Last Giveaway: ',
-                                            style: _detailsTextStyle),
-                                        Text(_group.last,
-                                            style: _group.last.contains('Open')
-                                                ? const TextStyle(
-                                                    color: Colors.green,
-                                                    fontSize: _fontSize)
-                                                : _detailsTextStyle)
-                                      ],
-                                    ),
-                                    Text('Average Entries: ${_group.average}',
+                                    Text('Winners: ${_group.winners}',
                                         style: _detailsTextStyle),
-                                    Text('Giveaways: ${_group.giveaways}',
+                                    Text('Gifts Sent: ${_group.sent}',
                                         style: _detailsTextStyle),
-                                  ]),
-                            ),
-                          ),
-                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text('Contributors: ${_group.contributors}',
-                                style: _detailsTextStyle),
-                            Text('Winners: ${_group.winners}', style: _detailsTextStyle),
-                            Text('Gifts Sent: ${_group.sent}', style: _detailsTextStyle),
-                            Text('Users: ${_group.users}', style: _detailsTextStyle),
-                          ])
-                        ]),
-                      )))),
-                      Consumer<ThemeProvider>(
-                          builder: (context, theme, child) => PagedSliverList(
-                              itemExtent: CustomPagedListTheme.itemExtent +
-                                  addItemExtent(theme.fontSize),
-                              pagingController: _pagingController,
-                              builderDelegate:
-                                  PagedChildBuilderDelegate<GiveawayListModel>(
-                                itemBuilder: (context, giveaway, index) =>
-                                    Column(mainAxisSize: MainAxisSize.min, children: [
-                                  GiveawayListTile(
-                                    giveaway: giveaway,
-                                    onTileChange: () =>
-                                        changeGiveawayState(giveaway, context, setState),
-                                  ),
-                                ]),
-                                newPageProgressIndicatorBuilder: (context) =>
-                                    const PagedProgressIndicator(),
-                              )))
-                    ])))
+                                    Text('Users: ${_group.users}',
+                                        style: _detailsTextStyle),
+                                  ])
+                            ]),
+                          )))),
+                          Consumer<ThemeProvider>(
+                              builder: (context, theme, child) => PagedSliverList(
+                                  itemExtent: CustomPagedListTheme.itemExtent +
+                                      addItemExtent(theme.fontSize),
+                                  pagingController: _pagingController,
+                                  builderDelegate:
+                                      PagedChildBuilderDelegate<GiveawayListModel>(
+                                    itemBuilder: (context, giveaway, index) =>
+                                        Column(mainAxisSize: MainAxisSize.min, children: [
+                                      GiveawayListTile(
+                                        giveaway: giveaway,
+                                        onTileChange: () => changeGiveawayState(
+                                            giveaway, context, setState),
+                                      ),
+                                    ]),
+                                    newPageProgressIndicatorBuilder: (context) =>
+                                        const PagedProgressIndicator(),
+                                  )))
+                        ]))),
+              )
             : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'group');
   }

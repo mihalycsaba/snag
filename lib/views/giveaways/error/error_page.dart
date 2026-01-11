@@ -17,9 +17,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/vars/prefs.dart';
 import 'package:snag/nav/pages.dart';
 
@@ -40,12 +40,8 @@ class ErrorPage extends StatelessWidget {
     double fontSize = prefs.getInt(PrefsKeys.fontSize.key)!.toDouble();
     return PopScope(
         canPop: false,
-        onPopInvokedWithResult: (didPop, result) {
-          if (didPop) {
-            return;
-          }
-          _popPage(context);
-        },
+        onPopInvokedWithResult: (didPop, result) =>
+            popNav(context: context, didPop: didPop, route: GiveawayPages.all.route),
         child: Scaffold(
             appBar: _ErrorAppbar(url: url),
             body: SingleChildScrollView(
@@ -93,9 +89,7 @@ class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.red,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          _popPage(context);
-        },
+        onPressed: () => popRoute(context: context, route: GiveawayPages.all.route),
       ),
       actions: <Widget>[
         GestureDetector(
@@ -109,13 +103,5 @@ class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
-  }
-}
-
-void _popPage(BuildContext context) {
-  if (context.canPop()) {
-    Navigator.pop(context);
-  } else {
-    context.go(GiveawayPages.all.route);
   }
 }
