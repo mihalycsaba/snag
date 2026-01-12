@@ -130,7 +130,9 @@ class DiscussionPages extends Pages {
       "Bugs & Suggestions",
       "/discussions/bugs-suggestions");
   static const deals = DiscussionPages(
-      "https://steamgifts.com/discussions/deals/search?", "Deals", "/discussions/deals");
+      "https://www.steamgifts.com/discussions/deals/search?",
+      "Deals",
+      "/discussions/deals");
   static const showcase = DiscussionPages(
       "https://www.steamgifts.com/discussions/game-showcase/search?",
       "Game Showcase",
