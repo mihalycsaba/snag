@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -43,6 +45,7 @@ import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/provider_models/won_provider.dart';
 import 'package:snag/views/discussions/discussion.dart';
 import 'package:snag/views/giveaways/entered/entered_list.dart';
+import 'package:snag/views/giveaways/error/error_page.dart';
 import 'package:snag/views/giveaways/game.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway.dart';
 import 'package:snag/views/misc/group.dart';
@@ -53,87 +56,115 @@ import 'package:snag/views/notifications/notifications.dart';
 import 'package:snag/views/notifications/notifications_destination.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+    };
+    objectbox = await ObjectBox.create();
+    // make navigation bar transparent
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+      ),
+    );
+    // make flutter draw behind navigation bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    String destination = await _notificationDestination();
 
-  objectbox = await ObjectBox.create();
-  // make navigation bar transparent
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-    ),
-  );
-  // make flutter draw behind navigation bar
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  String destination = await _notificationDestination();
-
-  prefs = await SharedPreferences.getInstance();
-  if (prefs.getString(PrefsKeys.sessid.key) == null) prefs.clear();
-  if (prefs.getInt(PrefsKeys.gifts.key) == null) {
-    prefs.setInt(PrefsKeys.gifts.key, 0);
-  }
-  if (prefs.getInt(PrefsKeys.won.key) == null) {
-    prefs.setInt(PrefsKeys.won.key, 0);
-  }
-  if (prefs.getInt(PrefsKeys.messages.key) == null) {
-    prefs.setInt(PrefsKeys.messages.key, 0);
-  }
-  if (prefs.getInt(PrefsKeys.pointLimit.key) == null) {
-    prefs.setInt(PrefsKeys.pointLimit.key, 350);
-  }
-  if (prefs.getBool(PrefsKeys.pointsNotification.key) == null) {
-    prefs.setBool(PrefsKeys.pointsNotification.key, true);
-  }
-  if (prefs.getString(PrefsKeys.frequency.key) != null) {
-    if (prefs.getInt(PrefsKeys.backgroundFrequency.key) == null) {
-      prefs.setInt(PrefsKeys.backgroundFrequency.key,
-          int.parse(prefs.getString(PrefsKeys.frequency.key)!));
+    prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(PrefsKeys.sessid.key) == null) prefs.clear();
+    if (prefs.getInt(PrefsKeys.gifts.key) == null) {
+      prefs.setInt(PrefsKeys.gifts.key, 0);
     }
-  } else {
-    prefs.setString(PrefsKeys.frequency.key, '15');
-    prefs.setInt(PrefsKeys.backgroundFrequency.key, 15);
-  }
-  if (prefs.getBool(PrefsKeys.dynamicColor.key) == null) {
-    prefs.setBool(PrefsKeys.dynamicColor.key, true);
-  }
-  if (prefs.getBool(PrefsKeys.keysAvailable.key) == null) {
-    prefs.setBool(PrefsKeys.keysAvailable.key, false);
-  }
-  if (prefs.getInt(PrefsKeys.fontSize.key) == null) {
-    prefs.setInt(PrefsKeys.fontSize.key, 0);
-  }
-  if (prefs.getInt(PrefsKeys.intervalStart.key) == null) {
-    prefs.setInt(PrefsKeys.intervalStart.key, 0);
-    prefs.setInt(PrefsKeys.intervalEnd.key, 23);
-  }
-
-  if (prefs.getString(PrefsKeys.sessid.key) != null) {
-    bool notificationsDenied = await Permission.notification.isDenied;
-    prefs.setBool(PrefsKeys.notificationsDenied.key, notificationsDenied);
-    if (notificationsDenied) {
-      Workmanager().cancelAll();
+    if (prefs.getInt(PrefsKeys.won.key) == null) {
+      prefs.setInt(PrefsKeys.won.key, 0);
+    }
+    if (prefs.getInt(PrefsKeys.messages.key) == null) {
+      prefs.setInt(PrefsKeys.messages.key, 0);
+    }
+    if (prefs.getInt(PrefsKeys.pointLimit.key) == null) {
+      prefs.setInt(PrefsKeys.pointLimit.key, 350);
+    }
+    if (prefs.getBool(PrefsKeys.pointsNotification.key) == null) {
+      prefs.setBool(PrefsKeys.pointsNotification.key, true);
+    }
+    if (prefs.getString(PrefsKeys.frequency.key) != null) {
+      if (prefs.getInt(PrefsKeys.backgroundFrequency.key) == null) {
+        prefs.setInt(PrefsKeys.backgroundFrequency.key,
+            int.parse(prefs.getString(PrefsKeys.frequency.key)!));
+      }
     } else {
-      backgroundTask();
+      prefs.setString(PrefsKeys.frequency.key, '15');
+      prefs.setInt(PrefsKeys.backgroundFrequency.key, 15);
     }
+    if (prefs.getBool(PrefsKeys.dynamicColor.key) == null) {
+      prefs.setBool(PrefsKeys.dynamicColor.key, true);
+    }
+    if (prefs.getBool(PrefsKeys.keysAvailable.key) == null) {
+      prefs.setBool(PrefsKeys.keysAvailable.key, false);
+    }
+    if (prefs.getInt(PrefsKeys.fontSize.key) == null) {
+      prefs.setInt(PrefsKeys.fontSize.key, 0);
+    }
+    if (prefs.getInt(PrefsKeys.intervalStart.key) == null) {
+      prefs.setInt(PrefsKeys.intervalStart.key, 0);
+      prefs.setInt(PrefsKeys.intervalEnd.key, 23);
+    }
+
+    if (prefs.getString(PrefsKeys.sessid.key) != null) {
+      bool notificationsDenied = await Permission.notification.isDenied;
+      prefs.setBool(PrefsKeys.notificationsDenied.key, notificationsDenied);
+      if (notificationsDenied) {
+        Workmanager().cancelAll();
+      } else {
+        backgroundTask();
+      }
+    }
+    if (prefs.getString(PrefsKeys.sessid.key) != null) {
+      await getUser();
+    }
+    runApp(MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => GiveawayFilterProvider()),
+      ChangeNotifierProvider(create: (_) => EnteredFilterProvider()),
+      ChangeNotifierProvider(create: (_) => DiscussionFilterProvider()),
+      ChangeNotifierProvider(create: (_) => PointsProvider()),
+      ChangeNotifierProvider(create: (_) => GiftsProvider()),
+      ChangeNotifierProvider(create: (_) => WonProvider()),
+      ChangeNotifierProvider(create: (_) => MessagesProvider()),
+      ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
+      ChangeNotifierProvider(create: (_) => ThemeProvider()),
+    ], child: Snag(destination: destination)));
+  }, (error, stackTrace) {
+    //there's a harmless type exception, when navigating back to certain game lists
+    if (error.runtimeType.toString() != '_TypeError') {
+      runApp(_ErrorApp(error: error.toString(), stackTrace: stackTrace.toString()));
+    }
+  });
+}
+
+class _ErrorApp extends StatelessWidget {
+  const _ErrorApp({required this.error, required this.stackTrace});
+
+  final String error;
+  final String stackTrace;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Snag',
+      theme: ThemeData.light(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
+      themeMode: ThemeMode.system,
+      home: ErrorPage(error: error, stackTrace: stackTrace, url: '', type: 'app'),
+    );
   }
-  if (prefs.getString(PrefsKeys.sessid.key) != null) {
-    await getUser();
-  }
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => GiveawayFilterProvider()),
-    ChangeNotifierProvider(create: (_) => EnteredFilterProvider()),
-    ChangeNotifierProvider(create: (_) => DiscussionFilterProvider()),
-    ChangeNotifierProvider(create: (_) => PointsProvider()),
-    ChangeNotifierProvider(create: (_) => GiftsProvider()),
-    ChangeNotifierProvider(create: (_) => WonProvider()),
-    ChangeNotifierProvider(create: (_) => MessagesProvider()),
-    ChangeNotifierProvider(create: (_) => GiveawayBookmarksProvider()),
-    ChangeNotifierProvider(create: (_) => ThemeProvider()),
-  ], child: Snag(destination: destination)));
 }
 
 Future<String> _notificationDestination() async {
   FlutterLocalNotificationsPlugin status = FlutterLocalNotificationsPlugin();
-  status.initialize(const InitializationSettings(
+  status.initialize(
+      settings: const InitializationSettings(
     android: AndroidInitializationSettings('@mipmap/ic_launcher'),
   ));
   final NotificationAppLaunchDetails? notificationAppLaunchDetails =
