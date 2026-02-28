@@ -81,7 +81,8 @@ class DiscussionsList extends StatelessWidget {
                           children: [
                             CustomNetworkImage(
                                 image: resizeImage(discussion.avatar, 64),
-                                width: 56.0 + theme.fontSize),
+                                width: 56.0 + theme.fontSize,
+                                height: 56.0 + theme.fontSize),
                             Row(
                               children: [
                                 Icon(

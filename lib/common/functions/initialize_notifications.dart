@@ -26,7 +26,7 @@ import 'package:snag/views/notifications/notification_destination.dart';
 void initializeNotifications(
     FlutterLocalNotificationsPlugin status, BuildContext context) {
   status.initialize(
-      const InitializationSettings(
+      settings: const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (details) =>

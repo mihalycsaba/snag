@@ -180,7 +180,7 @@ Future _showNotificationWithDefaultSound(
 
   InitializationSettings settings = InitializationSettings(android: android);
 
-  status.initialize(settings);
+  status.initialize(settings: settings);
 
   if (summary) {
     AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
@@ -188,11 +188,16 @@ Future _showNotificationWithDefaultSound(
         groupKey: groupKey, setAsGroupSummary: true);
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
-    status.show(id, name, value, notificationDetails);
+    status.show(
+        id: id, title: name, body: value, notificationDetails: notificationDetails);
   } else {
     NotificationDetails platformChannelSpecifics =
         _notificationDetails(channelId, channelName, group, groupKey);
-    await status.show(id, name, value, platformChannelSpecifics,
+    await status.show(
+        id: id,
+        title: name,
+        body: value,
+        notificationDetails: platformChannelSpecifics,
         payload: 'Default_Sound');
   }
 }

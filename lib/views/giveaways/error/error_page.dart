@@ -43,7 +43,7 @@ class ErrorPage extends StatelessWidget {
         onPopInvokedWithResult: (didPop, result) =>
             popNav(context: context, didPop: didPop, route: GiveawayPages.all.route),
         child: Scaffold(
-            appBar: _ErrorAppbar(url: url),
+            appBar: _ErrorAppbar(url: url, error: error, stackTrace: stackTrace),
             body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +56,9 @@ class ErrorPage extends StatelessWidget {
                   ),
                   Center(
                       child: Text(
-                    stackTrace == null ? error : 'Most likely the URL is invalid.',
+                    stackTrace == null
+                        ? error
+                        : 'Most likely the URL is invalid or inaccessible.',
                     style: TextStyle(color: Colors.blue, fontSize: 18 + fontSize),
                   )),
                   Column(
@@ -74,11 +76,12 @@ class ErrorPage extends StatelessWidget {
 }
 
 class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const _ErrorAppbar({required this.url})
+  const _ErrorAppbar({required this.url, this.error, this.stackTrace})
       : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   final String url;
-
+  final String? error;
+  final String? stackTrace;
   @override
   final Size preferredSize;
 
@@ -93,7 +96,9 @@ class _ErrorAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: <Widget>[
         GestureDetector(
-          onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse(url))),
+          onTap: () => SharePlus.instance.share(url == ''
+              ? ShareParams(text: '${error ?? ''}\n${stackTrace ?? ''}')
+              : ShareParams(uri: Uri.parse(url))),
           child: const Padding(
             padding: EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
             child: Icon(
