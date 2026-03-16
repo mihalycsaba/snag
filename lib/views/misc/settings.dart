@@ -161,7 +161,7 @@ class Settings extends StatelessWidget {
                             ])),
                       ),
                       GestureDetector(
-                        onTap: () => const OpenSettingsPlusAndroid().applicationDetails(),
+                        onTap: () => const OpenSettingsPlusAndroid().openByDefault(),
                         child: const Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Icon(Icons.settings),

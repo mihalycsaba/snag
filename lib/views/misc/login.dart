@@ -65,7 +65,8 @@ class _LoginState extends State<Login> {
       appBar: const CustomBackAppBar(name: 'Login'),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
-          url: WebUri('https://www.steamgifts.com/?login'),
+          url: WebUri(
+              'https://steamcommunity.com/openid/login?openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=checkid_setup&openid.return_to=https%3A%2F%2Fwww.steamgifts.com%2F'),
         ),
         onLoadStart: (controller, url) {
           _change(url, context);
