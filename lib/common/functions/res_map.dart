@@ -29,8 +29,8 @@ Future<Map> resMap(String body, String url) async {
       },
       encoding: Encoding.getByName('utf-8'),
       body: body);
-  //301 when marking messages as read, 200 and empty body when voting
-  if (response.statusCode == 301 || (response.statusCode == 200 && response.body == '')) {
+  //302 when marking messages as read, 200 and empty body when voting
+  if (response.statusCode == 302 || (response.statusCode == 200 && response.body == '')) {
     Map body = {};
     body['type'] = 'success';
     return body;
