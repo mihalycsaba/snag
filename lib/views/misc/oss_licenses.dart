@@ -677,13 +677,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_runner 2.12.2
+/// build_runner 2.13.0
 const _build_runner = Package(
   name: 'build_runner',
   description: 'A build system for Dart code generation and modular compilation.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_runner',
   authors: [],
-  version: '2.12.2',
+  version: '2.13.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -3097,13 +3097,13 @@ const _flat_buffers = Package(
    limitations under the License.''',
 );
 
-/// flutter 3.41.4
+/// flutter 3.41.5
 const _flutter = Package(
   name: 'flutter',
   description: 'A framework for writing Flutter applications',
   homepage: 'https://flutter.dev',
   authors: [],
-  version: '3.41.4',
+  version: '3.41.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: true,
@@ -6343,14 +6343,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// markdown 7.3.0
+/// markdown 7.3.1
 const _markdown = Package(
   name: 'markdown',
   description:
       'A portable Markdown library written in Dart that can parse Markdown into HTML.',
   repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/markdown',
   authors: [],
-  version: '7.3.0',
+  version: '7.3.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -6745,13 +6745,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// native_toolchain_c 0.17.5
+/// native_toolchain_c 0.17.6
 const _native_toolchain_c = Package(
   name: 'native_toolchain_c',
   description: 'A library to invoke the native C compiler installed on the host machine.',
   repository: 'https://github.com/dart-lang/native/tree/main/pkgs/native_toolchain_c',
   authors: [],
-  version: '0.17.5',
+  version: '0.17.6',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -7807,14 +7807,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// pana 0.23.10
+/// pana 0.23.11
 const _pana = Package(
   name: 'pana',
   description:
       'PAckage aNAlyzer - produce a report summarizing the health and quality of a Dart package.',
   repository: 'https://github.com/dart-lang/pana',
   authors: [],
-  version: '0.23.10',
+  version: '0.23.11',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42894,12 +42894,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.17-pre.02
+/// snag 0.0.18-pre.01
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.17-pre.02',
+  version: '0.0.18-pre.01',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,
