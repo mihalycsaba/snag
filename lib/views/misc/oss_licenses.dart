@@ -438,13 +438,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// async 2.13.0
+/// async 2.13.1
 const _async = Package(
   name: 'async',
   description: "Utility functions and classes related to the 'dart:async' library.",
   repository: 'https://github.com/dart-lang/core/tree/main/pkgs/async',
   authors: [],
-  version: '2.13.0',
+  version: '2.13.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -525,13 +525,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build 4.0.4
+/// build 4.0.5
 const _build = Package(
   name: 'build',
   description: 'A package for authoring build_runner compatible code generators.',
   repository: 'https://github.com/dart-lang/build/tree/master/build',
   authors: [],
-  version: '4.0.4',
+  version: '4.0.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -677,13 +677,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_runner 2.13.0
+/// build_runner 2.13.1
 const _build_runner = Package(
   name: 'build_runner',
   description: 'A build system for Dart code generation and modular compilation.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_runner',
   authors: [],
-  version: '2.13.0',
+  version: '2.13.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -794,7 +794,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// built_value 8.12.4
+/// built_value 8.12.5
 const _built_value = Package(
   name: 'built_value',
   description:
@@ -802,7 +802,7 @@ const _built_value = Package(
 ''',
   repository: 'https://github.com/google/built_value.dart/tree/master/built_value',
   authors: [],
-  version: '8.12.4',
+  version: '8.12.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -1580,19 +1580,24 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// cupertino_icons 1.0.8
+/// cupertino_icons 1.0.9
 const _cupertino_icons = Package(
   name: 'cupertino_icons',
   description: 'Default icons asset for Cupertino widgets based on Apple styled icons',
   repository:
       'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
   authors: [],
-  version: '1.0.8',
+  version: '1.0.9',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
   dependencies: [],
-  devDependencies: [PackageRef('flutter'), PackageRef('flutter_test')],
+  devDependencies: [
+    PackageRef('collection'),
+    PackageRef('flutter'),
+    PackageRef('flutter_test'),
+    PackageRef('path')
+  ],
   license: '''The MIT License (MIT)
 
 Copyright (c) 2016 Vladimir Kharlampidi
@@ -3097,13 +3102,13 @@ const _flat_buffers = Package(
    limitations under the License.''',
 );
 
-/// flutter 3.41.5
+/// flutter 3.41.6
 const _flutter = Package(
   name: 'flutter',
   description: 'A framework for writing Flutter applications',
   homepage: 'https://flutter.dev',
   authors: [],
-  version: '3.41.5',
+  version: '3.41.6',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: true,
@@ -5556,14 +5561,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// go_router 17.1.0
+/// go_router 17.2.0
 const _go_router = Package(
   name: 'go_router',
   description:
       'A declarative router for Flutter based on Navigation 2 supporting deep linking, data-driven routes and more',
   repository: 'https://github.com/flutter/packages/tree/main/packages/go_router',
   authors: [],
-  version: '17.1.0',
+  version: '17.2.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -6891,14 +6896,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// objectbox 5.2.0
+/// objectbox 5.3.1
 const _objectbox = Package(
   name: 'objectbox',
   description: 'Flutter database for super-fast NoSQL ACID compliant object persistence.',
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/objectbox',
   authors: [],
-  version: '5.2.0',
+  version: '5.3.1',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7113,7 +7118,7 @@ const _objectbox = Package(
    limitations under the License.''',
 );
 
-/// objectbox_flutter_libs 5.2.0
+/// objectbox_flutter_libs 5.3.1
 const _objectbox_flutter_libs = Package(
   name: 'objectbox_flutter_libs',
   description:
@@ -7121,7 +7126,7 @@ const _objectbox_flutter_libs = Package(
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/flutter_libs',
   authors: [],
-  version: '5.2.0',
+  version: '5.3.1',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7334,7 +7339,7 @@ const _objectbox_flutter_libs = Package(
    limitations under the License.''',
 );
 
-/// objectbox_generator 5.2.0
+/// objectbox_generator 5.3.1
 const _objectbox_generator = Package(
   name: 'objectbox_generator',
   description:
@@ -7342,7 +7347,7 @@ const _objectbox_generator = Package(
   homepage: 'https://objectbox.io',
   repository: 'https://github.com/objectbox/objectbox-dart/tree/main/generator',
   authors: [],
-  version: '5.2.0',
+  version: '5.3.1',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -7702,7 +7707,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// package_info_plus 9.0.0
+/// package_info_plus 9.0.1
 const _package_info_plus = Package(
   name: 'package_info_plus',
   description:
@@ -7711,7 +7716,7 @@ const _package_info_plus = Package(
   repository:
       'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/package_info_plus/package_info_plus',
   authors: [],
-  version: '9.0.0',
+  version: '9.0.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -7807,14 +7812,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// pana 0.23.11
+/// pana 0.23.12
 const _pana = Package(
   name: 'pana',
   description:
       'PAckage aNAlyzer - produce a report summarizing the health and quality of a Dart package.',
   repository: 'https://github.com/dart-lang/pana',
   authors: [],
-  version: '0.23.11',
+  version: '0.23.12',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -8009,14 +8014,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// path_provider_android 2.2.22
+/// path_provider_android 2.2.23
 const _path_provider_android = Package(
   name: 'path_provider_android',
   description: 'Android implementation of the path_provider plugin.',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_android',
   authors: [],
-  version: '2.2.22',
+  version: '2.2.23',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9676,7 +9681,7 @@ const _safe_url_check = Package(
    limitations under the License.''',
 );
 
-/// share_plus 12.0.1
+/// share_plus 12.0.2
 const _share_plus = Package(
   name: 'share_plus',
   description:
@@ -9685,7 +9690,7 @@ const _share_plus = Package(
   repository:
       'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus',
   authors: [],
-  version: '12.0.1',
+  version: '12.0.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9789,7 +9794,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// shared_preferences 2.5.4
+/// shared_preferences 2.5.5
 const _shared_preferences = Package(
   name: 'shared_preferences',
   description:
@@ -9797,7 +9802,7 @@ const _shared_preferences = Package(
   repository:
       'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
   authors: [],
-  version: '2.5.4',
+  version: '2.5.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9838,14 +9843,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// shared_preferences_android 2.4.21
+/// shared_preferences_android 2.4.23
 const _shared_preferences_android = Package(
   name: 'shared_preferences_android',
   description: 'Android implementation of the shared_preferences plugin',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_android',
   authors: [],
-  version: '2.4.21',
+  version: '2.4.23',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9971,20 +9976,20 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// shared_preferences_platform_interface 2.4.1
+/// shared_preferences_platform_interface 2.4.2
 const _shared_preferences_platform_interface = Package(
   name: 'shared_preferences_platform_interface',
   description: 'A common platform interface for the shared_preferences plugin.',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_platform_interface',
   authors: [],
-  version: '2.4.1',
+  version: '2.4.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
   dependencies: [PackageRef('flutter'), PackageRef('plugin_platform_interface')],
   devDependencies: [PackageRef('flutter_test')],
-  license: '''Copyright 2013 The Flutter Authors. All rights reserved.
+  license: '''Copyright 2013 The Flutter Authors
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -40859,13 +40864,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// source_gen 4.2.1
+/// source_gen 4.2.2
 const _source_gen = Package(
   name: 'source_gen',
   description: 'Source code generation builders and utilities for the Dart build system',
   repository: 'https://github.com/dart-lang/source_gen/tree/master/source_gen',
   authors: [],
-  version: '4.2.1',
+  version: '4.2.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -41571,14 +41576,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// url_launcher_android 6.3.28
+/// url_launcher_android 6.3.29
 const _url_launcher_android = Package(
   name: 'url_launcher_android',
   description: 'Android implementation of the url_launcher plugin.',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher_android',
   authors: [],
-  version: '6.3.28',
+  version: '6.3.29',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42093,13 +42098,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
 );
 
-/// vector_graphics 1.1.20
+/// vector_graphics 1.1.21
 const _vector_graphics = Package(
   name: 'vector_graphics',
   description: 'A vector graphics rendering package for Flutter using a binary encoding.',
   repository: 'https://github.com/flutter/packages/tree/main/packages/vector_graphics',
   authors: [],
-  version: '1.1.20',
+  version: '1.1.21',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42894,12 +42899,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.18-pre.01
+/// snag 0.0.18-pre.02
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.18-pre.01',
+  version: '0.0.18-pre.02',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,
