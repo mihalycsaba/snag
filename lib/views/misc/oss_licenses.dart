@@ -63,6 +63,7 @@ const allDependencies = <Package>[
   _flutter_local_notifications,
   _flutter_local_notifications_linux,
   _flutter_local_notifications_platform_interface,
+  _flutter_local_notifications_web,
   _flutter_local_notifications_windows,
   _flutter_staggered_grid_view,
   _flutter_svg,
@@ -84,6 +85,7 @@ const allDependencies = <Package>[
   _io,
   _jni,
   _jni_flutter,
+  _jni_util,
   _json_annotation,
   _leak_tracker,
   _leak_tracker_flutter_testing,
@@ -186,7 +188,9 @@ const allDependencies = <Package>[
   _workmanager,
   _workmanager_android,
   _workmanager_apple,
+  _workmanager_linux,
   _workmanager_platform_interface,
+  _workmanager_web,
   _xdg_directories,
   _xml,
   _yaml
@@ -527,13 +531,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build 4.0.6
+/// build 4.0.7
 const _build = Package(
   name: 'build',
   description: 'A package for authoring build_runner compatible code generators.',
   repository: 'https://github.com/dart-lang/build/tree/master/build',
   authors: [],
-  version: '4.0.6',
+  version: '4.0.7',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -575,13 +579,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_config 1.3.0
+/// build_config 1.3.2
 const _build_config = Package(
   name: 'build_config',
   description: 'Format definition and support for parsing `build.yaml` configuration.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_config',
   authors: [],
-  version: '1.3.0',
+  version: '1.3.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -625,13 +629,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_daemon 4.1.1
+/// build_daemon 4.1.4
 const _build_daemon = Package(
   name: 'build_daemon',
   description: 'A daemon for running Dart builds.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_daemon',
   authors: [],
-  version: '4.1.1',
+  version: '4.1.4',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -641,13 +645,16 @@ const _build_daemon = Package(
     PackageRef('crypto'),
     PackageRef('http_multi_server'),
     PackageRef('logging'),
+    PackageRef('package_config'),
     PackageRef('path'),
     PackageRef('pool'),
+    PackageRef('pub_semver'),
     PackageRef('shelf'),
     PackageRef('shelf_web_socket'),
     PackageRef('stream_transform'),
     PackageRef('watcher'),
-    PackageRef('web_socket_channel')
+    PackageRef('web_socket_channel'),
+    PackageRef('yaml')
   ],
   devDependencies: [PackageRef('build_runner'), PackageRef('test')],
   license: '''Copyright 2019, the Dart project authors.
@@ -679,13 +686,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_runner 2.15.0
+/// build_runner 2.15.1
 const _build_runner = Package(
   name: 'build_runner',
   description: 'A build system for Dart code generation and modular compilation.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_runner',
   authors: [],
-  version: '2.15.0',
+  version: '2.15.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -1354,13 +1361,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// coverage 1.15.0
+/// coverage 1.15.1
 const _coverage = Package(
   name: 'coverage',
   description: 'Coverage data manipulation and formatting',
   repository: 'https://github.com/dart-lang/tools/tree/main/pkgs/coverage',
   authors: [],
-  version: '1.15.0',
+  version: '1.15.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -1407,13 +1414,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// cross_file 0.3.5+2
+/// cross_file 0.3.5+4
 const _cross_file = Package(
   name: 'cross_file',
   description: 'An abstraction to allow working with files across multiple platforms.',
   repository: 'https://github.com/flutter/packages/tree/main/packages/cross_file',
   authors: [],
-  version: '0.3.5+2',
+  version: '0.3.5+4',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -1663,14 +1670,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// dbus 0.7.14
+/// dbus 0.7.13
 const _dbus = Package(
   name: 'dbus',
   description:
       'A native Dart implementation of the D-Bus message bus client. This package allows Dart applications to directly access services on the Linux desktop.',
   homepage: 'https://github.com/canonical/dbus.dart',
   authors: [],
-  version: '0.7.14',
+  version: '0.7.13',
   spdxIdentifiers: ['MPL-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -2056,7 +2063,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   defined by the Mozilla Public License, v. 2.0.''',
 );
 
-/// decimal 3.2.4
+/// decimal 3.2.6
 const _decimal = Package(
   name: 'decimal',
   description:
@@ -2064,7 +2071,7 @@ const _decimal = Package(
 ''',
   repository: 'https://github.com/a14n/dart-decimal',
   authors: [],
-  version: '3.2.4',
+  version: '3.2.6',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
@@ -3092,13 +3099,13 @@ const _flat_buffers = Package(
    limitations under the License.''',
 );
 
-/// flutter 3.44.1
+/// flutter 3.44.8
 const _flutter = Package(
   name: 'flutter',
   description: 'A framework for writing Flutter applications',
   homepage: 'https://flutter.dev',
   authors: [],
-  version: '3.44.1',
+  version: '3.44.8',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: true,
@@ -5098,7 +5105,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications 21.0.0
+/// flutter_local_notifications 22.2.0
 const _flutter_local_notifications = Package(
   name: 'flutter_local_notifications',
   description:
@@ -5106,7 +5113,7 @@ const _flutter_local_notifications = Package(
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
   authors: [],
-  version: '21.0.0',
+  version: '22.2.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -5115,6 +5122,7 @@ const _flutter_local_notifications = Package(
     PackageRef('flutter'),
     PackageRef('flutter_local_notifications_linux'),
     PackageRef('flutter_local_notifications_windows'),
+    PackageRef('flutter_local_notifications_web'),
     PackageRef('flutter_local_notifications_platform_interface'),
     PackageRef('timezone')
   ],
@@ -5152,14 +5160,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications_linux 8.0.0
+/// flutter_local_notifications_linux 8.0.1
 const _flutter_local_notifications_linux = Package(
   name: 'flutter_local_notifications_linux',
   description: 'Linux implementation of the flutter_local_notifications plugin',
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
   authors: [],
-  version: '8.0.0',
+  version: '8.0.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -5205,18 +5213,18 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications_platform_interface 11.0.0
+/// flutter_local_notifications_platform_interface 12.1.0
 const _flutter_local_notifications_platform_interface = Package(
   name: 'flutter_local_notifications_platform_interface',
   description: 'A common platform interface for the flutter_local_notifications plugin.',
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_platform_interface',
   authors: [],
-  version: '11.0.0',
+  version: '12.1.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
-  dependencies: [PackageRef('plugin_platform_interface')],
+  dependencies: [PackageRef('plugin_platform_interface'), PackageRef('timezone')],
   devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
   license: '''Copyright 2020 Michael Bui. All rights reserved.
 
@@ -5247,14 +5255,66 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications_windows 3.0.0
+/// flutter_local_notifications_web 1.0.0
+const _flutter_local_notifications_web = Package(
+  name: 'flutter_local_notifications_web',
+  description: 'Web implementation of the flutter_local_notifications plugin',
+  homepage:
+      'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_web',
+  authors: [],
+  version: '1.0.0',
+  spdxIdentifiers: ['BSD-3-Clause'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('collection'),
+    PackageRef('flutter'),
+    PackageRef('flutter_local_notifications_platform_interface'),
+    PackageRef('timezone'),
+    PackageRef('web')
+  ],
+  devDependencies: [
+    PackageRef('build_runner'),
+    PackageRef('flutter_test'),
+    PackageRef('flutter_lints')
+  ],
+  license: '''Copyright 2020 Michael Bui. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// flutter_local_notifications_windows 3.1.1
 const _flutter_local_notifications_windows = Package(
   name: 'flutter_local_notifications_windows',
   description: 'Windows implementation of the flutter_local_notifications plugin',
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_windows',
   authors: [],
-  version: '3.0.0',
+  version: '3.1.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -5950,14 +6010,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// intl 0.20.2
+/// intl 0.20.3
 const _intl = Package(
   name: 'intl',
   description:
       'Contains code to deal with internationalized/localized messages, date and number formatting and parsing, bi-directional text, and other internationalization issues.',
   repository: 'https://github.com/dart-lang/i18n/tree/main/pkgs/intl',
   authors: [],
-  version: '0.20.2',
+  version: '0.20.3',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -6039,14 +6099,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// jni 1.0.0
+/// jni 1.0.3
 const _jni = Package(
   name: 'jni',
   description:
       'A library to access JNI from Dart and Flutter that acts as a support library for package:jnigen.',
   repository: 'https://github.com/dart-lang/native/tree/main/pkgs/jni',
   authors: [],
-  version: '1.0.0',
+  version: '1.0.3',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -6054,6 +6114,7 @@ const _jni = Package(
     PackageRef('args'),
     PackageRef('collection'),
     PackageRef('ffi'),
+    PackageRef('jni_util'),
     PackageRef('meta'),
     PackageRef('package_config'),
     PackageRef('path'),
@@ -6089,18 +6150,59 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// jni_flutter 1.0.1
+/// jni_flutter 1.0.2
 const _jni_flutter = Package(
   name: 'jni_flutter',
   description: 'A library to access Flutter Android specific APIs from Dart.',
   repository: 'https://github.com/dart-lang/native/tree/main/pkgs/jni_flutter',
   authors: [],
-  version: '1.0.1',
+  version: '1.0.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
   dependencies: [PackageRef('flutter'), PackageRef('jni')],
   devDependencies: [PackageRef('flutter_test')],
+  license: '''Copyright 2026, the Dart project authors.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google LLC nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+);
+
+/// jni_util 1.0.0
+const _jni_util = Package(
+  name: 'jni_util',
+  description: 'Shared utility functions for package:jni and package:jnigen.',
+  repository: 'https://github.com/dart-lang/native/tree/main/pkgs/jni_util',
+  authors: [],
+  version: '1.0.0',
+  spdxIdentifiers: ['BSD-3-Clause'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [PackageRef('path')],
+  devDependencies: [PackageRef('test')],
   license: '''Copyright 2026, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -7609,14 +7711,14 @@ const _objectbox_generator = Package(
    limitations under the License.''',
 );
 
-/// objective_c 9.4.1
+/// objective_c 9.5.0
 const _objective_c = Package(
   name: 'objective_c',
   description:
       'A library to access Objective C from Flutter that acts as a support library for package:ffigen.',
   repository: 'https://github.com/dart-lang/native/tree/main/pkgs/objective_c',
   authors: [],
-  version: '9.4.1',
+  version: '9.5.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -7741,7 +7843,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// package_info_plus 10.1.0
+/// package_info_plus 10.2.1
 const _package_info_plus = Package(
   name: 'package_info_plus',
   description:
@@ -7750,7 +7852,7 @@ const _package_info_plus = Package(
   repository:
       'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/package_info_plus/package_info_plus',
   authors: [],
-  version: '10.1.0',
+  version: '10.2.1',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -7992,7 +8094,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// path_provider 2.1.5
+/// path_provider 2.1.6
 const _path_provider = Package(
   name: 'path_provider',
   description:
@@ -8000,7 +8102,7 @@ const _path_provider = Package(
   repository:
       'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider',
   authors: [],
-  version: '2.1.5',
+  version: '2.1.6',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -8017,7 +8119,7 @@ const _path_provider = Package(
     PackageRef('plugin_platform_interface'),
     PackageRef('test')
   ],
-  license: '''Copyright 2013 The Flutter Authors. All rights reserved.
+  license: '''Copyright 2013 The Flutter Authors
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -8134,14 +8236,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// path_provider_linux 2.2.1
+/// path_provider_linux 2.2.2
 const _path_provider_linux = Package(
   name: 'path_provider_linux',
   description: 'Linux implementation of the path_provider plugin',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_linux',
   authors: [],
-  version: '2.2.1',
+  version: '2.2.2',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -8153,7 +8255,7 @@ const _path_provider_linux = Package(
     PackageRef('xdg_directories')
   ],
   devDependencies: [PackageRef('flutter_test')],
-  license: '''Copyright 2013 The Flutter Authors. All rights reserved.
+  license: '''Copyright 2013 The Flutter Authors
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -8180,14 +8282,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// path_provider_platform_interface 2.1.2
+/// path_provider_platform_interface 2.1.3
 const _path_provider_platform_interface = Package(
   name: 'path_provider_platform_interface',
   description: 'A common platform interface for the path_provider plugin.',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/path_provider/path_provider_platform_interface',
   authors: [],
-  version: '2.1.2',
+  version: '2.1.3',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -8197,7 +8299,7 @@ const _path_provider_platform_interface = Package(
     PackageRef('plugin_platform_interface')
   ],
   devDependencies: [PackageRef('flutter_test')],
-  license: '''Copyright 2013 The Flutter Authors. All rights reserved.
+  license: '''Copyright 2013 The Flutter Authors
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -8356,14 +8458,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// permission_handler_apple 9.4.9
+/// permission_handler_apple 9.5.0
 const _permission_handler_apple = Package(
   name: 'permission_handler_apple',
   description:
       'Permission plugin for Flutter. This plugin provides the iOS API to request and check permissions.',
   repository: 'https://github.com/baseflow/flutter-permission-handler',
   authors: [],
-  version: '9.4.9',
+  version: '9.5.0',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -8395,14 +8497,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// permission_handler_html 0.1.3+5
+/// permission_handler_html 0.1.4+1
 const _permission_handler_html = Package(
   name: 'permission_handler_html',
   description:
       'Permission plugin for Flutter. This plugin provides the web API to request and check permissions.',
   homepage: 'https://github.com/baseflow/flutter-permission-handler',
   authors: [],
-  version: '0.1.3+5',
+  version: '0.1.4+1',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -8441,14 +8543,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// permission_handler_platform_interface 4.3.0
+/// permission_handler_platform_interface 4.4.0
 const _permission_handler_platform_interface = Package(
   name: 'permission_handler_platform_interface',
   description: 'A common platform interface for the permission_handler plugin.',
   homepage:
       'https://github.com/baseflow/flutter-permission-handler/tree/master/permission_handler_platform_interface',
   authors: [],
-  version: '4.3.0',
+  version: '4.4.0',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -8481,14 +8583,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// permission_handler_windows 0.2.1
+/// permission_handler_windows 0.2.2
 const _permission_handler_windows = Package(
   name: 'permission_handler_windows',
   description:
       'Permission plugin for Flutter. This plugin provides the Windows API to request and check permissions.',
   homepage: 'https://github.com/baseflow/flutter-permission-handler',
   authors: [],
-  version: '0.2.1',
+  version: '0.2.2',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -9758,7 +9860,7 @@ const _safe_url_check = Package(
    limitations under the License.''',
 );
 
-/// share_plus 13.1.0
+/// share_plus 13.3.0
 const _share_plus = Package(
   name: 'share_plus',
   description:
@@ -9767,7 +9869,7 @@ const _share_plus = Package(
   repository:
       'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus',
   authors: [],
-  version: '13.1.0',
+  version: '13.3.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9817,14 +9919,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// share_plus_platform_interface 7.1.0
+/// share_plus_platform_interface 7.2.0
 const _share_plus_platform_interface = Package(
   name: 'share_plus_platform_interface',
   description: 'A common platform interface for the share_plus plugin.',
   homepage: 'https://github.com/fluttercommunity/plus_plugins',
   repository: 'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
   authors: [],
-  version: '7.1.0',
+  version: '7.2.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -9916,19 +10018,20 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// shared_preferences_android 2.4.25
+/// shared_preferences_android 2.4.27
 const _shared_preferences_android = Package(
   name: 'shared_preferences_android',
   description: 'Android implementation of the shared_preferences plugin',
   repository:
       'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences_android',
   authors: [],
-  version: '2.4.25',
+  version: '2.4.27',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
   dependencies: [
     PackageRef('flutter'),
+    PackageRef('meta'),
     PackageRef('shared_preferences_platform_interface')
   ],
   devDependencies: [PackageRef('flutter_test')],
@@ -40615,13 +40718,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// source_gen 4.2.3
+/// source_gen 4.2.4
 const _source_gen = Package(
   name: 'source_gen',
   description: 'Source code generation builders and utilities for the Dart build system',
   repository: 'https://github.com/dart-lang/source_gen/tree/master/source_gen',
   authors: [],
-  version: '4.2.3',
+  version: '4.2.4',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -41190,13 +41293,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// timezone 0.11.0
+/// timezone 0.11.1
 const _timezone = Package(
   name: 'timezone',
   description: 'Time zone databases and time zone aware `DateTime`.',
   repository: 'https://github.com/dart-lang/labs/tree/main/pkgs/timezone',
   authors: [],
-  version: '0.11.0',
+  version: '0.11.1',
   spdxIdentifiers: ['BSD-2-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -41625,14 +41728,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// uuid 4.5.3
+/// uuid 4.6.0
 const _uuid = Package(
   name: 'uuid',
   description: '''RFC4122 (v1, v4, v5, v6, v7, v8) UUID Generator and Parser for Dart
 ''',
   repository: 'https://github.com/Daegalus/dart-uuid',
   authors: [],
-  version: '4.5.3',
+  version: '4.6.0',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -41647,13 +41750,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
 );
 
-/// vector_graphics 1.2.2
+/// vector_graphics 1.2.3
 const _vector_graphics = Package(
   name: 'vector_graphics',
   description: 'A vector graphics rendering package for Flutter using a binary encoding.',
   repository: 'https://github.com/flutter/packages/tree/main/packages/vector_graphics',
   authors: [],
-  version: '1.2.2',
+  version: '1.2.3',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -41731,7 +41834,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// vector_graphics_compiler 1.2.5
+/// vector_graphics_compiler 1.3.0
 const _vector_graphics_compiler = Package(
   name: 'vector_graphics_compiler',
   description:
@@ -41739,7 +41842,7 @@ const _vector_graphics_compiler = Package(
   repository:
       'https://github.com/flutter/packages/tree/main/packages/vector_graphics_compiler',
   authors: [],
-  version: '1.2.5',
+  version: '1.3.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42164,7 +42267,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// workmanager 0.9.0+3
+/// workmanager 0.10.6
 const _workmanager = Package(
   name: 'workmanager',
   description:
@@ -42172,7 +42275,7 @@ const _workmanager = Package(
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.9.0+3',
+  version: '0.10.6',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42180,7 +42283,9 @@ const _workmanager = Package(
     PackageRef('flutter'),
     PackageRef('workmanager_platform_interface'),
     PackageRef('workmanager_android'),
-    PackageRef('workmanager_apple')
+    PackageRef('workmanager_apple'),
+    PackageRef('workmanager_web'),
+    PackageRef('workmanager_linux')
   ],
   devDependencies: [
     PackageRef('test'),
@@ -42212,14 +42317,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// workmanager_android 0.9.0+2
+/// workmanager_android 0.10.5
 const _workmanager_android = Package(
   name: 'workmanager_android',
   description: 'Android implementation of the workmanager plugin.',
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.9.0+2',
+  version: '0.10.5',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42249,14 +42354,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// workmanager_apple 0.9.1+2
+/// workmanager_apple 0.9.10
 const _workmanager_apple = Package(
   name: 'workmanager_apple',
   description: 'Apple platform (iOS/macOS) implementation of the workmanager plugin.',
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.9.1+2',
+  version: '0.9.10',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42286,14 +42391,51 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// workmanager_platform_interface 0.9.1+1
+/// workmanager_linux 0.1.1+1
+const _workmanager_linux = Package(
+  name: 'workmanager_linux',
+  description:
+      'Linux (experimental) implementation of workmanager using systemd user units (timers and transient units) for background task execution.',
+  homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
+  repository: 'https://github.com/fluttercommunity/flutter_workmanager',
+  authors: [],
+  version: '0.1.1+1',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [PackageRef('flutter'), PackageRef('workmanager_platform_interface')],
+  devDependencies: [PackageRef('flutter_test'), PackageRef('lints'), PackageRef('test')],
+  license: '''MIT License
+
+Copyright (c) 2024 The Flutter Workmanager Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+);
+
+/// workmanager_platform_interface 0.10.4
 const _workmanager_platform_interface = Package(
   name: 'workmanager_platform_interface',
   description: 'A common platform interface for the workmanager plugin.',
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.9.1+1',
+  version: '0.10.4',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42302,11 +42444,52 @@ const _workmanager_platform_interface = Package(
     PackageRef('meta'),
     PackageRef('plugin_platform_interface')
   ],
-  devDependencies: [PackageRef('flutter_lints')],
+  devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
   license: '''MIT License
 
 Copyright (c) 2019 vrtdev
 Copyright (c) 2023 Flutter Community
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+);
+
+/// workmanager_web 0.1.3+1
+const _workmanager_web = Package(
+  name: 'workmanager_web',
+  description:
+      'Web (experimental) implementation of workmanager using a Service Worker and Web Worker for background task execution.',
+  homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
+  repository: 'https://github.com/fluttercommunity/flutter_workmanager',
+  authors: [],
+  version: '0.1.3+1',
+  spdxIdentifiers: ['MIT'],
+  isMarkdown: false,
+  isSdk: false,
+  dependencies: [
+    PackageRef('flutter'),
+    PackageRef('flutter_web_plugins'),
+    PackageRef('workmanager_platform_interface')
+  ],
+  devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+  license: '''MIT License
+
+Copyright (c) 2024 The Flutter Workmanager Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -42367,14 +42550,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// xml 6.6.1
+/// xml 7.0.1
 const _xml = Package(
   name: 'xml',
   description:
-      'A lightweight library for parsing, traversing, querying, transforming and building XML documents.',
-  homepage: 'https://github.com/renggli/dart-xml',
+      'Full-featured XML for Dart — DOM parsing, SAX streaming, XPath 3 querying, and a fluent builder API.',
+  repository: 'https://github.com/renggli/dart-xml',
   authors: [],
-  version: '6.6.1',
+  version: '7.0.1',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42382,7 +42565,7 @@ const _xml = Package(
   devDependencies: [PackageRef('args'), PackageRef('lints'), PackageRef('test')],
   license: '''The MIT License
 
-Copyright (c) 2006-2025 Lukas Renggli.
+Copyright (c) 2006-2026 Lukas Renggli.
 All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42442,12 +42625,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.18-pre.03
+/// snag 0.0.18-pre.04
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.18-pre.03',
+  version: '0.0.18-pre.04',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,
