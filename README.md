@@ -1,6 +1,13 @@
+<div align="center"><a href="https://github.com/Safouene1/support-palestine-banner/blob/master/Markdown-pages/Support.md"><img src="https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg" alt="Support Palestine" style="width: 100%;"></a></div>
+
 # ![Snag](android/app/src/main/res/mipmap-mdpi/ic_launcher.png) Snag
 
 Client application for [steamgifts.com](https://www.steamgifts.com/). Made with [Flutter 🩵](https://flutter.dev/).
+
+> [!CAUTION]
+> :rotating_light: **Free and Open-Source Android is under threat.** Google will turn Android into a locked-down platform, restricting your essential freedom to install apps of your choice. Make your voice heard – [**Keep Android Open**](https://keepandroidopen.org/).
+>
+> *See also: [Open Android Projects](https://github.com/offa/android-foss/blob/master/doc/OpenAndroidProjects.md)*
 
 ## Screenshots
 
