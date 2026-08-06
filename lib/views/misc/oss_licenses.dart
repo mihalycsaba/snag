@@ -629,13 +629,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// build_daemon 4.1.4
+/// build_daemon 4.1.5
 const _build_daemon = Package(
   name: 'build_daemon',
   description: 'A daemon for running Dart builds.',
   repository: 'https://github.com/dart-lang/build/tree/master/build_daemon',
   authors: [],
-  version: '4.1.4',
+  version: '4.1.5',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -802,7 +802,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// built_value 8.12.6
+/// built_value 8.12.7
 const _built_value = Package(
   name: 'built_value',
   description:
@@ -810,7 +810,7 @@ const _built_value = Package(
 ''',
   repository: 'https://github.com/google/built_value.dart/tree/master/built_value',
   authors: [],
-  version: '8.12.6',
+  version: '8.12.7',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -5611,14 +5611,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// go_router 17.3.0
+/// go_router 17.4.0
 const _go_router = Package(
   name: 'go_router',
   description:
       'A declarative router for Flutter based on Navigation 2 supporting deep linking, data-driven routes and more',
   repository: 'https://github.com/flutter/packages/tree/main/packages/go_router',
   authors: [],
-  version: '17.3.0',
+  version: '17.4.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42224,14 +42224,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// win32 6.3.0
+/// win32 6.4.0
 const _win32 = Package(
   name: 'win32',
   description: 'Call common Windows APIs directly from Dart using FFI.',
   homepage: 'https://win32.pub',
   repository: 'https://github.com/halildurmus/win32',
   authors: [],
-  version: '6.3.0',
+  version: '6.4.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -42267,7 +42267,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// workmanager 0.10.6
+/// workmanager 0.10.7
 const _workmanager = Package(
   name: 'workmanager',
   description:
@@ -42275,7 +42275,7 @@ const _workmanager = Package(
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.10.6',
+  version: '0.10.7',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42317,14 +42317,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// workmanager_android 0.10.5
+/// workmanager_android 0.10.6
 const _workmanager_android = Package(
   name: 'workmanager_android',
   description: 'Android implementation of the workmanager plugin.',
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.10.5',
+  version: '0.10.6',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42469,7 +42469,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// workmanager_web 0.1.3+1
+/// workmanager_web 0.2.0
 const _workmanager_web = Package(
   name: 'workmanager_web',
   description:
@@ -42477,7 +42477,7 @@ const _workmanager_web = Package(
   homepage: 'https://github.com/fluttercommunity/flutter_workmanager',
   repository: 'https://github.com/fluttercommunity/flutter_workmanager',
   authors: [],
-  version: '0.1.3+1',
+  version: '0.2.0',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
@@ -42625,12 +42625,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.18-pre.04
+/// snag 0.0.18-pre.05
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.18-pre.04',
+  version: '0.0.18-pre.05',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,

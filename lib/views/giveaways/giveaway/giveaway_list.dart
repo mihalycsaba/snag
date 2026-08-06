@@ -75,28 +75,26 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
   List<GiveawayListModel> _parseGiveawayList(String data, int pageKey) {
     List<GiveawayListModel> giveaways = [];
     dom.Document document = parse(data);
-    if (document.getElementsByClassName('pinned-giveaways__outer-wrap').isEmpty) {
+    if (document.getElementsByClassName('pinned-giveaways').isEmpty) {
       document.getElementsByClassName('giveaway__row-outer-wrap').forEach((element) {
-        giveaways.add(parseGiveawayListElement(element));
+        giveaways.add(parseGiveawayListElement(element: element));
       });
     } else {
       if (pageKey == 1 && widget.page.name == 'All' || widget.page.name == 'Multiple') {
-        parse(document
-                .getElementsByClassName('pinned-giveaways__outer-wrap')[0]
-                .innerHtml)
+        parse(document.getElementsByClassName('pinned-giveaways')[0].innerHtml)
             .getElementsByClassName('giveaway__row-outer-wrap')
             .forEach((element) {
-          giveaways.add(parseGiveawayListElement(element));
+          giveaways.add(parseGiveawayListElement(element: element, bold: true));
         });
       }
       parse(document.getElementsByClassName('widget-container')[0].innerHtml)
           .children[0]
           .children[1]
           .children[1]
-          .children[2]
+          .children[3]
           .getElementsByClassName('giveaway__row-outer-wrap')
           .forEach((element) {
-        giveaways.add(parseGiveawayListElement(element));
+        giveaways.add(parseGiveawayListElement(element: element));
       });
     }
     return giveaways;

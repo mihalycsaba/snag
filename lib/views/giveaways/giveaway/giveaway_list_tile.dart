@@ -63,6 +63,16 @@ class _GiveawayListTileState extends State<GiveawayListTile> {
       children: [
         Consumer<ThemeProvider>(
           builder: (context, theme, child) => ListTile(
+              titleTextStyle: widget.giveaway.bold
+                  ? Theme.of(context).listTileTheme.titleTextStyle?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      )
+                  : null,
+              subtitleTextStyle: widget.giveaway.bold
+                  ? Theme.of(context).listTileTheme.subtitleTextStyle?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      )
+                  : null,
               selected: widget.giveaway.entered,
               leading: CustomNetworkImage(
                   image: widget.giveaway.image,
