@@ -19,12 +19,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
-import 'package:snag/common/vars/prefs.dart';
+import 'package:snag/common/functions/cookie_string.dart';
 
 Future<Map> resMap(String body, String url) async {
   Response response = await post(Uri.parse(url),
       headers: <String, String>{
-        'Cookie': 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}',
+        'Cookie': cookieString(),
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       encoding: Encoding.getByName('utf-8'),

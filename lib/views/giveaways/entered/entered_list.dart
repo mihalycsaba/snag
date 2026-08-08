@@ -104,7 +104,8 @@ class _EnteredListState extends State<EnteredList> {
         ago: item
             .getElementsByClassName('table__column--width-small text-center')[1]
             .children[0]
-            .text);
+            .text,
+        bold: false);
   }
 
   @override

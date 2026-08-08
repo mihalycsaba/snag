@@ -25,12 +25,13 @@ import 'package:snag/views/giveaways/giveaway/giveaway_theme.dart';
 List<GiveawayListModel> parseList(dom.Element container, [String? username]) {
   List<GiveawayListModel> giveaways = [];
   container.getElementsByClassName('giveaway__row-outer-wrap').forEach((element) {
-    giveaways.add(parseGiveawayListElement(element, username));
+    giveaways.add(parseGiveawayListElement(element: element, username: username));
   });
   return giveaways;
 }
 
-GiveawayListModel parseGiveawayListElement(dom.Element element, [String? username]) {
+GiveawayListModel parseGiveawayListElement(
+    {required dom.Element element, String? username, bool bold = false}) {
   dom.Document item = parse(element.innerHtml);
   dom.Element name = item.getElementsByClassName('giveaway__heading__name')[0];
   List<dom.Element> heading = item.getElementsByClassName('giveaway__heading__thin');
@@ -68,5 +69,6 @@ GiveawayListModel parseGiveawayListElement(dom.Element element, [String? usernam
       region:
           item.getElementsByClassName('giveaway__column--region-restricted').isNotEmpty,
       notEnded: notEnded ? time.nodes[3].text!.contains('remaining') : true,
-      notStarted: notEnded ? false : time.nodes[1].text!.contains('Begins'));
+      notStarted: notEnded ? false : time.nodes[1].text!.contains('Begins'),
+      bold: bold);
 }

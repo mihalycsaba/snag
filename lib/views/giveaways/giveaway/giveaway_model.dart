@@ -56,6 +56,7 @@ abstract class GiveawayModel {
 }
 
 class GiveawayListModel extends GiveawayModel {
+  bool bold;
   GiveawayListModel(
       {required super.name,
       required super.entries,
@@ -73,5 +74,6 @@ class GiveawayListModel extends GiveawayModel {
       required super.group,
       required super.whitelist,
       required super.region,
-      required super.level});
+      required super.level,
+      required this.bold});
 }

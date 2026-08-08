@@ -19,12 +19,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
+import 'package:snag/common/functions/cookie_string.dart';
 import 'package:snag/common/vars/globals.dart';
-import 'package:snag/common/vars/prefs.dart';
 
 Future<void> getUser() async {
   Map<String, String> headers = {};
-  headers['Cookie'] = 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';
+  headers['Cookie'] = cookieString();
   Response response = await get(
       Uri.parse('https://www.steamgifts.com/account/settings/profile?format=json'),
       headers: headers);
