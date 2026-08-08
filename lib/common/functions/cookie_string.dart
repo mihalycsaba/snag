@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Mihaly Csaba
+// Copyright (C) 2026 Mihaly Csaba
 //
 // This file is part of Snag.
 //
@@ -15,15 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
-import 'package:http/http.dart';
+import 'package:snag/common/vars/prefs.dart';
 
-import 'package:snag/common/functions/cookie_string.dart';
-
-Future<String> fetchBody({required String url, final bool isBlacklisted = false}) async {
-  Map<String, String> headers = {};
-  if (!isBlacklisted) {
-    headers['Cookie'] = cookieString();
-  }
-  Response response = await get(Uri.parse(url), headers: headers);
-  return response.body;
-}
+String cookieString() => 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}';

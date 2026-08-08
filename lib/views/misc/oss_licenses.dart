@@ -2280,7 +2280,7 @@ const _decimal = Package(
    limitations under the License.''',
 );
 
-/// dynamic_color 1.8.1
+/// dynamic_color 1.9.0
 const _dynamic_color = Package(
   name: 'dynamic_color',
   description:
@@ -2288,16 +2288,16 @@ const _dynamic_color = Package(
   repository:
       'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
   authors: [],
-  version: '1.8.1',
+  version: '1.9.0',
   spdxIdentifiers: ['Apache-2.0'],
   isMarkdown: false,
   isSdk: false,
-  dependencies: [
-    PackageRef('flutter'),
-    PackageRef('flutter_test'),
-    PackageRef('material_color_utilities')
+  dependencies: [PackageRef('flutter'), PackageRef('material_color_utilities')],
+  devDependencies: [
+    PackageRef('flutter_lints'),
+    PackageRef('meta'),
+    PackageRef('flutter_test')
   ],
-  devDependencies: [PackageRef('flutter_lints'), PackageRef('meta')],
   license: '''Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -5105,7 +5105,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications 22.2.0
+/// flutter_local_notifications 22.3.0
 const _flutter_local_notifications = Package(
   name: 'flutter_local_notifications',
   description:
@@ -5113,7 +5113,7 @@ const _flutter_local_notifications = Package(
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications',
   authors: [],
-  version: '22.2.0',
+  version: '22.3.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,
@@ -5213,14 +5213,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
 );
 
-/// flutter_local_notifications_platform_interface 12.1.0
+/// flutter_local_notifications_platform_interface 12.2.0
 const _flutter_local_notifications_platform_interface = Package(
   name: 'flutter_local_notifications_platform_interface',
   description: 'A common platform interface for the flutter_local_notifications plugin.',
   homepage:
       'https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications_platform_interface',
   authors: [],
-  version: '12.1.0',
+  version: '12.2.0',
   spdxIdentifiers: ['BSD-3-Clause'],
   isMarkdown: false,
   isSdk: false,

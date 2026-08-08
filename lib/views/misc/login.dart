@@ -22,6 +22,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart';
 
 import 'package:snag/background_task.dart';
+import 'package:snag/common/functions/cookie_string.dart';
 import 'package:snag/common/functions/get_user.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/common/vars/prefs.dart';
@@ -44,7 +45,7 @@ class _LoginState extends State<Login> {
           .getCookie(url: urlchange!, name: 'PHPSESSID')
           .then((value) => prefs.setString(PrefsKeys.sessid.key, value?.value));
       await get(Uri.parse(url), headers: <String, String>{
-        'Cookie': 'PHPSESSID=${prefs.getString(PrefsKeys.sessid.key)}'
+        'Cookie': cookieString(),
       }).then((value) => prefs.setString(
           PrefsKeys.xsrf.key,
           parse(value.body)
