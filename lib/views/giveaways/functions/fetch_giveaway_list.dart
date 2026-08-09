@@ -19,27 +19,31 @@ import 'package:flutter/material.dart';
 
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/has_next_page.dart';
 import 'package:snag/views/giveaways/functions/get_points.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 import 'package:snag/views/notifications/get_notifications.dart';
 
-Future<void> fetchGiveawayList(
-    int pageKey,
-    String url,
-    Function parser,
-    PagingController<int, GiveawayListModel> pagingController,
-    BuildContext context) async {
+Future<List<GiveawayListModel>> fetchGiveawayList(
+  int pageKey,
+  String url,
+  Function parser,
+  BuildContext context, {
+  void Function(bool hasNextPage)? updateHasNextPage,
+}) async {
   String data = await fetchBody(url: '$url&page=${pageKey.toString()}');
   dom.Document document = parse(data);
+  dom.Element? container = document.getElementsByClassName('widget-container').isNotEmpty
+      ? document.getElementsByClassName('widget-container').first
+      : null;
+  if (container != null) {
+    updateHasNextPage?.call(hasNextPage(container));
+  }
   if (context.mounted) {
     getPoints(document, context);
     getNotifications(document, context);
   }
-  List<GiveawayListModel> giveaways = parser(data, pageKey);
-  addPage(giveaways, pagingController, pageKey,
-      document.getElementsByClassName('widget-container').first);
+  return parser(data, pageKey);
 }

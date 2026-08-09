@@ -23,9 +23,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -64,108 +64,114 @@ class DiscussionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, theme, child) => PagedListView<int, DiscussionModel>(
-        pagingController: pagingController,
-        builderDelegate: PagedChildBuilderDelegate<DiscussionModel>(
-          itemBuilder: (context, discussion, index) => Card(
-              child: InkWell(
-                  onTap: () => customNav(Discussion(href: discussion.href), context),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomNetworkImage(
-                                image: resizeImage(discussion.avatar, 64),
-                                width: 56.0 + theme.fontSize,
-                                height: 56.0 + theme.fontSize),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.comment_outlined,
-                                  size: 14.0 + theme.fontSize,
-                                ),
-                                const SizedBox(width: 2),
-                                Text(discussion.comments,
-                                    style: TextStyle(fontSize: 12.0 + theme.fontSize)),
-                              ],
-                            ),
-                            Row(children: [
-                              if (discussion.closed)
-                                Icon(
-                                  Icons.lock,
-                                  size: 14.0 + theme.fontSize,
-                                  color: Colors.red,
-                                ),
-                              if (discussion.poll)
-                                Icon(
-                                  Icons.poll_outlined,
-                                  size: 15.0 + theme.fontSize,
-                                  color: Colors.green,
-                                ),
-                            ])
-                          ],
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
+    return PagingListener<int, DiscussionModel>(
+      controller: pagingController,
+      builder: (context, state, fetchNextPage) => Consumer<ThemeProvider>(
+        builder: (context, theme, child) => PagedListView<int, DiscussionModel>(
+          state: state,
+          fetchNextPage: fetchNextPage,
+          builderDelegate: PagedChildBuilderDelegate<DiscussionModel>(
+            itemBuilder: (context, discussion, index) => Card(
+                child: InkWell(
+                    onTap: () => customNav(Discussion(href: discussion.href), context),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                discussion.title,
-                                style: TextStyle(
-                                    fontSize: 14.0 + theme.fontSize,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(discussion.user,
-                                  style: TextStyle(fontSize: 12.0 + theme.fontSize)),
-                              const SizedBox(height: 10),
+                              CustomNetworkImage(
+                                  image: resizeImage(discussion.avatar, 64),
+                                  width: 56.0 + theme.fontSize,
+                                  height: 56.0 + theme.fontSize),
                               Row(
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      '${discussion.topic} · Created: ${discussion.created} ago · Active: ${discussion.last} ago',
-                                      style: TextStyle(
-                                        fontSize: 10.0 + theme.fontSize,
-                                      ),
-                                    ),
+                                  Icon(
+                                    Icons.comment_outlined,
+                                    size: 14.0 + theme.fontSize,
                                   ),
+                                  const SizedBox(width: 2),
+                                  Text(discussion.comments,
+                                      style: TextStyle(fontSize: 12.0 + theme.fontSize)),
                                 ],
                               ),
+                              Row(children: [
+                                if (discussion.closed)
+                                  Icon(
+                                    Icons.lock,
+                                    size: 14.0 + theme.fontSize,
+                                    color: Colors.red,
+                                  ),
+                                if (discussion.poll)
+                                  Icon(
+                                    Icons.poll_outlined,
+                                    size: 15.0 + theme.fontSize,
+                                    color: Colors.green,
+                                  ),
+                              ])
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ))),
-          newPageProgressIndicatorBuilder: (context) => const PagedProgressIndicator(),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  discussion.title,
+                                  style: TextStyle(
+                                      fontSize: 14.0 + theme.fontSize,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(discussion.user,
+                                    style: TextStyle(fontSize: 12.0 + theme.fontSize)),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        '${discussion.topic} · Created: ${discussion.created} ago · Active: ${discussion.last} ago',
+                                        style: TextStyle(
+                                          fontSize: 10.0 + theme.fontSize,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ))),
+            newPageProgressIndicatorBuilder: (context) => const PagedProgressIndicator(),
+          ),
         ),
       ),
     );
   }
 }
 
-Future<void> fetchDiscussions(
-    {bool user = false,
-    required PagingController<int, DiscussionModel> pagingController,
-    required int pageKey,
-    required String url,
-    required BuildContext context}) async {
+Future<List<DiscussionModel>> fetchDiscussions(
+  int pageKey,
+  String url,
+  Function parser,
+  BuildContext context, {
+  bool user = false,
+  void Function(bool hasNextPage)? updateHasNextPage,
+}) async {
   String data = await fetchBody(url: '$url&page=${pageKey.toString()}');
   dom.Document document = parse(data);
   if (context.mounted) {
     getNotifications(document, context);
   }
-  List<DiscussionModel> discussions = _parseDiscussionList(document);
-  addPage(discussions, pagingController, pageKey,
-      document.getElementsByClassName('widget-container').first);
+  updateHasNextPage
+      ?.call(hasNextPage(document.getElementsByClassName('widget-container').first));
+  return parser(document);
 }
 
-List<DiscussionModel> _parseDiscussionList(dom.Document document) {
+List<DiscussionModel> parseDiscussionList(dom.Document document) {
   List<DiscussionModel> discussions = [];
   document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
     dom.Element heading = element.getElementsByClassName('table__column__heading')[0];

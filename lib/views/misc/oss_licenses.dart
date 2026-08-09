@@ -5966,21 +5966,23 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
 );
 
-/// infinite_scroll_pagination 4.1.0
+/// infinite_scroll_pagination 5.1.1
 const _infinite_scroll_pagination = Package(
   name: 'infinite_scroll_pagination',
   description:
       'Lazily load and display pages of items as the user scrolls down your screen.',
   homepage: 'https://github.com/EdsonBueno/infinite_scroll_pagination',
   authors: [],
-  version: '4.1.0',
+  version: '5.1.1',
   spdxIdentifiers: ['MIT'],
   isMarkdown: false,
   isSdk: false,
   dependencies: [
     PackageRef('flutter'),
     PackageRef('flutter_staggered_grid_view'),
-    PackageRef('sliver_tools')
+    PackageRef('sliver_tools'),
+    PackageRef('collection'),
+    PackageRef('meta')
   ],
   devDependencies: [
     PackageRef('flutter_test'),
@@ -42625,12 +42627,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
 );
 
-/// snag 0.0.18-pre.05
+/// snag 0.0.18-pre.06
 const _snag = Package(
   name: 'snag',
   description: 'Client application for SteamGifts',
   authors: [],
-  version: '0.0.18-pre.05',
+  version: '0.0.18-pre.06',
   spdxIdentifiers: ['GPL-3.0'],
   isMarkdown: false,
   isSdk: false,

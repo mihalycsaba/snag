@@ -23,8 +23,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
@@ -50,10 +51,6 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  final PagingController<int, GiveawayListModel> _pagingController =
-      PagingController<int, GiveawayListModel>(firstPageKey: 1);
-  static const TextStyle _detailsTextStyle = TextStyle(fontSize: 16);
-
   String _appid = '';
   String _type = '';
   List<GameBookmarkModel> _bookmark = [];
@@ -66,9 +63,28 @@ class _GameState extends State<Game> {
       received: '',
       reduced: '',
       noValue: '');
-  String _url = '';
   String _exception = '';
   String _stackTrace = '';
+  String _url = '';
+  bool _hasNextPage = true;
+  late final PagingController<int, GiveawayListModel> _pagingController =
+      PagingController<int, GiveawayListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<GiveawayListModel>(
+      pageKey: pageKey,
+      fetcher: _fetchGamePage,
+      url: _url,
+      parser: parseList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
+  static const TextStyle _detailsTextStyle = TextStyle(fontSize: 16);
 
   @override
   void initState() {
@@ -81,7 +97,6 @@ class _GameState extends State<Game> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -140,7 +155,9 @@ class _GameState extends State<Game> {
                     ],
                   ),
                   body: RefreshIndicator(
-                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                    onRefresh: () => Future.sync(() => _hasNextPage =
+                        refreshList<GiveawayListModel>(
+                            pagingController: _pagingController)),
                     child: CustomScrollView(slivers: <Widget>[
                       SliverToBoxAdapter(
                         child: Center(
@@ -188,22 +205,29 @@ class _GameState extends State<Game> {
                         ),
                       ),
                       Consumer<ThemeProvider>(
-                        builder: (context, theme, child) => PagedSliverList<int,
-                                GiveawayListModel>(
+                        builder: (context, theme, child) =>
+                            PagingListener<int, GiveawayListModel>(
+                          controller: _pagingController,
+                          builder: (context, state, fetchNextPage) =>
+                              PagedSliverList<int, GiveawayListModel>(
                             itemExtent: CustomPagedListTheme.itemExtent +
                                 addItemExtent(theme.fontSize),
-                            pagingController: _pagingController,
+                            state: state,
+                            fetchNextPage: fetchNextPage,
                             builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
-                                itemBuilder: (context, giveaway, index) =>
-                                    Column(mainAxisSize: MainAxisSize.min, children: [
-                                      GiveawayListTile(
-                                        giveaway: giveaway,
-                                        onTileChange: () => changeGiveawayState(
-                                            giveaway, context, setState),
-                                      ),
-                                    ]),
-                                newPageProgressIndicatorBuilder: (context) =>
-                                    const PagedProgressIndicator())),
+                              itemBuilder: (context, giveaway, index) =>
+                                  Column(mainAxisSize: MainAxisSize.min, children: [
+                                GiveawayListTile(
+                                  giveaway: giveaway,
+                                  onTileChange: () =>
+                                      changeGiveawayState(giveaway, context, setState),
+                                ),
+                              ]),
+                              newPageProgressIndicatorBuilder: (context) =>
+                                  const PagedProgressIndicator(),
+                            ),
+                          ),
+                        ),
                       ),
                     ]),
                   ),
@@ -213,9 +237,15 @@ class _GameState extends State<Game> {
         : ErrorPage(error: _exception, stackTrace: _stackTrace, url: _url, type: 'game');
   }
 
-  void _fetchPage(int pageKey, BuildContext context) async {
+  Future<List<GiveawayListModel>> _fetchGamePage(
+    int pageKey,
+    String url,
+    Function parser,
+    BuildContext context, {
+    void Function(bool hasNextPage)? updateHasNextPage,
+  }) async {
     try {
-      String data = await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
+      String data = await fetchBody(url: '${url}search?page=${pageKey.toString()}');
       dom.Element container = parse(data).getElementsByClassName('widget-container')[0];
       if (pageKey == 1) {
         _url =
@@ -265,14 +295,19 @@ class _GameState extends State<Game> {
               .text
               .trim(),
         );
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       }
-      List<GiveawayListModel> giveaways = parseList(container);
-      addPage(giveaways, _pagingController, pageKey, container);
+      updateHasNextPage?.call(hasNextPage(container));
+      return parseList(container);
     } catch (error, stack) {
       _exception = error.toString();
       _stackTrace = stack.toString();
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
+      return [];
     }
   }
 }

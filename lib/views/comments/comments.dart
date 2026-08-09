@@ -21,9 +21,10 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/views/comments/comment_message.dart';
@@ -58,15 +59,31 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
-  final PagingController<int, _CommentModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, _CommentModel> _pagingController =
+      PagingController<int, _CommentModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<_CommentModel>(
+      pageKey: pageKey,
+      fetcher: _fetchComments,
+      url: _url,
+      parser: _parseComments,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
   bool refresh = false;
 
   String _url = '';
 
   void _refreshComments() {
     refresh = true;
-    _pagingController.refresh();
+    _hasNextPage = refreshList<_CommentModel>(pagingController: _pagingController);
   }
 
   @override
@@ -78,13 +95,13 @@ class _CommentsState extends State<Comments> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) => _fetchComments(pageKey, _url));
-  }
-
-  Future<void> _fetchComments(int pageKey, String url) async {
+  Future<List<_CommentModel>> _fetchComments(
+    int pageKey,
+    String url,
+    Function parser,
+    BuildContext context, {
+    void Function(bool hasNextPage)? updateHasNextPage,
+  }) async {
     String data = pageKey == 1 && refresh == false
         ? widget.firstPage
         : await fetchBody(
@@ -97,7 +114,8 @@ class _CommentsState extends State<Comments> {
     } else {
       comments = list.length != 1 ? _parseComments(list[1].children) : [];
     }
-    addPage(comments, _pagingController, pageKey, container);
+    updateHasNextPage?.call(hasNextPage(container));
+    return comments;
   }
 
   List<_CommentModel> _parseComments(List<dom.Element> elements,
@@ -152,13 +170,17 @@ class _CommentsState extends State<Comments> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedSliverList<int, _CommentModel>(
-        pagingController: _pagingController,
+    return PagingListener<int, _CommentModel>(
+      controller: _pagingController,
+      builder: (context, state, fetchNextPage) => PagedSliverList<int, _CommentModel>(
+        state: state,
+        fetchNextPage: fetchNextPage,
         builderDelegate: PagedChildBuilderDelegate<_CommentModel>(
-            itemBuilder: (context, comment, index) =>
-                _Comment(comment: comment, indent: 0),
-            newPageProgressIndicatorBuilder: (context) =>
-                const PagedProgressIndicator()));
+          itemBuilder: (context, comment, index) => _Comment(comment: comment, indent: 0),
+          newPageProgressIndicatorBuilder: (context) => const PagedProgressIndicator(),
+        ),
+      ),
+    );
   }
 }
 

@@ -17,18 +17,15 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/provider_models/giveaway_filter_provider.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_filter_dialog.dart';
 import 'package:snag/views/giveaways/giveaway/giveaway_filter_model.dart';
-import 'package:snag/views/giveaways/giveaway/giveaway_model.dart';
 
 class GiveawayFilter extends StatelessWidget {
-  const GiveawayFilter({required this.pagingController, super.key});
-  final PagingController<int, GiveawayListModel> pagingController;
-
+  const GiveawayFilter({required this.refresh, super.key});
+  final Function refresh;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,7 +37,7 @@ class GiveawayFilter extends StatelessWidget {
               context: context, builder: (context) => const GiveawayFilterDialog());
           if (context.mounted) {
             if (filter != context.read<GiveawayFilterProvider>().filter) {
-              pagingController.refresh();
+              refresh();
             }
           }
         },

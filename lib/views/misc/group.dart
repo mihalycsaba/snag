@@ -25,9 +25,10 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/functions/url_launcher.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
@@ -53,8 +54,6 @@ class Group extends StatefulWidget {
 }
 
 class _GroupState extends State<Group> {
-  final PagingController<int, GiveawayListModel> _pagingController =
-      PagingController<int, GiveawayListModel>(firstPageKey: 1);
   static const double _fontSize = 12;
   static const TextStyle _detailsTextStyle = TextStyle(fontSize: _fontSize);
 
@@ -77,6 +76,23 @@ class _GroupState extends State<Group> {
   String _url = '';
   String _exception = '';
   String _stackTrace = '';
+  bool _hasNextPage = true;
+  late final PagingController<int, GiveawayListModel> _pagingController =
+      PagingController<int, GiveawayListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage(
+        pageKey: pageKey,
+        fetcher: _fetchGroupPage,
+        url: _url,
+        parser: parseList,
+        context: context,
+        pagingController: _pagingController,
+        hasNextPage: _hasNextPage,
+        updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage),
+  );
 
   @override
   void initState() {
@@ -89,7 +105,6 @@ class _GroupState extends State<Group> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com${widget.href}/';
-    _pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey, context));
   }
 
   @override
@@ -141,7 +156,9 @@ class _GroupState extends State<Group> {
                       ],
                     ),
                     body: RefreshIndicator(
-                        onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                        onRefresh: () => Future.sync(() => _hasNextPage =
+                            refreshList<GiveawayListModel>(
+                                pagingController: _pagingController)),
                         child: CustomScrollView(slivers: <Widget>[
                           SliverToBoxAdapter(
                               child: Center(
@@ -198,32 +215,42 @@ class _GroupState extends State<Group> {
                             ]),
                           )))),
                           Consumer<ThemeProvider>(
-                              builder: (context, theme, child) => PagedSliverList(
-                                  itemExtent: CustomPagedListTheme.itemExtent +
-                                      addItemExtent(theme.fontSize),
-                                  pagingController: _pagingController,
-                                  builderDelegate:
-                                      PagedChildBuilderDelegate<GiveawayListModel>(
-                                    itemBuilder: (context, giveaway, index) =>
-                                        Column(mainAxisSize: MainAxisSize.min, children: [
-                                      GiveawayListTile(
-                                        giveaway: giveaway,
-                                        onTileChange: () => changeGiveawayState(
-                                            giveaway, context, setState),
-                                      ),
-                                    ]),
-                                    newPageProgressIndicatorBuilder: (context) =>
-                                        const PagedProgressIndicator(),
-                                  )))
+                              builder: (context, theme, child) => PagingListener<int,
+                                      GiveawayListModel>(
+                                  controller: _pagingController,
+                                  builder: (context, state, fetchNextPage) =>
+                                      PagedSliverList(
+                                          itemExtent: CustomPagedListTheme.itemExtent +
+                                              addItemExtent(theme.fontSize),
+                                          state: state,
+                                          fetchNextPage: fetchNextPage,
+                                          builderDelegate: PagedChildBuilderDelegate<
+                                              GiveawayListModel>(
+                                            itemBuilder: (context, giveaway, index) =>
+                                                Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                  GiveawayListTile(
+                                                    giveaway: giveaway,
+                                                    onTileChange: () =>
+                                                        changeGiveawayState(
+                                                            giveaway, context, setState),
+                                                  ),
+                                                ]),
+                                            newPageProgressIndicatorBuilder: (context) =>
+                                                const PagedProgressIndicator(),
+                                          ))))
                         ]))),
               )
             : const LoggedOut()
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'group');
   }
 
-  void _fetchPage(int pageKey, BuildContext context) async {
+  Future<List<GiveawayListModel>> _fetchGroupPage(
+      int pageKey, String url, Function parser, BuildContext context,
+      {void Function(bool hasNextPage)? updateHasNextPage}) async {
     try {
-      String data = await fetchBody(url: '${_url}search?page=${pageKey.toString()}');
+      String data = await fetchBody(url: '${url}search?page=${pageKey.toString()}');
 
       dom.Document document = parse(data);
       dom.Element container = document.getElementsByClassName('widget-container')[0];
@@ -281,14 +308,15 @@ class _GroupState extends State<Group> {
                 .getElementsByClassName('sidebar__shortcut-inner-wrap')[0]
                 .nodes[1]
                 .attributes['href']!);
-        setState(() {});
+        if (mounted) setState(() {});
       }
-      List<GiveawayListModel> giveaways = parseList(container);
-      addPage(giveaways, _pagingController, pageKey, container);
+      updateHasNextPage?.call(hasNextPage(container));
+      return parseList(container);
     } catch (error, stack) {
       _exception = error.toString();
       _stackTrace = stack.toString();
-      setState(() {});
+      if (mounted) setState(() {});
+      return [];
     }
   }
 }

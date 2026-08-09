@@ -22,10 +22,11 @@ import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/res_map.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/prefs.dart';
@@ -65,15 +66,28 @@ class MessagesBuilder extends StatefulWidget {
 }
 
 class _MessagesBuilderState extends State<MessagesBuilder> {
-  final PagingController<int, _MessageModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, _MessageModel> _pagingController =
+      PagingController<int, _MessageModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<_MessageModel>(
+      pageKey: pageKey,
+      fetcher: _fetchMessagesList,
+      url: 'https://www.steamgifts.com/messages/search?page=',
+      parser: _parseMessagesList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchMessagesList(pageKey, context);
-    });
   }
 
   @override
@@ -91,33 +105,42 @@ class _MessagesBuilderState extends State<MessagesBuilder> {
                 (user.messages == '0') ? Container() : const _MarkWidget()),
         Flexible(
           child: RefreshIndicator(
-              onRefresh: () => Future.sync(() => _pagingController.refresh()),
-              child: PagedListView<int, _MessageModel>(
-                  pagingController: _pagingController,
+              onRefresh: () => Future.sync(() => _hasNextPage =
+                  refreshList<_MessageModel>(pagingController: _pagingController)),
+              child: PagingListener<int, _MessageModel>(
+                controller: _pagingController,
+                builder: (context, state, fetchNextPage) =>
+                    PagedListView<int, _MessageModel>(
+                  state: state,
+                  fetchNextPage: fetchNextPage,
                   builderDelegate: PagedChildBuilderDelegate<_MessageModel>(
-                      itemBuilder: (context, message, index) =>
-                          _MessageEntry(message: message),
-                      newPageProgressIndicatorBuilder: (context) =>
-                          const PagedProgressIndicator()))),
+                    itemBuilder: (context, message, index) =>
+                        _MessageEntry(message: message),
+                    newPageProgressIndicatorBuilder: (context) =>
+                        const PagedProgressIndicator(),
+                  ),
+                ),
+              )),
         ),
       ],
     );
   }
 
-  void _fetchMessagesList(int pageKey, BuildContext context) async {
-    String data = await fetchBody(
-        url: 'https://www.steamgifts.com/messages/search?page=${pageKey.toString()}');
+  Future<List<_MessageModel>> _fetchMessagesList(
+      int pageKey, String url, Function parser, BuildContext context,
+      {void Function(bool hasNextPage)? updateHasNextPage}) async {
+    String data = await fetchBody(url: '$url${pageKey.toString()}');
     dom.Document document = parse(data);
     var notifications = document.getElementsByClassName('nav__right-container')[0];
     String messages = notifications.children[2].innerHtml.contains('nav__notification')
         ? notifications.children[2].getElementsByClassName('nav__notification')[0].text
         : '0';
-    if (!context.mounted) return;
+    if (!context.mounted) return [];
     context.read<MessagesProvider>().updateMessages(messages);
     prefs.setInt(PrefsKeys.messages.key, int.parse(messages));
-    List<_MessageModel> messagesList = _parseMessagesList(document);
-    addPage(messagesList, _pagingController, pageKey,
-        document.getElementsByClassName('widget-container').first);
+    updateHasNextPage
+        ?.call(hasNextPage(document.getElementsByClassName('widget-container').first));
+    return _parseMessagesList(document);
   }
 
   List<_MessageModel> _parseMessagesList(dom.Document document) {
