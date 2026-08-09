@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/initialize_notifications.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/simple_filter_model.dart';
 import 'package:snag/nav/custom_drawer.dart';
 import 'package:snag/nav/custom_drawer_appbar.dart';
@@ -39,18 +40,28 @@ class Discussions extends StatefulWidget {
 }
 
 class _DiscussionsState extends State<Discussions> {
-  final PagingController<int, DiscussionModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, DiscussionModel> _pagingController =
+      PagingController<int, DiscussionModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<DiscussionModel>(
+      pageKey: pageKey,
+      fetcher: fetchDiscussions,
+      url: widget.page.url + context.read<DiscussionFilterProvider>().filter,
+      parser: parseDiscussionList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
   final FlutterLocalNotificationsPlugin _status = FlutterLocalNotificationsPlugin();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) => fetchDiscussions(
-        pagingController: _pagingController,
-        pageKey: pageKey,
-        url: widget.page.url + context.read<DiscussionFilterProvider>().filter,
-        context: context));
+  void _refreshDiscussions() {
+    _hasNextPage = refreshList<DiscussionModel>(pagingController: _pagingController);
   }
 
   @override
@@ -66,22 +77,22 @@ class _DiscussionsState extends State<Discussions> {
         appBar: CustomDrawerAppBar(
           name: widget.page.name,
           showPoints: false,
-          filter: _DiscussionFilter(pagingController: _pagingController),
+          filter: _DiscussionFilter(refresh: _refreshDiscussions),
         ),
         drawer: const CustomDrawer(
           giveawaysOpen: false,
         ),
         body: Center(
             child: RefreshIndicator(
-          onRefresh: () => Future.sync(() => _pagingController.refresh()),
+          onRefresh: () => Future.sync(() => _refreshDiscussions()),
           child: DiscussionsList(pagingController: _pagingController),
         )));
   }
 }
 
 class _DiscussionFilter extends StatelessWidget {
-  const _DiscussionFilter({required this.pagingController});
-  final PagingController<int, DiscussionModel> pagingController;
+  const _DiscussionFilter({required this.refresh});
+  final Function refresh;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +108,7 @@ class _DiscussionFilter extends StatelessWidget {
               });
           if (context.mounted) {
             if (filter != context.read<DiscussionFilterProvider>().filter) {
-              pagingController.refresh();
+              refresh();
             }
           }
         },

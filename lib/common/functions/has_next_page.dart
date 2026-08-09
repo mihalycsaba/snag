@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Mihaly Csaba
+// Copyright (C) 2026 Mihaly Csaba
 //
 // This file is part of Snag.
 //
@@ -16,17 +16,11 @@
 // along with Snag.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:html/dom.dart' as dom;
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-void addPage(
-    List list, PagingController pagingController, int pageKey, dom.Element container) {
-  List<dom.Element> pagination =
+bool hasNextPage(dom.Element container) {
+  final List<dom.Element> pagination =
       container.getElementsByClassName('pagination__navigation');
   final bool isLastPage =
       pagination.isEmpty || !pagination.first.innerHtml.contains('<span>Next</span>');
-  if (isLastPage) {
-    pagingController.appendLastPage(list);
-  } else {
-    pagingController.appendPage(list, pageKey + 1);
-  }
+  return !isLastPage;
 }

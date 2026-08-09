@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:snag/common/custom_network_image.dart';
 import 'package:snag/common/custom_text_field.dart';
 import 'package:snag/common/functions/button_background_color.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/simple_filter_model.dart';
@@ -48,21 +49,35 @@ class EnteredList extends StatefulWidget {
 }
 
 class _EnteredListState extends State<EnteredList> {
-  final PagingController<int, GiveawayListModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, GiveawayListModel> _pagingController =
+      PagingController<int, GiveawayListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<GiveawayListModel>(
+      pageKey: pageKey,
+      fetcher: fetchGiveawayList,
+      url: Entered.entered.url + _sort + context.read<EnteredFilterProvider>().filter,
+      parser: _parseEnteredList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
   String _sort = '';
   late WidgetStateProperty<Color?> _bgColor;
+
+  void _refreshEnteredList() {
+    _hasNextPage = refreshList<GiveawayListModel>(pagingController: _pagingController);
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _bgColor = buttonBackgroundColor(context);
-    _pagingController.addPageRequestListener((pageKey) => fetchGiveawayList(
-        pageKey,
-        Entered.entered.url + _sort + context.read<EnteredFilterProvider>().filter,
-        _parseEnteredList,
-        _pagingController,
-        context));
   }
 
   List<GiveawayListModel> _parseEnteredList(String data, int pageKey) {
@@ -120,7 +135,7 @@ class _EnteredListState extends State<EnteredList> {
         appBar: CustomDrawerAppBar(
           name: Entered.entered.name,
           showPoints: true,
-          filter: _EnteredFilter(pagingController: _pagingController),
+          filter: _EnteredFilter(refreshList: _refreshEnteredList),
         ),
         drawer: const CustomDrawer(
           giveawaysOpen: true,
@@ -139,7 +154,7 @@ class _EnteredListState extends State<EnteredList> {
                       onPressed: () {
                         setState(() {
                           _sort = '';
-                          _pagingController.refresh();
+                          _refreshEnteredList();
                         });
                       }),
                   TextButton(
@@ -150,7 +165,7 @@ class _EnteredListState extends State<EnteredList> {
                       onPressed: () {
                         setState(() {
                           _sort = '&sort=deleted';
-                          _pagingController.refresh();
+                          _refreshEnteredList();
                         });
                       }),
                   Padding(
@@ -163,7 +178,7 @@ class _EnteredListState extends State<EnteredList> {
                         onPressed: () {
                           setState(() {
                             _sort = '&sort=all';
-                            _pagingController.refresh();
+                            _refreshEnteredList();
                           });
                         }),
                   )
@@ -171,27 +186,32 @@ class _EnteredListState extends State<EnteredList> {
               ),
               Flexible(
                 child: RefreshIndicator(
-                    onRefresh: () => Future.sync(() => _pagingController.refresh()),
+                    onRefresh: () => Future.sync(() => _refreshEnteredList()),
                     child: Consumer<ThemeProvider>(
                       builder: (context, theme, child) =>
-                          PagedListView<int, GiveawayListModel>(
-                              itemExtent: CustomPagedListTheme.itemExtent +
-                                  addItemExtent(theme.fontSize),
-                              pagingController: _pagingController,
-                              builderDelegate:
-                                  PagedChildBuilderDelegate<GiveawayListModel>(
-                                      itemBuilder: (context, giveaway, index) => Column(
-                                            children: [
-                                              _EnteredListTile(
-                                                giveaway: giveaway,
-                                                onTileChange: (giveaway) =>
-                                                    changeGiveawayState(
-                                                        giveaway, context, setState),
-                                              ),
-                                            ],
-                                          ),
-                                      newPageProgressIndicatorBuilder: (context) =>
-                                          const PagedProgressIndicator())),
+                          PagingListener<int, GiveawayListModel>(
+                        controller: _pagingController,
+                        builder: (context, state, fetchNextPage) =>
+                            PagedListView<int, GiveawayListModel>(
+                          itemExtent: CustomPagedListTheme.itemExtent +
+                              addItemExtent(theme.fontSize),
+                          state: state,
+                          fetchNextPage: fetchNextPage,
+                          builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                            itemBuilder: (context, giveaway, index) => Column(
+                              children: [
+                                _EnteredListTile(
+                                  giveaway: giveaway,
+                                  onTileChange: (giveaway) =>
+                                      changeGiveawayState(giveaway, context, setState),
+                                ),
+                              ],
+                            ),
+                            newPageProgressIndicatorBuilder: (context) =>
+                                const PagedProgressIndicator(),
+                          ),
+                        ),
+                      ),
                     )),
               ),
             ],
@@ -265,8 +285,8 @@ class _EnteredListTileState extends State<_EnteredListTile> {
 }
 
 class _EnteredFilter extends StatelessWidget {
-  const _EnteredFilter({required this.pagingController});
-  final PagingController<int, GiveawayListModel> pagingController;
+  const _EnteredFilter({required this.refreshList});
+  final Function refreshList;
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +302,7 @@ class _EnteredFilter extends StatelessWidget {
               });
           if (context.mounted) {
             if (filter != context.read<EnteredFilterProvider>().filter) {
-              pagingController.refresh();
+              refreshList();
             }
           }
         },

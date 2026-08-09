@@ -23,8 +23,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
@@ -59,15 +60,27 @@ class CreatedBuilder extends StatefulWidget {
 }
 
 class _CreatedBuilderState extends State<CreatedBuilder> {
-  final PagingController<int, _CreatedListModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, _CreatedListModel> _pagingController =
+      PagingController<int, _CreatedListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage(
+        pageKey: pageKey,
+        fetcher: _fetchCreatedList,
+        url: 'https://www.steamgifts.com/giveaways/created/search?page=',
+        parser: _parseCreatedList,
+        context: context,
+        pagingController: _pagingController,
+        hasNextPage: _hasNextPage,
+        updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage),
+  );
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchCreatedList(pageKey, context);
-    });
   }
 
   @override
@@ -79,58 +92,68 @@ class _CreatedBuilderState extends State<CreatedBuilder> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        onRefresh: () => Future.sync(() => _hasNextPage =
+            refreshList<_CreatedListModel>(pagingController: _pagingController)),
         child: Consumer<ThemeProvider>(
-          builder: (context, theme, child) => PagedListView<int, _CreatedListModel>(
+          builder: (context, theme, child) => PagingListener<int, _CreatedListModel>(
+            controller: _pagingController,
+            builder: (context, state, fetchNextPage) =>
+                PagedListView<int, _CreatedListModel>(
               itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
-              pagingController: _pagingController,
+              state: state,
+              fetchNextPage: fetchNextPage,
               builderDelegate: PagedChildBuilderDelegate<_CreatedListModel>(
-                  itemBuilder: (context, created, index) => Column(children: [
-                        ListTile(
-                            selected: !created.received,
-                            leading: CustomNetworkImage(
-                                image: resizeImage(created.image,
-                                    GiveawayListTileTheme.leadingWidth.toInt()),
-                                width: GiveawayListTileTheme.leadingWidth),
-                            title: Text(created.name,
-                                overflow: GiveawayListTileTheme.overflow),
-                            subtitle: Text(
-                              created.time,
-                            ),
-                            onTap: () => customNav(Giveaway(href: created.href), context),
-                            trailing: created.sendLink != null
-                                ? TextButton(
-                                    child: const Text('Winners'),
-                                    onPressed: () => customNav(
-                                      Winners(link: created.sendLink!, self: true),
-                                      context,
-                                    ).then((value) => _pagingController.refresh()),
-                                  )
-                                : null),
-                      ]),
-                  newPageProgressIndicatorBuilder: (context) =>
-                      const PagedProgressIndicator())),
+                itemBuilder: (context, created, index) => Column(children: [
+                  ListTile(
+                    selected: !created.received,
+                    leading: CustomNetworkImage(
+                      image: resizeImage(
+                          created.image, GiveawayListTileTheme.leadingWidth.toInt()),
+                      width: GiveawayListTileTheme.leadingWidth,
+                    ),
+                    title: Text(created.name, overflow: GiveawayListTileTheme.overflow),
+                    subtitle: Text(created.time),
+                    onTap: () => customNav(Giveaway(href: created.href), context),
+                    trailing: created.sendLink != null
+                        ? TextButton(
+                            child: const Text('Winners'),
+                            onPressed: () => customNav(
+                              Winners(link: created.sendLink!, self: true),
+                              context,
+                            ).then((value) => _hasNextPage =
+                                refreshList<_CreatedListModel>(
+                                    pagingController: _pagingController)),
+                          )
+                        : null,
+                  ),
+                ]),
+                newPageProgressIndicatorBuilder: (context) =>
+                    const PagedProgressIndicator(),
+              ),
+            ),
+          ),
         ));
   }
 
-  Future<void> fetchCreatedList(int pageKey, BuildContext context) async {
-    String data = await fetchBody(
-        url:
-            'https://www.steamgifts.com/giveaways/created/search?page=${pageKey.toString()}');
-    List<_CreatedListModel> createdList = parseCreatedList(data);
-    addPage(createdList, _pagingController, pageKey,
-        parse(data).getElementsByClassName('widget-container').first);
+  Future<List<_CreatedListModel>> _fetchCreatedList(
+      int pageKey, String url, Function parser, BuildContext context,
+      {void Function(bool hasNextPage)? updateHasNextPage}) async {
+    String data = await fetchBody(url: '$url${pageKey.toString()}');
+    dom.Document document = parse(data);
+    updateHasNextPage
+        ?.call(hasNextPage(document.getElementsByClassName('widget-container').first));
+    return _parseCreatedList(document);
   }
 
-  List<_CreatedListModel> parseCreatedList(String data) {
+  List<_CreatedListModel> _parseCreatedList(dom.Document document) {
     List<_CreatedListModel> createdList = [];
-    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
-      createdList.add(parseCreatedListElement(element));
+    document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
+      createdList.add(_parseCreatedListElement(element));
     });
     return createdList;
   }
 
-  _CreatedListModel parseCreatedListElement(dom.Element element) {
+  _CreatedListModel _parseCreatedListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
     List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');
     String image = img.isNotEmpty ? img[0].attributes['style']! : '';

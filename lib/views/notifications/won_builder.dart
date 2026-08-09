@@ -23,8 +23,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/functions/url_launcher.dart';
@@ -73,15 +74,28 @@ class WonBuilder extends StatefulWidget {
 }
 
 class _WonBuilderState extends State<WonBuilder> {
-  final PagingController<int, _WonListModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, _WonListModel> _pagingController =
+      PagingController<int, _WonListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<_WonListModel>(
+      pageKey: pageKey,
+      fetcher: _fetchWonList,
+      url: 'https://www.steamgifts.com/giveaways/won/search?page=',
+      parser: _parseWonList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchWonList(pageKey, context);
-    });
   }
 
   @override
@@ -95,9 +109,12 @@ class _WonBuilderState extends State<WonBuilder> {
     return RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: Consumer<ThemeProvider>(
-          builder: (context, theme, child) => PagedListView<int, _WonListModel>(
+          builder: (context, theme, child) => PagingListener<int, _WonListModel>(
+            controller: _pagingController,
+            builder: (context, state, fetchNextPage) => PagedListView<int, _WonListModel>(
               itemExtent: CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
-              pagingController: _pagingController,
+              state: state,
+              fetchNextPage: fetchNextPage,
               builderDelegate: PagedChildBuilderDelegate<_WonListModel>(
                 itemBuilder: (context, giveaway, index) => Column(
                   children: [
@@ -106,14 +123,13 @@ class _WonBuilderState extends State<WonBuilder> {
                       child: ListTile(
                         selected: giveaway.notReceived,
                         leading: CustomNetworkImage(
-                            image: resizeImage(giveaway.image,
-                                GiveawayListTileTheme.leadingWidth.toInt()),
-                            width: GiveawayListTileTheme.leadingWidth),
+                          image: resizeImage(
+                              giveaway.image, GiveawayListTileTheme.leadingWidth.toInt()),
+                          width: GiveawayListTileTheme.leadingWidth,
+                        ),
                         title:
                             Text(giveaway.name, overflow: GiveawayListTileTheme.overflow),
-                        subtitle: Text(
-                          giveaway.time,
-                        ),
+                        subtitle: Text(giveaway.time),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -146,9 +162,7 @@ class _WonBuilderState extends State<WonBuilder> {
                                             ? TextButton(
                                                 onPressed: () =>
                                                     urlLauncher(giveaway.giftLink!),
-                                                child: const Text(
-                                                  'Link',
-                                                ))
+                                                child: const Text('Link'))
                                             : Container(),
                             giveaway.notReceived
                                 ? _Received(
@@ -174,28 +188,31 @@ class _WonBuilderState extends State<WonBuilder> {
                 ),
                 newPageProgressIndicatorBuilder: (context) =>
                     const PagedProgressIndicator(),
-              )),
+              ),
+            ),
+          ),
         ));
   }
 
-  Future<void> fetchWonList(int pageKey, BuildContext context) async {
-    String data = await fetchBody(
-        url:
-            'https://www.steamgifts.com/giveaways/won/search?page=${pageKey.toString()}');
-    List<_WonListModel> wonList = parseWonList(data);
-    addPage(wonList, _pagingController, pageKey,
-        parse(data).getElementsByClassName('widget-container').first);
+  Future<List<_WonListModel>> _fetchWonList(
+      int pageKey, String url, Function parser, BuildContext context,
+      {void Function(bool hasNextPage)? updateHasNextPage}) async {
+    String data = await fetchBody(url: '$url${pageKey.toString()}');
+    dom.Document document = parse(data);
+    updateHasNextPage
+        ?.call(hasNextPage(document.getElementsByClassName('widget-container').first));
+    return _parseWonList(document);
   }
 
-  List<_WonListModel> parseWonList(String data) {
+  List<_WonListModel> _parseWonList(dom.Document document) {
     List<_WonListModel> wonList = [];
-    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
-      wonList.add(parseWonListElement(element));
+    document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
+      wonList.add(_parseWonListElement(element));
     });
     return wonList;
   }
 
-  _WonListModel parseWonListElement(dom.Element element) {
+  _WonListModel _parseWonListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
     dom.Element name = item.getElementsByClassName('table__column__heading')[0];
     List<dom.Element> img = item.getElementsByClassName('table_image_thumbnail');

@@ -27,10 +27,11 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/button_background_color.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/pop_nav.dart';
 import 'package:snag/common/functions/res_map_ajax.dart';
 import 'package:snag/common/functions/url_launcher.dart';
@@ -71,10 +72,8 @@ class _UserState extends State<User> {
   List<UserBookmarkModel> _bookmark = [];
   bool _bookmarked = false;
   bool _notLoading = true;
-  final PagingController<int, GiveawayListModel> _giveawayPagingController =
-      PagingController(firstPageKey: 1);
-  final PagingController<int, DiscussionModel> _discussionsPagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasGiveawayNextPage = true;
+  bool _hasDiscussionNextPage = true;
   String _list = '';
   late String _url;
   late WidgetStateProperty<Color?> _bgColor;
@@ -96,6 +95,40 @@ class _UserState extends State<User> {
   late final String _href;
   String _exception = '';
   String _stackTrace = '';
+  late final PagingController<int, GiveawayListModel> _giveawayPagingController =
+      PagingController<int, GiveawayListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasGiveawayNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<GiveawayListModel>(
+      pageKey: pageKey,
+      fetcher: _fetchGiveawayList,
+      url: '$_url$_list',
+      parser: parseList,
+      context: context,
+      pagingController: _giveawayPagingController,
+      hasNextPage: _hasGiveawayNextPage,
+      updateHasNextPage: (hasNextPage) => _hasGiveawayNextPage = hasNextPage,
+    ),
+  );
+  late final PagingController<int, DiscussionModel> _discussionsPagingController =
+      PagingController<int, DiscussionModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasDiscussionNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<DiscussionModel>(
+      pageKey: pageKey,
+      fetcher: fetchDiscussions,
+      url: '$_url/discussions/search?',
+      parser: parseDiscussionList,
+      context: context,
+      pagingController: _discussionsPagingController,
+      hasNextPage: _hasDiscussionNextPage,
+      updateHasNextPage: (hasNextPage) => _hasDiscussionNextPage = hasNextPage,
+    ),
+  );
 
   @override
   void initState() {
@@ -111,14 +144,6 @@ class _UserState extends State<User> {
     super.didChangeDependencies();
     _url = 'https://www.steamgifts.com$_href';
     _bgColor = buttonBackgroundColor(context);
-    _giveawayPagingController.addPageRequestListener(
-        (pageKey) => _fetchGiveawayList(pageKey, '$_url$_list', context));
-    _discussionsPagingController.addPageRequestListener((pageKey) => fetchDiscussions(
-        user: true,
-        pagingController: _discussionsPagingController,
-        pageKey: pageKey,
-        url: '$_url/discussions/search?',
-        context: context));
   }
 
   @override
@@ -238,8 +263,12 @@ class _UserState extends State<User> {
                       ],
                     ),
                     body: RefreshIndicator(
-                      onRefresh: () =>
-                          Future.sync(() => _giveawayPagingController.refresh()),
+                      onRefresh: () => Future.sync(() {
+                        _hasGiveawayNextPage = refreshList<GiveawayListModel>(
+                            pagingController: _giveawayPagingController);
+                        _hasDiscussionNextPage = refreshList<DiscussionModel>(
+                            pagingController: _discussionsPagingController);
+                      }),
                       child: Center(
                         child: Column(
                           children: [
@@ -325,7 +354,10 @@ class _UserState extends State<User> {
                                       setState(() {
                                         _list = '';
                                       });
-                                      _giveawayPagingController.refresh();
+                                      _hasGiveawayNextPage =
+                                          refreshList<GiveawayListModel>(
+                                              pagingController:
+                                                  _giveawayPagingController);
                                     },
                                     child: const Text('Sent')),
                                 TextButton(
@@ -337,7 +369,8 @@ class _UserState extends State<User> {
                                     setState(() {
                                       _list = '/giveaways/won';
                                     });
-                                    _giveawayPagingController.refresh();
+                                    _hasGiveawayNextPage = refreshList<GiveawayListModel>(
+                                        pagingController: _giveawayPagingController);
                                   },
                                   child: const Text('Won'),
                                 ),
@@ -349,7 +382,10 @@ class _UserState extends State<User> {
                                   onPressed: () {
                                     setState(() {
                                       _list = '/discussions';
-                                      _discussionsPagingController.refresh();
+                                      _hasDiscussionNextPage =
+                                          refreshList<DiscussionModel>(
+                                              pagingController:
+                                                  _discussionsPagingController);
                                     });
                                   },
                                   child: const Text('Discussions'),
@@ -361,28 +397,33 @@ class _UserState extends State<User> {
                                   ? DiscussionsList(
                                       pagingController: _discussionsPagingController)
                                   : Consumer<ThemeProvider>(
-                                      builder: (context, theme, child) => PagedListView<
-                                              int, GiveawayListModel>(
+                                      builder: (context, theme, child) =>
+                                          PagingListener<int, GiveawayListModel>(
+                                        controller: _giveawayPagingController,
+                                        builder: (context, state, fetchNextPage) =>
+                                            PagedListView<int, GiveawayListModel>(
                                           itemExtent: CustomPagedListTheme.itemExtent +
                                               addItemExtent(theme.fontSize),
-                                          pagingController: _giveawayPagingController,
+                                          state: state,
+                                          fetchNextPage: fetchNextPage,
                                           builderDelegate: PagedChildBuilderDelegate<
-                                                  GiveawayListModel>(
-                                              itemBuilder: (context, giveaway, index) =>
-                                                  Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      GiveawayListTile(
-                                                        giveaway: giveaway,
-                                                        onTileChange: () =>
-                                                            changeGiveawayState(giveaway,
-                                                                context, setState),
-                                                      ),
-                                                    ],
-                                                  ),
-                                              newPageProgressIndicatorBuilder:
-                                                  (context) =>
-                                                      const PagedProgressIndicator())),
+                                              GiveawayListModel>(
+                                            itemBuilder: (context, giveaway, index) =>
+                                                Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GiveawayListTile(
+                                                  giveaway: giveaway,
+                                                  onTileChange: () => changeGiveawayState(
+                                                      giveaway, context, setState),
+                                                ),
+                                              ],
+                                            ),
+                                            newPageProgressIndicatorBuilder: (context) =>
+                                                const PagedProgressIndicator(),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                             ),
                           ],
@@ -394,8 +435,14 @@ class _UserState extends State<User> {
         : ErrorPage(error: _exception, url: _url, stackTrace: _stackTrace, type: 'user');
   }
 
-  Future<void> _fetchGiveawayList(int pageKey, String page, BuildContext context) async {
-    String data = await fetchBody(url: '$page?page=${pageKey.toString()}');
+  Future<List<GiveawayListModel>> _fetchGiveawayList(
+    int pageKey,
+    String url,
+    Function parser,
+    BuildContext context, {
+    void Function(bool hasNextPage)? updateHasNextPage,
+  }) async {
+    String data = await fetchBody(url: '$url?page=${pageKey.toString()}');
     _isUser = widget.name == username;
     try {
       dom.Element container = parse(data).getElementsByClassName('widget-container')[0];
@@ -463,14 +510,15 @@ class _UserState extends State<User> {
                     .getElementsByClassName('sidebar__shortcut__whitelist is-selected')
                     .isNotEmpty,
             blacklisted: _isUser ? null : buttons.getElementsByClassName('sidebar__shortcut__blacklist is-selected').isNotEmpty);
-        setState(() {});
+        if (mounted) setState(() {});
       }
-      List<GiveawayListModel> giveaways = parseList(container, widget.name);
-      addPage(giveaways, _giveawayPagingController, pageKey, container);
+      updateHasNextPage?.call(hasNextPage(container));
+      return parser(container, widget.name);
     } catch (error, stack) {
       _exception = error.toString();
       _stackTrace = stack.toString();
-      setState(() {});
+      if (mounted) setState(() {});
+      return [];
     }
   }
 

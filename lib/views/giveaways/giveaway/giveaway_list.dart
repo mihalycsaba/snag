@@ -26,6 +26,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 import 'package:snag/common/functions/initialize_notifications.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/common/vars/globals.dart';
 import 'package:snag/nav/custom_drawer.dart';
@@ -50,8 +51,24 @@ class GiveawayList extends StatefulWidget {
 }
 
 class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver {
-  final PagingController<int, GiveawayListModel> _pagingController =
-      PagingController(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, GiveawayListModel> _pagingController =
+      PagingController<int, GiveawayListModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<GiveawayListModel>(
+      pageKey: pageKey,
+      fetcher: fetchGiveawayList,
+      url: widget.page.url + context.read<GiveawayFilterProvider>().filter,
+      parser: _parseGiveawayList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
   final FlutterLocalNotificationsPlugin _status = FlutterLocalNotificationsPlugin();
   bool _refresh = false;
 
@@ -61,15 +78,8 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
     WidgetsBinding.instance.addObserver(this);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) => fetchGiveawayList(
-        pageKey,
-        widget.page.url + context.read<GiveawayFilterProvider>().filter,
-        _parseGiveawayList,
-        _pagingController,
-        context));
+  void _refreshGiveaways() {
+    _hasNextPage = refreshList<GiveawayListModel>(pagingController: _pagingController);
   }
 
   List<GiveawayListModel> _parseGiveawayList(String data, int pageKey) {
@@ -113,7 +123,7 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
       case AppLifecycleState.resumed:
         if (_refresh) {
           _refresh = false;
-          _pagingController.refresh();
+          _refreshGiveaways();
         }
         break;
       case AppLifecycleState.paused:
@@ -131,28 +141,35 @@ class _GiveawayListState extends State<GiveawayList> with WidgetsBindingObserver
             appBar: CustomDrawerAppBar(
               name: widget.page.name,
               showPoints: true,
-              filter: GiveawayFilter(pagingController: _pagingController),
+              filter: GiveawayFilter(refresh: _refreshGiveaways),
             ),
             drawer: const CustomDrawer(giveawaysOpen: true),
             body: Center(
-              child: RefreshIndicator(
-                  onRefresh: () => Future.sync(() => _pagingController.refresh()),
-                  child: Consumer<ThemeProvider>(
-                    builder: (context, theme, child) => PagedListView<int,
-                            GiveawayListModel>(
-                        itemExtent: CustomPagedListTheme.itemExtent +
-                            addItemExtent(theme.fontSize),
-                        pagingController: _pagingController,
-                        builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
-                            itemBuilder: (context, giveaway, index) => GiveawayListTile(
-                                  giveaway: giveaway,
-                                  onTileChange: () =>
-                                      changeGiveawayState(giveaway, context, setState),
-                                ),
-                            newPageProgressIndicatorBuilder: (context) =>
-                                const PagedProgressIndicator())),
-                  )),
-            ))
+                child: RefreshIndicator(
+              onRefresh: () => Future.sync(() => _refreshGiveaways()),
+              child: Consumer<ThemeProvider>(
+                builder: (context, theme, child) =>
+                    PagingListener<int, GiveawayListModel>(
+                  controller: _pagingController,
+                  builder: (context, state, fetchNextPage) =>
+                      PagedListView<int, GiveawayListModel>(
+                    itemExtent:
+                        CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
+                    state: state,
+                    fetchNextPage: fetchNextPage,
+                    builderDelegate: PagedChildBuilderDelegate<GiveawayListModel>(
+                      itemBuilder: (context, giveaway, index) => GiveawayListTile(
+                        giveaway: giveaway,
+                        onTileChange: () =>
+                            changeGiveawayState(giveaway, context, setState),
+                      ),
+                      newPageProgressIndicatorBuilder: (context) =>
+                          const PagedProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ),
+            )))
         : const LoggedOut();
   }
 }

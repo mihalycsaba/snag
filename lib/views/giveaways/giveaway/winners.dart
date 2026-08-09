@@ -20,17 +20,16 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 
 import 'package:snag/common/custom_network_image.dart';
-import 'package:snag/common/functions/add_page.dart';
 import 'package:snag/common/functions/fetch_body.dart';
 import 'package:snag/common/functions/get_avatar.dart';
+import 'package:snag/common/functions/has_next_page.dart';
+import 'package:snag/common/functions/paging_functions.dart';
 import 'package:snag/common/functions/res_status_code.dart';
 import 'package:snag/common/functions/resize_image.dart';
 import 'package:snag/common/paged_progress_indicator.dart';
 import 'package:snag/nav/custom_nav.dart';
-import 'package:snag/provider_models/theme_provider.dart';
 import 'package:snag/views/misc/user.dart';
 
 class WinnerModel {
@@ -59,14 +58,28 @@ class Winners extends StatefulWidget {
 }
 
 class _WinnersState extends State<Winners> {
-  final _pagingController = PagingController<int, WinnerModel>(firstPageKey: 1);
+  bool _hasNextPage = true;
+  late final PagingController<int, WinnerModel> _pagingController =
+      PagingController<int, WinnerModel>(
+    getNextPageKey: (state) => getNextPageKey(
+      state: state,
+      hasNextPage: _hasNextPage,
+    ),
+    fetchPage: (pageKey) => fetchPage<WinnerModel>(
+      pageKey: pageKey,
+      fetcher: _fetchWinnerList,
+      url: 'https://www.steamgifts.com${widget.link}/search?page=',
+      parser: _parseWinnerList,
+      context: context,
+      pagingController: _pagingController,
+      hasNextPage: _hasNextPage,
+      updateHasNextPage: (hasNextPage) => _hasNextPage = hasNextPage,
+    ),
+  );
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchWinnerList(pageKey, context);
-    });
   }
 
   @override
@@ -83,70 +96,66 @@ class _WinnersState extends State<Winners> {
           title: const Text('Winners'),
         ),
         body: RefreshIndicator(
-            onRefresh: () => Future.sync(() => _pagingController.refresh()),
-            child: Consumer<ThemeProvider>(
-                builder: (context, theme, child) => PagedListView<int, WinnerModel>(
-                    itemExtent:
-                        CustomPagedListTheme.itemExtent + addItemExtent(theme.fontSize),
-                    pagingController: _pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
-                      itemBuilder: (context, item, index) => ListTile(
-                          leading: CustomNetworkImage(
-                            image: resizeImage(item.image, 40),
-                            width: 40,
-                          ),
-                          title: Text(
-                            item.name,
-                          ),
-                          subtitle: widget.self
-                              ? Text(
-                                  item.email!,
-                                )
-                              : null,
-                          onTap: item.anonymous
-                              ? null
-                              : () => customNav(User(name: item.name), context),
-                          trailing: widget.self
-                              ? TextButton(
-                                  onPressed: item.sent
-                                      ? null
-                                      : () async {
-                                          int statusCode = await resStatusCode(
-                                              '&action=1&do=sent_feedback&winner_id=${item.id}');
-                                          if (statusCode == 200) {
-                                            setState(() {
-                                              item.sent = true;
-                                            });
-                                          }
-                                        },
-                                  child: const Text(
-                                    'Send',
-                                  ))
-                              : null),
-                      newPageProgressIndicatorBuilder: (context) =>
-                          const PagedProgressIndicator(),
-                    )))));
+            onRefresh: () => Future.sync(() => _hasNextPage =
+                refreshList<WinnerModel>(pagingController: _pagingController)),
+            child: PagingListener<int, WinnerModel>(
+              controller: _pagingController,
+              builder: (context, state, fetchNextPage) => PagedListView<int, WinnerModel>(
+                state: state,
+                fetchNextPage: fetchNextPage,
+                builderDelegate: PagedChildBuilderDelegate<WinnerModel>(
+                  itemBuilder: (context, item, index) => ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14.0),
+                      leading: CustomNetworkImage(
+                        image: resizeImage(item.image, 40),
+                        width: 40,
+                      ),
+                      title: Text(item.name),
+                      subtitle: widget.self ? Text(item.email!) : null,
+                      onTap: item.anonymous
+                          ? null
+                          : () => customNav(User(name: item.name), context),
+                      trailing: widget.self
+                          ? TextButton(
+                              onPressed: item.sent
+                                  ? null
+                                  : () async {
+                                      int statusCode = await resStatusCode(
+                                          '&action=1&do=sent_feedback&winner_id=${item.id}');
+                                      if (statusCode == 200) {
+                                        setState(() {
+                                          item.sent = true;
+                                        });
+                                      }
+                                    },
+                              child: const Text('Send'))
+                          : null),
+                  newPageProgressIndicatorBuilder: (context) =>
+                      const PagedProgressIndicator(),
+                ),
+              ),
+            )));
   }
 
-  Future<void> fetchWinnerList(int pageKey, BuildContext context) async {
-    String data = await fetchBody(
-        url:
-            'https://www.steamgifts.com${widget.link}/search?page=${pageKey.toString()}');
-    List<WinnerModel> winnerList = parseWinnerList(data);
+  Future<List<WinnerModel>> _fetchWinnerList(
+      int pageKey, String url, Function parser, BuildContext context,
+      {void Function(bool hasNextPage)? updateHasNextPage}) async {
+    String data = await fetchBody(url: '$url${pageKey.toString()}');
     dom.Document document = parse(data);
-    addPage(winnerList, _pagingController, pageKey,
-        document.getElementsByClassName('widget-container').first);
+    updateHasNextPage
+        ?.call(hasNextPage(document.getElementsByClassName('widget-container').first));
+    return _parseWinnerList(document);
   }
 
-  List<WinnerModel> parseWinnerList(String data) {
+  List<WinnerModel> _parseWinnerList(dom.Document document) {
     List<WinnerModel> winnerList = [];
-    parse(data).getElementsByClassName('table__row-inner-wrap').forEach((element) {
-      winnerList.add(parseWinnerListElement(element));
+    document.getElementsByClassName('table__row-inner-wrap').forEach((element) {
+      winnerList.add(_parseWinnerListElement(element));
     });
     return winnerList;
   }
 
-  WinnerModel parseWinnerListElement(dom.Element element) {
+  WinnerModel _parseWinnerListElement(dom.Element element) {
     dom.Document item = parse(element.innerHtml);
     dom.Element heading = item.getElementsByClassName('table__column__heading')[0];
     return WinnerModel(
