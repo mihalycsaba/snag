@@ -469,64 +469,69 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                 ),
                 SliverToBoxAdapter(
                     child: Card.filled(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: Column(
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                //overflow comes from site
-                                child: Consumer<ThemeProvider>(
-                                  builder: (context, theme, child) => Text(
-                                    _giveaway.name,
-                                    style: TextStyle(
-                                        fontSize: 20.0 + theme.fontSize,
-                                        fontWeight: FontWeight.bold),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )),
-                            Row(children: [
-                              GestureDetector(
-                                  onTap: () =>
-                                      customNav(User(name: _giveaway.creator!), context),
-                                  child: Consumer<ThemeProvider>(
-                                      builder: (context, theme, child) => Row(children: [
-                                            Icon(Icons.person,
-                                                size: 16.0 + theme.fontSize),
-                                            Text(_giveaway.creator!,
-                                                style: TextStyle(
-                                                    fontSize: _detailsFontSize +
-                                                        4 +
-                                                        theme.fontSize)),
-                                          ]))),
-                              const Spacer(),
-                              _giveaway.copies != null
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(right: 4.0),
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            _giveaway.copies!,
-                                          )),
-                                    )
-                                  : Container(),
+                  child: Consumer<ThemeProvider>(
+                    builder: (context, theme, child) => Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Column(
+                            children: [
                               Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text('Level ${_giveaway.level}'))
-                            ]),
-                            Consumer<ThemeProvider>(
-                              builder: (context, theme, child) => Row(children: [
-                                Icon(Icons.group, size: 14.0 + theme.fontSize),
+                                  //overflow comes from site
+                                  child: Text(
+                                    _giveaway.name,
+                                    style: TextStyle(
+                                        fontSize: 22.0 + theme.fontSize,
+                                        fontWeight: FontWeight.bold),
+                                    overflow: TextOverflow.ellipsis,
+                                  )),
+                              Row(children: [
+                                GestureDetector(
+                                    onTap: () => customNav(
+                                        User(name: _giveaway.creator!), context),
+                                    child: Row(children: [
+                                      Icon(Icons.person, size: 20.0 + theme.fontSize),
+                                      Text(_giveaway.creator!,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  _detailsFontSize + 6 + theme.fontSize)),
+                                    ])),
+                              ]),
+                              Row(children: [
                                 const SizedBox(width: 1),
+                                Icon(Icons.group, size: 14.0 + theme.fontSize),
+                                const SizedBox(width: 2),
                                 Text(
                                   '${_giveaway.entries} entries ',
                                   style: TextStyle(
                                       fontSize: _detailsFontSize + theme.fontSize),
                                 ),
-                                Icon(Icons.calendar_today, size: 10.0 + theme.fontSize),
+                                const Spacer(),
+                                _giveaway.copies != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(right: 4.0),
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              _giveaway.copies!,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      _detailsFontSize + theme.fontSize),
+                                            )),
+                                      )
+                                    : Container(),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('Level ${_giveaway.level}',
+                                        style: TextStyle(
+                                            fontSize:
+                                                _detailsFontSize + theme.fontSize))),
+                              ]),
+                              Row(children: [
                                 const SizedBox(width: 1),
+                                Icon(Icons.calendar_today, size: 10.0 + theme.fontSize),
+                                const SizedBox(width: 3),
                                 Text('${_giveaway.ago!} ago',
                                     style: TextStyle(
                                         fontSize: _detailsFontSize + theme.fontSize)),
@@ -536,99 +541,100 @@ class _GiveawayDetailsState extends State<GiveawayDetails> {
                                 Text(_giveaway.remaining.toLowerCase(),
                                     style: TextStyle(
                                         fontSize: _detailsFontSize + theme.fontSize)),
-                              ]),
-                            )
-                          ],
+                              ])
+                            ],
+                          ),
                         ),
-                      ),
-                      const Divider(height: 10),
-                      _description,
-                      Row(
-                        children: [
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: widget.isBlacklisted
-                                  ? const Padding(
-                                      padding: EdgeInsets.only(left: 8.0),
-                                      child: Text('Blacklisted',
-                                          style: TextStyle(color: Colors.red)),
-                                    )
-                                  : _giveaway.error == null
-                                      ? _giveaway.notEnded &&
-                                              _giveaway.notStarted! &&
-                                              _giveaway.creator != username
-                                          ? TextButton(
-                                              onPressed: _giveaway.entered ||
-                                                      context
-                                                              .read<PointsProvider>()
-                                                              .points >=
-                                                          _giveaway.points!
-                                                  ? () async {
-                                                      await changeGiveawayState(
-                                                          _giveaway, context, setState);
-                                                    }
-                                                  : null,
-                                              child: _giveaway.entered
-                                                  ? Text('Leave (${_giveaway.points}P)')
-                                                  : Text('Enter (${_giveaway.points}P)'))
-                                          : Container()
-                                      : Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
-                                          child: Text(_giveaway.error!),
-                                        )),
-                          widget.isBlacklisted
-                              ? Container()
-                              : TextButton(
-                                  onPressed: () async {
-                                    Object? refresh = await customNav(
-                                        CommentEditor(
-                                            data: _descriptionText.isNotEmpty
-                                                ? _descriptionText[0].children[0]
-                                                : dom.Element.html('<p></p>'),
-                                            name: _giveaway.creator!,
-                                            url: _url),
-                                        context);
-                                    if (refresh == true) {
-                                      _controller.method();
-                                    }
-                                  },
-                                  child: const Text('Comment')),
-                          const Spacer(),
-                          _giveaway.inviteOnly
-                              ? const Icon(
-                                  Icons.lock,
-                                  size: _iconSize,
-                                )
-                              : Container(),
-                          _giveaway.group
-                              ? InkWell(
-                                  onTap: () =>
-                                      customNav(Groups(groupUrl: _groupUrl), context),
-                                  child: const Padding(
+                        const Divider(height: 10),
+                        _description,
+                        Row(
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: widget.isBlacklisted
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Text('Blacklisted',
+                                            style: TextStyle(color: Colors.red)),
+                                      )
+                                    : _giveaway.error == null
+                                        ? _giveaway.notEnded &&
+                                                _giveaway.notStarted! &&
+                                                _giveaway.creator != username
+                                            ? TextButton(
+                                                onPressed: _giveaway.entered ||
+                                                        context
+                                                                .read<PointsProvider>()
+                                                                .points >=
+                                                            _giveaway.points!
+                                                    ? () async {
+                                                        await changeGiveawayState(
+                                                            _giveaway, context, setState);
+                                                      }
+                                                    : null,
+                                                child: _giveaway.entered
+                                                    ? Text('Leave (${_giveaway.points}P)')
+                                                    : Text(
+                                                        'Enter (${_giveaway.points}P)'))
+                                            : Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Text(_giveaway.error!),
+                                          )),
+                            widget.isBlacklisted
+                                ? Container()
+                                : TextButton(
+                                    onPressed: () async {
+                                      Object? refresh = await customNav(
+                                          CommentEditor(
+                                              data: _descriptionText.isNotEmpty
+                                                  ? _descriptionText[0].children[0]
+                                                  : dom.Element.html('<p></p>'),
+                                              name: _giveaway.creator!,
+                                              url: _url),
+                                          context);
+                                      if (refresh == true) {
+                                        _controller.method();
+                                      }
+                                    },
+                                    child: const Text('Comment')),
+                            const Spacer(),
+                            _giveaway.inviteOnly
+                                ? const Icon(
+                                    Icons.lock,
+                                    size: _iconSize,
+                                  )
+                                : Container(),
+                            _giveaway.group
+                                ? InkWell(
+                                    onTap: () =>
+                                        customNav(Groups(groupUrl: _groupUrl), context),
+                                    child: const Padding(
+                                      padding: _iconPadding,
+                                      child: Icon(Icons.groups,
+                                          size: _iconSize + 4, color: Colors.green),
+                                    ),
+                                  )
+                                : Container(),
+                            _giveaway.whitelist
+                                ? const Padding(
                                     padding: _iconPadding,
-                                    child: Icon(Icons.groups,
-                                        size: _iconSize + 4, color: Colors.green),
-                                  ),
-                                )
-                              : Container(),
-                          _giveaway.whitelist
-                              ? const Padding(
-                                  padding: _iconPadding,
-                                  child: Icon(Icons.favorite,
-                                      size: _iconSize, color: Colors.pinkAccent),
-                                )
-                              : Container(),
-                          _giveaway.region
-                              ? const Padding(
-                                  padding: _iconPadding,
-                                  child: Icon(Icons.public,
-                                      size: _iconSize, color: Colors.blueGrey),
-                                )
-                              : Container(),
-                          const SizedBox(width: 10)
-                        ],
-                      )
-                    ],
+                                    child: Icon(Icons.favorite,
+                                        size: _iconSize, color: Colors.pinkAccent),
+                                  )
+                                : Container(),
+                            _giveaway.region
+                                ? const Padding(
+                                    padding: _iconPadding,
+                                    child: Icon(Icons.public,
+                                        size: _iconSize, color: Colors.blueGrey),
+                                  )
+                                : Container(),
+                            const SizedBox(width: 10)
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 )),
                 Comments(
